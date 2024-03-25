@@ -42,4 +42,16 @@ public class AuthService {
 
         return claims.getBody().getSubject();
     }
+
+    //Verify token Method 
+    public boolean isTokenValid(String token) {
+        try {
+            // Verify the token
+            String email = verifyToken(token);
+            // Token is valid if email is not null
+            return email != null;
+        } catch (Exception e) {
+            return false; // Token verification failed
+        }
+    }
 }

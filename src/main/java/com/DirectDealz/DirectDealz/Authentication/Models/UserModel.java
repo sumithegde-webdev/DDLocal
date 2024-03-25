@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Component;
 
+import com.DirectDealz.DirectDealz.Authentication.Enum.RequestStatus;
 import com.DirectDealz.DirectDealz.Authentication.Enum.UserRole;
 
 import jakarta.persistence.Column;
@@ -48,5 +49,32 @@ public class UserModel {
     private String password;
     
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.BUYER;
+    private UserRole userRole = UserRole.BUYER;
+
+    
+    @Enumerated(EnumType.STRING)
+    private RequestStatus requestStatus = RequestStatus.NOTREQUESTED; // Default status is NOT_REQUESTED
+
+    // Getters and setters for all fields
+
+    public void setRequestStatus(RequestStatus requestStatus) {
+        this.requestStatus = requestStatus;
+    }
+
+    public RequestStatus getRequestStatus() {
+        return requestStatus;
+    }
+
+    // Address storing for the seller 
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
 }

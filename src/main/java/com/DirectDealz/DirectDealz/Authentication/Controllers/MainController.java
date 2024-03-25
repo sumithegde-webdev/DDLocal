@@ -1,4 +1,7 @@
 package com.DirectDealz.DirectDealz.Authentication.Controllers;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.DirectDealz.DirectDealz.Authentication.Models.LoginModel;
+import com.DirectDealz.DirectDealz.Authentication.Models.UserModel;
+import com.DirectDealz.DirectDealz.Authentication.Repository.UserRepository;
 import com.DirectDealz.DirectDealz.Authentication.Services.UserService;
 
 import jakarta.validation.Valid;
@@ -19,6 +24,8 @@ public class MainController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("adduser")
     public ResponseEntity<Object> addUser(@Valid @RequestBody Object userOrService, BindingResult bindingResult,
@@ -58,4 +65,18 @@ public class MainController {
         return userService.resetThePasswordService(passwordFromUser, role, email);
     }
 
+    // Endpoint for Becoming Seller Request 
+     @PostMapping("/request")
+    public ResponseEntity<Object> requestToBecomeBuyer(@RequestHeader UUID userId,
+                                                       @RequestHeader String address,
+                                                       @RequestHeader String token) {
+        return userService.requestToBecomeBuyer(userId, address, token);
+    }
+
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserModel>> getAllUsers() {
+        List<UserModel> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
+    }
 }
