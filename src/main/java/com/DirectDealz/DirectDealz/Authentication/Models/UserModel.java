@@ -57,24 +57,22 @@ public class UserModel {
 
     // Getters and setters for all fields
 
-    public void setRequestStatus(RequestStatus requestStatus) {
-        this.requestStatus = requestStatus;
-    }
+    // public void setRequestStatus(RequestStatus requestStatus) {
+    //     this.requestStatus = requestStatus;
+    // }
 
-    public RequestStatus getRequestStatus() {
-        return requestStatus;
-    }
+    // public RequestStatus getRequestStatus() {
+    //     return requestStatus;
+    // }
 
-    // Address storing for the seller 
-    private String address;
+    private String country = "India";
 
-    public String getAddress() {
-        return address;
-    }
+    private String state;
+    
+    private String city;
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    private int pincode;
 
+    private String streetAddress;
 
 }

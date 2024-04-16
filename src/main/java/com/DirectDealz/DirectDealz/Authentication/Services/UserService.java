@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
-
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-
 import com.DirectDealz.DirectDealz.Authentication.Enum.RequestStatus;
 import com.DirectDealz.DirectDealz.Authentication.Enum.UserRole;
 import com.DirectDealz.DirectDealz.Authentication.Models.EmailModel;
@@ -24,7 +22,6 @@ import com.DirectDealz.DirectDealz.Authentication.Repository.OTPRepository;
 import com.DirectDealz.DirectDealz.Authentication.Repository.UserRepository;
 import com.DirectDealz.DirectDealz.Authentication.StaticInfo.OTPGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.transaction.Transactional;
 
 @Service
@@ -333,7 +330,7 @@ public class UserService {
 
     // Seller Service for Becoming a Seller Request 
     @Transactional
-    public ResponseEntity<Object> requestToBecomeBuyer(UUID userId, String address, String token) {
+    public ResponseEntity<Object> requestToBecomeBuyer(UserModel usermodel, String token) {
         try {
             // Verify the token
             if (!authService.isTokenValid(token)) {
@@ -341,9 +338,8 @@ public class UserService {
                 responseMessage.setMessage("Invalid token");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
             }
-
-            UserModel user = userRepository.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+            String email = authService.verifyToken(token);
+            UserModel user = userRepository.findByEmail(email);
 
             // Check if the user is already a seller
             if (user.getUserRole() == UserRole.SELLER) {
@@ -355,9 +351,12 @@ public class UserService {
             }
         
 
-            // Update the user's address and set the request status to "Pending"
-            user.setAddress(address);
-            user.setRequestStatus(RequestStatus.PENDING);;
+            // Update the user's address data and set the request status to "Pending"
+            user.setState(usermodel.getState());
+            user.setCity(usermodel.getCity());
+            user.setStreetAddress(usermodel.getStreetAddress());
+            user.setPincode(usermodel.getPincode());
+            user.setRequestStatus(RequestStatus.PENDING);
             userRepository.save(user);
 
             responseMessage.setSuccess(true);
@@ -366,6 +365,27 @@ public class UserService {
         } catch (Exception e) {
             responseMessage.setSuccess(false);
             responseMessage.setMessage("Internal Server Error in requestToBecomeBuyer. Reason: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMessage);
+        }
+    }
+
+
+
+    public ResponseEntity<Object> GetAllUsers(String token) {
+        try {
+            // Verify the token
+            if (!authService.isTokenValid(token)) {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Invalid token");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
+            }
+
+        List<UserModel> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
+           
+        } catch (Exception e) {
+            responseMessage.setSuccess(false);
+            responseMessage.setMessage("Internal Server Error. Reason: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMessage);
         }
     }
