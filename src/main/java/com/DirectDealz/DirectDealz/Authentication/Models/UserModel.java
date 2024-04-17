@@ -1,14 +1,11 @@
 package com.DirectDealz.DirectDealz.Authentication.Models;
 
 import java.util.UUID;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Component;
-
 import com.DirectDealz.DirectDealz.Authentication.Enum.RequestStatus;
 import com.DirectDealz.DirectDealz.Authentication.Enum.UserRole;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,18 +49,10 @@ public class UserModel {
     private UserRole userRole = UserRole.BUYER;
 
     
+    // Only for Admin
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus = RequestStatus.NOTREQUESTED; // Default status is NOT_REQUESTED
 
-    // Getters and setters for all fields
-
-    // public void setRequestStatus(RequestStatus requestStatus) {
-    //     this.requestStatus = requestStatus;
-    // }
-
-    // public RequestStatus getRequestStatus() {
-    //     return requestStatus;
-    // }
 
     private String country = "India";
 
