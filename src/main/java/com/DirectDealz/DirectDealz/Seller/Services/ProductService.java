@@ -142,4 +142,39 @@ public class ProductService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
         }
     }
+
+
+
+    public ResponseEntity<Object> getProductById(UUID productId, String token) {
+        try {
+            if (!authService.isTokenValid(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
+            
+            // Get the user from the token
+            String email = authService.verifyToken(token);
+            UserModel user = userRepository.findByEmail(email);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            // Check if the user is a buyer or seller or Admin
+            if (user.getUserRole() != UserRole.BUYER && user.getUserRole() != UserRole.SELLER && user.getUserRole() != UserRole.ADMIN) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
+            }
+
+            // Find the product by ID
+            Optional<Product> productOptional = productRepository.findById(productId);
+            if (!productOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+            }
+
+            // Return the product if found
+            Product product = productOptional.get();
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+        }
+    }
+
 }

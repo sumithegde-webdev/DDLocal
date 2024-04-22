@@ -40,7 +40,7 @@ public class Product {
     private BigDecimal price;
         
     @Enumerated(EnumType.STRING)
-    private ProductStatus productStatus = ProductStatus.AVAILABLE; // Default status is NOT_REQUESTED
+    private ProductStatus productStatus = ProductStatus.AVAILABLE; // Default status is Available 
     
     @CreationTimestamp
     private LocalDateTime createdAt;
