@@ -42,7 +42,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus = ProductStatus.AVAILABLE; 
 
-    private String City;
+    private String productcity;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
