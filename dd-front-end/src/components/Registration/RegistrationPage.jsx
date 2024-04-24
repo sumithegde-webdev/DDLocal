@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/registrationPage.css'
 import uF from '../assets/image (5).png';
-import InputField from './InputField';
+import InputField from '../InputField';
 import { Route } from 'react-router-dom';
-import LoginPage from './LoginPage';
+import LoginPage from '../Login/LoginPage';
 
 const baseURL = "http://localhost:8090/api/adduser";
 
