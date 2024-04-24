@@ -27,10 +27,10 @@ public class MainController {
         return userService.userRegisterService(userOrService, bindingResult, role);
     }
 
-    @GetMapping("getuserdetailsbytoken")
-    public ResponseEntity<Object> getUserDetailsByToken(@RequestHeader String token, @RequestHeader String role) {
-        return userService.getUserDetailsByEmailService(token, role);
-    }
+    // @GetMapping("getuserdetailsbytoken")
+    // public ResponseEntity<Object> getUserDetailsByToken(@RequestHeader String token, @RequestHeader String role) {
+    //     return userService.getUserDetailsByEmailService(token, role);
+    // }
 
     @GetMapping("login")
     public ResponseEntity<Object> verifyUser(@RequestBody LoginModel loginModel, @RequestHeader String role) {
@@ -67,8 +67,8 @@ public class MainController {
         return userService.requestToBecomeBuyer(userModel, token);
     }
 
-
-    @GetMapping("/all")
+    // Endpoint to Access All user By Admin
+    @GetMapping("/GetallUsers")
     public ResponseEntity<Object> getAllUsers(@RequestHeader String token) {
         return userService.GetAllUsers(token);
     }

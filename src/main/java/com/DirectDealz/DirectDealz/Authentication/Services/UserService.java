@@ -52,7 +52,7 @@ public class UserService {
 
     @Scheduled(fixedRate = 60000)
     public void deleteExpiredRecords() {
-        LocalDateTime expiryTime = LocalDateTime.now().minusMinutes(1).truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime expiryTime = LocalDateTime.now().minusMinutes(7).truncatedTo(ChronoUnit.MINUTES);
         List<OTPModel> expiredRecords = otpRepo.findByCreatedAt(expiryTime);
         if (expiredRecords.size() != 0) {
             otpRepo.deleteAll(expiredRecords);
@@ -378,9 +378,18 @@ public class UserService {
                 responseMessage.setMessage("Invalid token");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
             }
+            String email = authService.verifyToken(token);
+            UserModel user = userRepository.findByEmail(email);
 
-        List<UserModel> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+            if (!(user.getUserRole() == UserRole.ADMIN)) {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Only Admin Role Can access this URL");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
+                
+            }
+
+            List<UserModel> users = userRepository.findAll();
+            return ResponseEntity.ok(users);
            
         } catch (Exception e) {
             responseMessage.setSuccess(false);
