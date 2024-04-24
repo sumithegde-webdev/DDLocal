@@ -2,6 +2,7 @@ package com.DirectDealz.DirectDealz.Authentication.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import com.DirectDealz.DirectDealz.Authentication.Services.UserService;
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://localhost/3000")
 @RequestMapping("api")
 public class MainController {
 
@@ -26,11 +28,6 @@ public class MainController {
             @RequestHeader String role) {
         return userService.userRegisterService(userOrService, bindingResult, role);
     }
-
-    // @GetMapping("getuserdetailsbytoken")
-    // public ResponseEntity<Object> getUserDetailsByToken(@RequestHeader String token, @RequestHeader String role) {
-    //     return userService.getUserDetailsByEmailService(token, role);
-    // }
 
     @GetMapping("login")
     public ResponseEntity<Object> verifyUser(@RequestBody LoginModel loginModel, @RequestHeader String role) {
