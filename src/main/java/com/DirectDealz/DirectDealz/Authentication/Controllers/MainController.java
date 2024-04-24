@@ -1,4 +1,5 @@
 package com.DirectDealz.DirectDealz.Authentication.Controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,7 @@ import com.DirectDealz.DirectDealz.Authentication.Services.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost/3000")
+@CrossOrigin(origins = "http://localhost/5173")
 @RequestMapping("api")
 public class MainController {
 
@@ -56,11 +57,11 @@ public class MainController {
         return userService.resetThePasswordService(passwordFromUser, role, email);
     }
 
-    // Endpoint for Becoming Seller Request 
-     @PostMapping("/request")
+    // Endpoint for Becoming Seller Request
+    @PostMapping("/request")
     public ResponseEntity<Object> requestToBecomeBuyer(
-                                                       @RequestBody UserModel userModel,
-                                                       @RequestHeader String token) {
+            @RequestBody UserModel userModel,
+            @RequestHeader String token) {
         return userService.requestToBecomeBuyer(userModel, token);
     }
 

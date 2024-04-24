@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/registrationPage.css'
 import uF from '../assets/image (5).png';
-import InputField from './InputField';
+import InputField from '../InputField';
+import { Route } from 'react-router-dom';
+import LoginPage from '../Login/LoginPage';
 
-const baseURL = "http://localhost:8900/api/adduser";
+const baseURL = "http://localhost:8090/api/adduser";
 
 const axiosInstance = axios.create({
     headers: {
@@ -33,6 +35,8 @@ const RegistrationPage = () => {
         leftColumn: "",
         rightColumn: "noaccess"
     })
+
+    const [subState, setSubState] = useState("noaccess");
 
     function onChangeHandler(e) {
         const { name, value } = e.target;
@@ -149,19 +153,43 @@ const RegistrationPage = () => {
             }
             else {
                 //momentarily green
-                setTimeout(() => { }, 2000);
+                setPreviewState(true);
+                setSubState("");
+                // setTimeout(() => { }, 2000);
             }
         }
         // console.log(credentials);
     }
 
-    const submitHandler = () => {
-        axiosInstance.post({
+    function submitHandler() {
+        console.log(credentials);
+        axiosInstance.post("", {
             userName: credentials.userName,
             email: credentials.email,
             phoneNumber: credentials.phoneNumber,
             password: credentials.password
-        });
+        })
+            .then((res) => {
+                setCredentials({
+                    userName: "",
+                    email: "",
+                    phoneNumber: "",
+                    password: "",
+                    repassword: ""
+                });
+                setNoAccess({
+                    leftColumn: "",
+                    rightColumn: "noaccess"
+                });
+                //route to login page
+                refreshPage()
+                // console.log(res);
+            })
+            .catch((error) => { console.error(error); });
+    }
+
+    function refreshPage() {
+        window.location.reload(false);
     }
 
     return (
@@ -280,8 +308,13 @@ const RegistrationPage = () => {
                         {validationErrors.repassword && <div id='repassword--error' className='error--messages'>{validationErrors.repassword}</div>}
                     </div>
                 </div>
-                <button type='button' id='register--button' className='sac--button'>Sign Up</button>
+                <button
+                    type='button'
+                    id='register--button'
+                    className={`sac--button ` + subState}
+                    onClick={submitHandler}>Sign Up</button>
             </div>
+            <div>{ }</div>
 
         </div>
     )
