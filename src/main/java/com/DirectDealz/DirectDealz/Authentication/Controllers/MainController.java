@@ -30,7 +30,13 @@ public class MainController {
         return userService.userRegisterService(userOrService, bindingResult, role);
     }
 
-    @GetMapping("login")
+    // @GetMapping("login")
+    // public ResponseEntity<Object> verifyUser(@RequestBody LoginModel loginModel,
+    // @RequestHeader String role) {
+    // return userService.userLoginService(loginModel, role);
+    // }
+
+    @PostMapping("login")
     public ResponseEntity<Object> verifyUser(@RequestBody LoginModel loginModel, @RequestHeader String role) {
         return userService.userLoginService(loginModel, role);
     }
