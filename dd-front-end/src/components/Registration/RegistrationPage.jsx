@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../styles/registrationPage.css'
-import uF from '../assets/image (5).png';
-import InputField from '../InputField';
+import '../Registration/RegistrationPage.css'
+import uF from '../../assets/image (5).png';
 import { Route } from 'react-router-dom';
 import LoginPage from '../Login/LoginPage';
 
