@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import '../styles/otpAuth.css'
+import './otpAuth.css'
 
 const OtpAuth = () => {
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../Registration/RegistrationPage.css'
+import './registrationPage.css'
 import uF from '../../assets/image (5).png';
 import { Route } from 'react-router-dom';
 import LoginPage from '../Login/LoginPage';
