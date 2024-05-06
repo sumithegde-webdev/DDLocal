@@ -81,11 +81,12 @@ const Login = (props) => {
     return (
         <>
             <div id="logo">
-                <img src={darkLogo} width={"100%"} />
+                <img src={lightLogo} width={"100%"} />
             </div>
             <div id="login--container">
                 <div id="carousel--div">
                     <img src={cOne} width={"100%"} />
+                    <button>Register</button>
                 </div>
                 <div id="dividing--line"></div>
                 <div id="login--div">

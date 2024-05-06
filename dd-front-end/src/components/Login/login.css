@@ -13,12 +13,12 @@
     overflow: hidden;
     /* background-color: #2461FF; */
     box-shadow: 10px 10px 5px #000a;
-
+    border: 1px solid black;
 }
 
 #login--container {
     position: absolute;
-    top: 50%;
+    top: 52.5%;
     left: 50%;
     transform: translate(-50%, -50%);
 
