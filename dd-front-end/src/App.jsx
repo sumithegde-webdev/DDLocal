@@ -1,25 +1,48 @@
-import React from "react";
-import RegistrationPage from "./components/Registration/RegistrationPage";
-// import RegPage from "./components/RegPage";
-// import OtpAuth from "./components/OTP/OtpAuth";
+import { useState } from "react";
+import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./components/Login/LoginPage";
-import home from "./components/Home/home.jsx"
+import Login from "./components/Login/Login";
+import Register from "./components/Registration/Register";
+import Home from "./components/Home/HomePage";
+import TFAuth from "./components/Login/TFAuth";
 
-export default function App() {
+function App() {
+  const [userLoginStatus, setUserLoginStatus] = useState(false);
+  // console.log(userLoginStatus);
+
   return (
-    <Routes>
-      <Route path="/"
-        element={<home />} />
-      <Route
-        path="/login"
-        element={<LoginPage />}
-      />
-      <Route
-        path="/register"
-        element={<RegistrationPage />}
-      />
-    </Routes>
-
+    <>
+      {/* <nav>Navbar</nav> */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login/*" element={null}>
+          <Route
+            path=""
+            element={<Login setLoginStatus={setUserLoginStatus} />}
+          />
+          {userLoginStatus && <Route path="tfauth" element={<TFAuth />} />}
+          <Route
+            path="*"
+            element={
+              <>
+                <div>404 ERROR</div>
+              </>
+            }
+          />
+        </Route>
+        <Route path="/register" element={<Register />} />
+        {/* <Route path="/tfauth" element={<TFAuth />} /> */}
+        <Route
+          path="*"
+          element={
+            <>
+              <div>404 ERROR</div>
+            </>
+          }
+        />
+      </Routes>
+    </>
   );
 }
+
+export default App;
