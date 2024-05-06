@@ -88,9 +88,14 @@ public class UserService {
                     return ResponseEntity.status(400).body(responseMessage);
                 }
             } else {
-                responseMessage.setSuccess(false);
-                responseMessage.setMessage("OTP already Present");
-                return ResponseEntity.status(400).body(responseMessage);
+                // OTP already present logic
+                // responseMessage.setSuccess(false);
+                // responseMessage.setMessage("OTP already Present");
+                // return ResponseEntity.status(400).body(responseMessage);
+
+                // modifying the logic to remove the existing otp and generate a new one
+                otpRepo.delete(newOTp);
+                return generateOTPforTwoFAService(userModel);
             }
 
         } catch (Exception e) {
@@ -325,9 +330,7 @@ public class UserService {
         }
     }
 
-
-
-    // Seller Service for Becoming a Seller Request 
+    // Seller Service for Becoming a Seller Request
     @Transactional
     public ResponseEntity<Object> requestToBecomeBuyer(UserModel usermodel, String token) {
         try {
@@ -346,9 +349,8 @@ public class UserService {
                 responseMessage.setMessage("User is already a seller");
                 user.setRequestStatus(RequestStatus.APPROVED);
                 return ResponseEntity.badRequest().body(responseMessage);
-                
+
             }
-        
 
             // Update the user's address data and set the request status to "Pending"
             user.setState(usermodel.getState());
@@ -368,8 +370,6 @@ public class UserService {
         }
     }
 
-
-
     public ResponseEntity<Object> GetAllUsers(String token) {
         try {
             // Verify the token
@@ -385,12 +385,12 @@ public class UserService {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Only Admin Role Can access this URL");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
-                
+
             }
 
             List<UserModel> users = userRepository.findAll();
             return ResponseEntity.ok(users);
-           
+
         } catch (Exception e) {
             responseMessage.setSuccess(false);
             responseMessage.setMessage("Internal Server Error. Reason: " + e.getMessage());
