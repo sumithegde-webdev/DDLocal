@@ -1,7 +1,12 @@
 import axios from "axios"
 import { useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import TFAuth from "./TFAuth";
+import { Navigate } from "react-router-dom";
+import cOne from '../../assets/carouselOne.png';
+import cTwo from '../../assets/carouselTwo.png';
+import lightLogo from '../../assets/lightLogo.png';
+import darkLogo from '../../assets/darkLogo.png';
+
+import './login.css'
 
 // const baseURL = 'http://localhost:8090/api/login';
 const loginAxios = axios.create({
@@ -75,32 +80,45 @@ const Login = (props) => {
 
     return (
         <>
-            <div>
-                <div>Carousel Part</div>
-                <div>Login Part
-                    <form>
-                        <label htmlFor="email-input">Email</label>
-                        <br />
+            <div id="logo">
+                <img src={darkLogo} width={"100%"} />
+            </div>
+            <div id="login--container">
+                <div id="carousel--div">
+                    <img src={cOne} width={"100%"} />
+                </div>
+                <div id="dividing--line"></div>
+                <div id="login--div">
+                    <div className="login--divs" id="login--title">LOGIN</div>
+                    <form className="login--divs" id="login--form">
+                        {/* <label id="email--label" className="label" htmlFor="email-input">Email</label> */}
+                        {/* <br /> */}
                         <input
-                            id="email-input"
+                            id="email--input"
+                            autoComplete="off"
                             type="email"
                             name="email"
+                            placeholder="Email"
                             value={loginCreds.email}
                             onChange={(e) => { onChangeHandler(e) }}
                         />
-                        <br />
-                        <label htmlFor="password-input">Password</label>
-                        <br />
+                        {/* <br /> */}
+                        {/* <label id="password--label" className="label" htmlFor="password-input">Password</label> */}
+                        {/* <br /> */}
                         <input
-                            id="password-input"
+                            id="password--input"
                             type="password"
                             name="password"
+                            placeholder="Password"
                             value={loginCreds.password}
                             onChange={(e) => { onChangeHandler(e) }}
                         />
-                        <br />
+                        <div id="forgot--password">FORGOT PASSWORD!</div>
+                        {/* <br /> */}
                     </form>
-                    <button type="button" onClick={onSubmitHandler}>Login</button>
+                    <div className="login--divs" id="button--div">
+                        <button id="login--button" type="button" onClick={onSubmitHandler}>Login</button>
+                    </div>
                 </div>
             </div>
         </>
