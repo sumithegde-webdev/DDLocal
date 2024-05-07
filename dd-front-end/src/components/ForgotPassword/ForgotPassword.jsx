@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './forgotPassword.css'
 
 const forgotPasswordAxios = axios.create({
@@ -75,6 +75,24 @@ const ForgotPassword = () => {
 
     const [fpotp, setFpOtp] = useState("");
 
+    const [min, setMin] = useState(5);
+    const [sec, setSec] = useState(60);
+
+    var timer;
+    useEffect(() => {
+        timer = setInterval(() => {
+            if (sec == 0) {
+                setSec(60);
+            }
+            setSec(sec - 1);
+            if (sec == 1) {
+                setMin(min - 1);
+            }
+        }, 1000)
+
+        return () => clearInterval(timer);
+    });
+
     function onOTPChangeHandler(e) {
         // console.log(isNumber(e.target.value));
         if (isNumber(e.target.value)) {
@@ -143,19 +161,33 @@ const ForgotPassword = () => {
             {
                 (stage === "verifyotp") &&
                 <div id='verify--otp--div' className='current--div'>
-                    <input
-                        id='verify--otp--input'
-                        name='fpotp'
-                        type='text'
-                        placeholder='Enter the OTP'
-                        value={fpotp}
-                        minLength={6}
-                        maxLength={6}
-                        onChange={(e) => onOTPChangeHandler(e)} />
-                    <div>OTP Valid for : 04 min 34 sec</div>
-                    <div>Resend OTP</div>
-                    <button type='button' onClick={requestReset}>Verify OTP</button>
-                    <div>DO NOT RELOAD THIS PAGE!</div>
+                    <div id='top--half'>
+                        <div id='verify--title'>Verify OTP to Reset Password</div>
+                        <div id='sent--message'>OTP sent to entered Email.</div>
+                        <input
+                            id='verify--otp--input'
+                            name='fpotp'
+                            type='text'
+                            placeholder='Enter the OTP'
+                            value={fpotp}
+                            minLength={6}
+                            maxLength={6}
+                            onChange={(e) => onOTPChangeHandler(e)} />
+                    </div>
+                    <div id='horizontal--line'></div>
+                    <div id='bottom--half'>
+                        <div id='div--housing'>
+                            <div id='timer--div'>
+                                <div id='textual' className='sub--timer--divs'>OTP Valid for</div>
+                                <div id='time--left' className='sub--timer--divs'>{min} min {sec} sec</div>
+                            </div>
+                            <div id='resend--otp'><p>Resend OTP</p></div>
+                        </div>
+                        <div id='verify--button--div'>
+                            <button id='verify--button' type='button' onClick={requestReset}>Verify OTP</button>
+                        </div>
+                    </div>
+                    {/* <div>DO NOT RELOAD THIS PAGE!</div> */}
                 </div>
             }
             {
