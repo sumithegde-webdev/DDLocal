@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import lightLogo from '../../assets/lightLogo.png';
+import darkLogo from '../../assets/darkLogo.png';
 import './register.css';
 
 const registerAxios = axios.create({
@@ -11,6 +13,9 @@ const registerAxios = axios.create({
 });
 
 const Register = () => {
+
+    const navigate = useNavigate();
+
     const [regSuccess, setRegSuccess] = useState(false);
 
     const [userCredentials, setUserCredentials] = useState({
@@ -118,39 +123,39 @@ const Register = () => {
 
         //userName has to be greater than 3 characters
         if (!userCredentials.userName.trim()) {
-            validationError.userNameError = "Username is required."
+            validationError.userNameError = "username is required."
         }
         else if (userCredentials.userName.length < 3) {
-            validationError.userNameError = "Username needs to have more than 3 characters.";
+            validationError.userNameError = "needs to have more than 3 characters.";
         }
 
         //email to follow the pattern
         const emailPattern = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$/;
         if (!userCredentials.email.trim()) {
-            validationError.emailError = "Email is required."
+            validationError.emailError = "email is required."
         }
         else if (!emailPattern.test(userCredentials.email)) {
-            validationError.emailError = "Email format is _@_._";
+            validationError.emailError = "email format is _@_._";
         }
 
         //phoneNumber MUST contain 10 digits
         if (!userCredentials.phoneNumber.trim()) {
-            validationError.phoneNumberError = "Phone Number is required."
+            validationError.phoneNumberError = "phone Number is required."
         }
         else if (userCredentials.phoneNumber.length < 10) {
-            validationError.phoneNumberError = "Phone numbers MUST contain 10 digits.";
+            validationError.phoneNumberError = "phone numbers must contain 10 digits.";
         }
 
         //password and rePassword
         if (!userCredentials.password.trim()) {
-            validationError.passwordError = "Password is required."
+            validationError.passwordError = "password is required."
         }
         else if (!userCredentials.rePassword.trim()) {
-            validationError.rePasswordError = "Re enter your Password."
+            validationError.rePasswordError = "re-enter your Password."
         }
         else if (userCredentials.password !== userCredentials.rePassword) {
-            validationError.passwordError = "Passwords do not match."
-            validationError.rePasswordError = "Passwords do not match."
+            validationError.passwordError = "passwords do not match."
+            validationError.rePasswordError = "passwords do not match."
         }
 
         setErrors(validationError);
@@ -173,14 +178,28 @@ const Register = () => {
                         email: "",
                         phoneNumber: "",
                         password: "",
+                        rePassword: "",
                     });
                     setRegSuccess(true);
                 })
                 .catch((error) => {
+                    window.alert("An error occured during Registration. Please try again!");
+                    setUserCredentials({
+                        userName: "",
+                        email: "",
+                        phoneNumber: "",
+                        password: "",
+                        rePassword: "",
+                    });
                     console.error(error);
                 });
         }
 
+    }
+
+    function loginRouting() {
+        // console.log("Clicked");
+        navigate("/login");
     }
 
     if (regSuccess) {
@@ -189,44 +208,50 @@ const Register = () => {
 
     return (
         <>
-            <div>
-                Register
-                <div>
-                    <form autoComplete="off">
-                        <label htmlFor="username--input">Username</label>
-                        <br />
+            <div id="logo">
+                <img src={lightLogo} width={"100%"} />
+            </div>
+            <div id="register--container">
+                <div id="reg--title">REGISTER</div>
+                <div id="register--inputs--container">
+                    <div>
                         <input
-                            id="username--input"
+                            className={!errors.userNameError ? "reg--inputs" : "reg--inputs erred"}
+                            id="username--input--reg"
                             type="text"
                             name="userName"
                             onChange={(e) => {
                                 onChangeHandler(e);
                             }}
+                            autoComplete="off"
                             value={userCredentials.userName}
                             maxLength={15}
                             minLength={3}
+                            placeholder="Username"
                         />
-                        {!errors.userNameError && <div className="guide--div">Username guides</div>}
-                        {errors.userNameError && <div className="error--div">{errors.userNameError}</div>}
-                        <br />
-                        <label htmlFor="email--input">Email</label>
-                        <br />
+                        {!errors.userNameError && <div className="sub--divs guide--div">minimum 3 and maximum 15 characters</div>}
+                        {errors.userNameError && <div className="sub--divs error--div">{errors.userNameError}</div>}
+                    </div>
+                    <div>
                         <input
-                            id="email--input"
+                            className={!errors.emailError ? "reg--inputs" : "reg--inputs erred"}
+                            id="email--input--reg"
                             type="email"
                             name="email"
                             onChange={(e) => {
                                 onChangeHandler(e);
                             }}
+                            autoComplete={"off"}
                             value={userCredentials.email}
+                            placeholder="Email"
                         />
-                        {!errors.userNameError && <div className="guide--div">Email guides</div>}
-                        {errors.emailError && <div className="error--div">{errors.emailError}</div>}
-                        <br />
-                        <label htmlFor="phonenumber--input">Phone Number</label>
-                        <br />
+                        {!errors.emailError && <div className="sub--divs guide--div">email format '_@_._'</div>}
+                        {errors.emailError && <div className="sub--divs error--div">{errors.emailError}</div>}
+                    </div>
+                    <div>
                         <input
-                            id="phonenumber--input"
+                            className={!errors.phoneNumberError ? "reg--inputs" : "reg--inputs erred"}
+                            id="phonenumber--input--reg"
                             type="text"
                             name="phoneNumber"
                             onChange={(e) => {
@@ -234,42 +259,45 @@ const Register = () => {
                             }}
                             value={userCredentials.phoneNumber}
                             maxLength={10}
+                            placeholder="Phone Number"
                         />
-                        {!errors.userNameError && <div className="guide--div">Phone Number guides</div>}
-                        {errors.phoneNumberError && <div className="error--div">{errors.phoneNumberError}</div>}
-                        <br />
-                        <label htmlFor="password--input">Password</label>
-                        <br />
+                        {!errors.phoneNumberError && <div className="sub--divs guide--div">enter 10 digits</div>}
+                        {errors.phoneNumberError && <div className="sub--divs error--div">{errors.phoneNumberError}</div>}
+                    </div>
+                    <div>
                         <input
-                            id="password--input"
+                            className={!errors.passwordError ? "reg--inputs" : "reg--inputs erred"}
+                            id="password--input--reg"
                             type="password"
                             name="password"
                             onChange={(e) => {
                                 onChangeHandler(e);
                             }}
                             value={userCredentials.password}
+                            placeholder="Enter Password"
                         />
-                        {!errors.userNameError && <div className="guide--div">Password guides</div>}
-                        {errors.passwordError && <div className="error--div">{errors.passwordError}</div>}
-                        <br />
-                        <label id="repass--label" className={repassState} htmlFor='repassword--input'>Re-enter Password</label>
-                        <br />
+                        {!errors.passwordError && <div className="sub--divs guide--div">minimum 8 characters</div>}
+                        {errors.passwordError && <div className="sub--divs error--div">{errors.passwordError}</div>}
+                    </div>
+                    <div>
                         <input
-                            className={repassState}
-                            id='repassword--input'
+                            className={`${!errors.rePasswordError ? "reg--inputs" : "reg--inputs erred"} ${repassState}`}
+                            id='repassword--input--reg'
                             type='password'
                             name='rePassword'
                             onChange={(e) => {
                                 onChangeHandler(e);
                             }}
-                            value={userCredentials.rePassword} />
-                        <br />
-                        {!errors.rePasswordError && <div className={"guide--div " + `${repassState}`}>Re Password guides</div>}
-                        {errors.rePasswordError && <div className={"error--div" + `${repassState}`}>{errors.rePasswordError}</div>}
-                        <button type="button" onClick={clickHandler}>
-                            Register
-                        </button>
-                    </form>
+                            value={userCredentials.rePassword}
+                            placeholder="Re-Enter Password"
+                        />
+                        {!errors.rePasswordError && <div className={"sub--divs guide--div " + `${repassState}`}>re-enter your password</div>}
+                        {errors.rePasswordError && <div className={"sub--divs error--div " + `${repassState}`}>{errors.rePasswordError}</div>}
+                    </div>
+                </div>
+                <div id="login--ref" onClick={loginRouting}>Already have an Account?</div>
+                <div id="register--button--holder">
+                    <button id="register--button" type="button" onClick={clickHandler}>REGISTER</button>
                 </div>
             </div>
         </>

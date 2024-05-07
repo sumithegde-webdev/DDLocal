@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Home from "./components/Home/HomePage";
 import TFAuth from "./components/Login/TFAuth";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword.jsx";
 
 function App() {
   const [userLoginStatus, setUserLoginStatus] = useState(false);
@@ -30,6 +31,7 @@ function App() {
             }
           />
         </Route>
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path="/tfauth" element={<TFAuth />} /> */}
         <Route

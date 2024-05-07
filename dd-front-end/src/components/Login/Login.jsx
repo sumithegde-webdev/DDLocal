@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import cOne from '../../assets/carouselOne.png';
 import cTwo from '../../assets/carouselTwo.png';
 import lightLogo from '../../assets/lightLogo.png';
@@ -21,6 +21,8 @@ const loginAxios = axios.create({
 // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdW1pdGhlZ2RlNjQ2M0BnbWFpbC5jb20ifQ.DmDicY6ssI8FMSOJBz5yWLUKWa1oNVLjbFbXAIfetOk
 
 const Login = (props) => {
+
+    const navigate = useNavigate();
     // console.log(props);
     const [login, setLogin] = useState(false);
 
@@ -36,6 +38,15 @@ const Login = (props) => {
             ...loginCreds,
             [name]: value,
         });
+    }
+
+    function registerRouting() {
+        // console.log("Clicked");
+        navigate("/register");
+    }
+
+    function forgotPasswordRouter() {
+        navigate("/forgotPassword");
     }
 
     //holding the token in memory
@@ -85,8 +96,12 @@ const Login = (props) => {
             </div>
             <div id="login--container">
                 <div id="carousel--div">
-                    <img src={cOne} width={"100%"} />
-                    <button>Register</button>
+                    <div id="image--holder">
+                        <img src={cOne} width={"100%"} />
+                    </div>
+                    <div id="reg--button--div" className="button--holder">
+                        <button id="register--routing--button" type="button" onClick={registerRouting}>Register</button>
+                    </div>
                 </div>
                 <div id="dividing--line"></div>
                 <div id="login--div">
@@ -114,10 +129,10 @@ const Login = (props) => {
                             value={loginCreds.password}
                             onChange={(e) => { onChangeHandler(e) }}
                         />
-                        <div id="forgot--password">FORGOT PASSWORD!</div>
+                        <div id="forgot--password" onClick={forgotPasswordRouter}>FORGOT PASSWORD!</div>
                         {/* <br /> */}
                     </form>
-                    <div className="login--divs" id="button--div">
+                    <div className="login--divs button--holder" id="button--div">
                         <button id="login--button" type="button" onClick={onSubmitHandler}>Login</button>
                     </div>
                 </div>
