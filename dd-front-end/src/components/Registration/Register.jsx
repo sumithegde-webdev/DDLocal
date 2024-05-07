@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
+import './register.css';
 
 const registerAxios = axios.create({
     headers: {
@@ -16,11 +18,21 @@ const Register = () => {
         email: "",
         phoneNumber: "",
         password: "",
+        rePassword: "",
     });
 
-    // useEffect(()=>{
-    //     console.log(userCredentials);
-    // },[userCredentials]);
+    const [errors, setErrors] = useState({});
+
+    const [repassState, setRepassState] = useState("repass disabled")
+
+    useEffect(() => {
+        if (userCredentials.password.length > 7) {
+            setRepassState("repass");
+        }
+        else {
+            setRepassState("repass disabled")
+        }
+    }, [userCredentials.password]);
 
     function onChangeHandler(e) {
         e.preventDefault();
@@ -44,7 +56,6 @@ const Register = () => {
 
         //email
         //just needs to be checked before submit if it is a valid email address
-        const emailPattern = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$/;
         if (name === "email") {
             setUserCredentials({
                 ...userCredentials,
@@ -69,8 +80,9 @@ const Register = () => {
         //password and re-password
         //no spaces allowed, minimum 8
         //needs to be encrypted at rest and transit
-        if (name === "password" || name === "repassword") {
-            if (value !== " ") {
+        if (name === "password" || name === "rePassword") {
+
+            if (value[value.length - 1] !== " ") {
                 setUserCredentials({
                     ...userCredentials,
                     [name]: value, //encrypt this
@@ -98,29 +110,81 @@ const Register = () => {
     };
 
     function clickHandler() {
-        registerAxios
-            .post("", {
-                userName: userCredentials.userName,
-                email: userCredentials.email,
-                phoneNumber: userCredentials.phoneNumber,
-                password: userCredentials.password,
-            })
-            .then((response) => {
-                setUserCredentials({
-                    userName: "",
-                    email: "",
-                    phoneNumber: "",
-                    password: "",
+
+        const validationError = {}
+
+        //validation of all individual fields to be satisfied
+        //any field is empty condition
+
+        //userName has to be greater than 3 characters
+        if (!userCredentials.userName.trim()) {
+            validationError.userNameError = "Username is required."
+        }
+        else if (userCredentials.userName.length < 3) {
+            validationError.userNameError = "Username needs to have more than 3 characters.";
+        }
+
+        //email to follow the pattern
+        const emailPattern = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$/;
+        if (!userCredentials.email.trim()) {
+            validationError.emailError = "Email is required."
+        }
+        else if (!emailPattern.test(userCredentials.email)) {
+            validationError.emailError = "Email format is _@_._";
+        }
+
+        //phoneNumber MUST contain 10 digits
+        if (!userCredentials.phoneNumber.trim()) {
+            validationError.phoneNumberError = "Phone Number is required."
+        }
+        else if (userCredentials.phoneNumber.length < 10) {
+            validationError.phoneNumberError = "Phone numbers MUST contain 10 digits.";
+        }
+
+        //password and rePassword
+        if (!userCredentials.password.trim()) {
+            validationError.passwordError = "Password is required."
+        }
+        else if (!userCredentials.rePassword.trim()) {
+            validationError.rePasswordError = "Re enter your Password."
+        }
+        else if (userCredentials.password !== userCredentials.rePassword) {
+            validationError.passwordError = "Passwords do not match."
+            validationError.rePasswordError = "Passwords do not match."
+        }
+
+        setErrors(validationError);
+        //a timeout here to remove the validation error
+        setTimeout(() => {
+            setErrors({});
+        }, 3000)
+
+        if (Object.keys(validationError).length === 0) {
+            registerAxios
+                .post("", {
+                    userName: userCredentials.userName,
+                    email: userCredentials.email,
+                    phoneNumber: userCredentials.phoneNumber,
+                    password: userCredentials.password,
+                })
+                .then((response) => {
+                    setUserCredentials({
+                        userName: "",
+                        email: "",
+                        phoneNumber: "",
+                        password: "",
+                    });
+                    setRegSuccess(true);
+                })
+                .catch((error) => {
+                    console.error(error);
                 });
-                setRegSuccess(true);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        }
+
     }
 
     if (regSuccess) {
-        return <Navigate to="login" />;
+        return <Navigate to="/login" />;
     }
 
     return (
@@ -142,6 +206,8 @@ const Register = () => {
                             maxLength={15}
                             minLength={3}
                         />
+                        {!errors.userNameError && <div className="guide--div">Username guides</div>}
+                        {errors.userNameError && <div className="error--div">{errors.userNameError}</div>}
                         <br />
                         <label htmlFor="email--input">Email</label>
                         <br />
@@ -154,6 +220,8 @@ const Register = () => {
                             }}
                             value={userCredentials.email}
                         />
+                        {!errors.userNameError && <div className="guide--div">Email guides</div>}
+                        {errors.emailError && <div className="error--div">{errors.emailError}</div>}
                         <br />
                         <label htmlFor="phonenumber--input">Phone Number</label>
                         <br />
@@ -167,6 +235,8 @@ const Register = () => {
                             value={userCredentials.phoneNumber}
                             maxLength={10}
                         />
+                        {!errors.userNameError && <div className="guide--div">Phone Number guides</div>}
+                        {errors.phoneNumberError && <div className="error--div">{errors.phoneNumberError}</div>}
                         <br />
                         <label htmlFor="password--input">Password</label>
                         <br />
@@ -179,14 +249,23 @@ const Register = () => {
                             }}
                             value={userCredentials.password}
                         />
-                        {/* <br />
-                        <label htmlFor='repassword--input'>Re-enter Password</label>
+                        {!errors.userNameError && <div className="guide--div">Password guides</div>}
+                        {errors.passwordError && <div className="error--div">{errors.passwordError}</div>}
+                        <br />
+                        <label id="repass--label" className={repassState} htmlFor='repassword--input'>Re-enter Password</label>
                         <br />
                         <input
+                            className={repassState}
                             id='repassword--input'
                             type='password'
-                            name='repassword' /> */}
+                            name='rePassword'
+                            onChange={(e) => {
+                                onChangeHandler(e);
+                            }}
+                            value={userCredentials.rePassword} />
                         <br />
+                        {!errors.rePasswordError && <div className={"guide--div " + `${repassState}`}>Re Password guides</div>}
+                        {errors.rePasswordError && <div className={"error--div" + `${repassState}`}>{errors.rePasswordError}</div>}
                         <button type="button" onClick={clickHandler}>
                             Register
                         </button>
