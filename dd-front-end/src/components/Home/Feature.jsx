@@ -2,27 +2,27 @@ import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from
 
 const features = [
   {
-    name: 'Push to deploy',
+    name: 'C2C Marketplace',
     description:
-      'Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi. Odio urna massa nunc massa.',
+    "Enable seamless peer-to-peer transactions by connecting buyers and sellers directly in an online marketplace.",
     icon: CloudArrowUpIcon,
   },
   {
-    name: 'SSL certificates',
+    name: 'Deal Locking',
     description:
-      'Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget. Sem sodales gravida quam turpis enim lacus amet.',
+    "Deal locking ensures product availability by securing the transaction once the seller agrees to purchase.",
     icon: LockClosedIcon,
   },
   {
-    name: 'Simple queues',
+    name: 'Request to become a Seller.',
     description:
-      'Quisque est vel vulputate cursus. Risus proin diam nunc commodo. Lobortis auctor congue commodo diam neque.',
+      'Initiate your journey as a seller by submitting a request to join our platform.',
     icon: ArrowPathIcon,
   },
   {
-    name: 'Advanced security',
+    name: 'Get what you see.',
     description:
-      'Arcu egestas dolor vel iaculis in ipsum mauris. Tincidunt mattis aliquet hac quis. Id hac maecenas ac donec pharetra eget.',
+    "Receive exactly what you see with transparent and accurate product representations.",
     icon: FingerPrintIcon,
   },
 ]
@@ -33,14 +33,14 @@ export default function Example() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
           {/* <h2 className="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2> */}
-          <h2 className="text-base font-semibold leading-7" style={{ color: '#2461FF' }}>Deploy faster</h2>
+          <h2 className="text-base font-semibold leading-7" style={{ color: '#2461FF' }}>Buy Anything!</h2>
 
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Everything you need to deploy your app
+            Over a wide range of products to buy.
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum
-            pulvinar et feugiat blandit at. In mi viverra elit nunc.
+          Explore a diverse selection of products for every need and preference. 
+          From electronics to fashion, find everything you desire in one convenient marketplace.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
