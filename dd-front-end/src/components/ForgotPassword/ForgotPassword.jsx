@@ -3,10 +3,6 @@ import React, { useEffect, useState } from 'react'
 import './forgotPassword.css'
 
 const forgotPasswordAxios = axios.create({
-    headers: {
-        role: "user",
-        email: "",
-    },
     baseURL: "http://localhost:8090/api/forgotpassword",
 })
 
@@ -58,40 +54,51 @@ const ForgotPassword = () => {
         }, 3000);
 
         if (Object.keys(emailValidationError).length === 0) {
-            setStage("verifyotp");
-            // forgotPasswordAxios.post('', {
-            //     headers: {
-            //         email: { fpEmail },
-            //     }
-            // })
-            //     .then(() => {
-            //         setStage("verifyotp");
-            //     })
-            //     .catch((err) => {
-            //         console.error(err);
-            //     });
+            // setStage("verifyotp");
+            console.log(fpEmail);
+            const set = {
+                email: fpEmail,
+                role: "user",
+            }
+            axios.post('http://localhost:8090/api/forgotpassword', {
+                headers: set,
+            })
+                .then(() => {
+                    setStage("verifyotp");
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }
 
     const [fpotp, setFpOtp] = useState("");
 
-    const [min, setMin] = useState(5);
-    const [sec, setSec] = useState(60);
+    const [min, setMin] = useState(0);
+    const [sec, setSec] = useState(10);
 
     var timer;
+    const [counter, setCounter] = useState(0)
     useEffect(() => {
         timer = setInterval(() => {
-            if (sec == 0) {
-                setSec(60);
-            }
-            setSec(sec - 1);
-            if (sec == 1) {
-                setMin(min - 1);
+            if (min == 0 && sec == 1) {
+                setMin(0)
+                setSec(0)
+            } else if (min >= 0 && sec > 0) {
+                setSec(sec - 1);
+                setCounter(counter + 1);
+            } else if (sec == 0) {
+                setSec(59);
+                setMin(min - 1)
+                setCounter(counter + 1);
+            } else {
+                setMin(0)
+                setSec(0)
             }
         }, 1000)
 
         return () => clearInterval(timer);
-    });
+    }, [counter])
 
     function onOTPChangeHandler(e) {
         // console.log(isNumber(e.target.value));
@@ -113,6 +120,8 @@ const ForgotPassword = () => {
             return true;
         }
     }
+
+    function resendOTPRequest() { }
 
     function requestReset() {
         if (fpotp.length < 6) {
@@ -179,16 +188,20 @@ const ForgotPassword = () => {
                         <div id='div--housing'>
                             <div id='timer--div'>
                                 <div id='textual' className='sub--timer--divs'>OTP Valid for</div>
-                                <div id='time--left' className='sub--timer--divs'>{min} min {sec} sec</div>
+                                <div id='time--left' className='sub--timer--divs'>
+                                    {(min > 0) ? `${min} min` : ""} {sec} sec
+                                </div>
                             </div>
-                            <div id='resend--otp'><p>Resend OTP</p></div>
+                            <div id='resend--otp'>
+                                <p className={(min == 0 && sec == 0) ? "highlight" : "inactivate"} onClick={resendOTPRequest}>Resend OTP</p>
+                            </div>
                         </div>
                         <div id='verify--button--div'>
                             <button id='verify--button' type='button' onClick={requestReset}>Verify OTP</button>
                         </div>
                     </div>
                     {/* <div>DO NOT RELOAD THIS PAGE!</div> */}
-                </div>
+                </div >
             }
             {
                 (stage === "resetpassword") &&
