@@ -37,7 +37,7 @@ const ForgotPasswordSequence = () => {
             }
             {
                 (stage === "resetpassword") &&
-                <ResetPassword userEmail={fpEmail} />
+                <ResetPassword setStage={stageHandler} userEmail={fpEmail} />
             }
         </>
     )

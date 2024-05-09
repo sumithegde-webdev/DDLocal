@@ -4,6 +4,8 @@ import { Navigate } from "react-router-dom"
 
 const ResetPassword = (props) => {
 
+    const [rpSuccess, setrpSuccess] = useState(false);
+
     const [passwords, setPasswords] = useState({
         password: "",
         rePassword: "",
@@ -64,13 +66,32 @@ const ResetPassword = (props) => {
         }, 3000)
 
         if (Object.keys(validationError).length === 0) {
-            console.log("Works");
-        }
-        else {
-            console.log("works");
+            axios.post('http://localhost:8090/api/resetpassword', {}, {
+                headers: {
+                    passwordFromUser: passwords.password,
+                    role: "user",
+                    email: props.userEmail,
+                }
+            })
+                .then(() => {
+                    setPasswords({
+                        password: "",
+                        rePassword: ""
+                    })
+                    setrpSuccess(true);
+                    // props.setStage("forgotpassword");
+
+                }
+                )
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }
 
+    if (rpSuccess) {
+        return <Navigate to='/login' />
+    }
 
     return (
         <>
@@ -108,8 +129,8 @@ const ResetPassword = (props) => {
                         {errors.rePasswordError && <div className={"sub--divs error--div " + `${repassState}`}>{errors.rePasswordError}</div>}
                     </div>
                 </div>
-                <div>
-                    <button type="button" onClick={resetHandler}>Reset Password</button>
+                <div id="reset--button--div">
+                    <button id="rp--button" type="button" onClick={resetHandler}>Reset Password</button>
                 </div>
             </div>
         </>
