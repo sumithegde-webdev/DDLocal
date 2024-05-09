@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
@@ -8,8 +8,39 @@ import TFAuth from "./components/Login/TFAuth";
 import ForgotPasswordSequence from "./components/ForgotPassword/ForgotPasswordSequence.jsx";
 
 function App() {
+
+
   const [userLoginStatus, setUserLoginStatus] = useState(false);
+
+  const [userCredentials, setUserCredentials] = useState({
+    email: "",
+    token: "",
+    role: "user",
+  })
   // console.log(userLoginStatus);
+  useEffect(() => {
+    console.log(userCredentials);
+  }, [userCredentials]);
+
+  function credEmailHandler(email) {
+    setUserCredentials({
+      ...userCredentials,
+      email: email,
+    })
+  }
+
+  function credTokenHandler(token, email) {
+    if (email === userCredentials.email) {
+      setUserCredentials({
+        ...userCredentials,
+        token: token,
+      })
+    }
+    else {
+      console.log("INTRUDER ALERT!");
+    }
+
+  }
 
   return (
     <>
@@ -19,9 +50,9 @@ function App() {
         <Route path="/login/*" element={null}>
           <Route
             path=""
-            element={<Login setLoginStatus={setUserLoginStatus} />}
+            element={<Login setLoginStatus={setUserLoginStatus} loginEmail={(val) => credEmailHandler(val)} />}
           />
-          {userLoginStatus && <Route path="tfauth" element={<TFAuth />} />}
+          {userLoginStatus && <Route path="tfauth" element={<TFAuth userEmail={userCredentials.email} setUserToken={credTokenHandler} />} />}
           <Route
             path="*"
             element={

@@ -59,20 +59,25 @@ const Login = (props) => {
             password: loginCreds.password,
         })
             .then((response) => {
-                console.log(response);
-                setLoginCreds({
-                    email: '',
-                    password: '',
-                })
+                // console.log(response);
                 if (response.data.success) {
+                    props.loginEmail(loginCreds.email);
                     props.setLoginStatus(true);
                     setLogin(true);
                     // console.log("TFA");
                 }
                 else {
+                    setLoginCreds({
+                        email: '',
+                        password: '',
+                    })
                     setLogin(false);
                     // console.log("FAILED");
                 }
+                setLoginCreds({
+                    email: '',
+                    password: '',
+                })
             })
             .catch((error) => {
                 setLoginCreds({

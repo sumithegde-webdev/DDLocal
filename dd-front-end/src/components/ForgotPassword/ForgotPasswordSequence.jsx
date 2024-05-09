@@ -5,15 +5,6 @@ import ForgotPassword from './ForgotPassword'
 import VerifyOTP from './VerifyOTP'
 import ResetPassword from './ResetPassword'
 
-// const resetPasswordAxios = axios.create({
-//     headers: {
-//         passwordFromUser: "",
-//         role: "user",
-//         email: "",
-//     },
-//     baseURL: "http://localhost:8090/api/resetpassword"
-// })
-
 const ForgotPasswordSequence = () => {
     const [stage, setStage] = useState("forgotpassword");
 
