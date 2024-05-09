@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Home from "./components/Home/HomePage";
 import TFAuth from "./components/Login/TFAuth";
+import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPasswordSequence from "./components/ForgotPassword/ForgotPasswordSequence.jsx";
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
       {/* <nav>Navbar</nav> */}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/login/*" element={null}>
           <Route
             path=""
