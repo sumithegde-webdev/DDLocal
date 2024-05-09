@@ -6,6 +6,8 @@ import Register from "./components/Registration/Register";
 import Home from "./components/Home/HomePage";
 import TFAuth from "./components/Login/TFAuth";
 import Dashboard from "./components/Dashboard/Dashboard";
+import CreateSellerProductForm from "./components/Seller/CreateProduct";
+import EditProduct from "./components/Seller/EditProduct";
 
 function App() {
   const [userLoginStatus, setUserLoginStatus] = useState(false);
@@ -17,6 +19,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        
+        <Route path="/Seller" element={<CreateSellerProductForm />} />
+        <Route path="/Edit" element={<EditProduct />} />
         <Route path="/login/*" element={null}>
           <Route
             path=""
