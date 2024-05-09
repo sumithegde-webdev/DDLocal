@@ -76,4 +76,9 @@ public class MainController {
     public ResponseEntity<Object> getAllUsers(@RequestHeader String token) {
         return userService.GetAllUsers(token);
     }
+
+    @GetMapping("getuserdetailsbytoken")
+    public ResponseEntity<Object> getUserDetailsByToken(@RequestHeader String token, @RequestHeader String role) {
+        return userService.getUserDetailsByEmailService(token, role);
+    }
 }
