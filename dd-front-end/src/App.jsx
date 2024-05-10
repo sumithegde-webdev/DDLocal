@@ -7,6 +7,8 @@ import Home from "./components/Home/HomePage";
 import TFAuth from "./components/Login/TFAuth";
 import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPasswordSequence from "./components/ForgotPassword/ForgotPasswordSequence.jsx";
+import CreateSellerProductForm from "./components/Seller/CreateProduct";
+import EditProduct from "./components/Seller/EditProduct";
 
 function App() {
 
@@ -49,6 +51,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        
+        <Route path="/Seller" element={<CreateSellerProductForm />} />
+        <Route path="/Edit" element={<EditProduct />} />
         <Route path="/login/*" element={null}>
           <Route
             path=""
