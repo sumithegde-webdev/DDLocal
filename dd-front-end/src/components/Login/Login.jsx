@@ -90,6 +90,11 @@ const Login = (props) => {
         // console.log(loginCreds);
     }
 
+    //if a valid cookie exists, route to tfauth page directly
+    //for that email with an option initially asking
+
+
+
     if (login) {
         return <Navigate to='tfauth' />
     }
