@@ -10,20 +10,34 @@ import ForgotPasswordSequence from "./components/ForgotPassword/ForgotPasswordSe
 import CreateSellerProductForm from "./components/Seller/CreateProduct";
 import EditProduct from "./components/Seller/EditProduct";
 
+import Cookie from "universal-cookie";
+import { jwtDecode } from "jwt-decode";
+
 function App() {
 
+  //cookie logic here
+  const cookie = new Cookie();
+  // console.log(cookie.cookies.jwt_token);
+  // console.log(jwtDecode(cookie.cookies.jwt_token));
 
   const [userLoginStatus, setUserLoginStatus] = useState(false);
 
   const [userCredentials, setUserCredentials] = useState({
-    email: "",
-    token: "",
+    email: (cookie.cookies.jwt_token == null ? "" : jwtDecode(cookie.cookies.jwt_token).sub),
+    token: (cookie.cookies.jwt_token == null ? "" : cookie.cookies.jwt_token),
     role: "user",
   })
-  // console.log(userLoginStatus);
-  useEffect(() => {
-    console.log(userCredentials);
-  }, [userCredentials]);
+
+  // if (cookie.cookies.jwt_token != null) {
+
+  //   const [userLoginStatus, setUserLoginStatus] = useState(true);
+
+  //   const [userCredentials, setUserCredentials] = useState({
+  //     email: jwtDecode(cookie.cookies.jwt_token).sub,
+  //     token: cookie.cookies.jwt_token,
+  //     role: "user",
+  //   })
+  // }
 
   function credEmailHandler(email) {
     setUserCredentials({
@@ -38,9 +52,10 @@ function App() {
         ...userCredentials,
         token: token,
       })
+      // console.log("WELCOME");
     }
     else {
-      console.log("INTRUDER ALERT!");
+      // console.log("INTRUDER ALERT!");
     }
 
   }
@@ -50,8 +65,8 @@ function App() {
       {/* <nav>Navbar</nav> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        
+        <Route path="/Dashboard" element={<Dashboard requiredToken={userCredentials.token} />} />
+
         <Route path="/Seller" element={<CreateSellerProductForm />} />
         <Route path="/Edit" element={<EditProduct />} />
         <Route path="/login/*" element={null}>

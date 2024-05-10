@@ -12,7 +12,7 @@
     border-radius: 15px;
     overflow: hidden;
     /* background-color: #2461FF; */
-    box-shadow: 10px 10px 5px #000a;
+    /* box-shadow: 10px 10px 5px #000a; */
     border: 1px solid black;
 }
 
@@ -28,7 +28,7 @@
     /* background-color: rgb(205, 226, 245); */
     background-color: #a5d8ff;
     border: 1px solid #000;
-    box-shadow: 20px 20px 5px #000a;
+    /* box-shadow: 20px 20px 5px #000a; */
     border-radius: 15px;
 
     overflow: hidden;

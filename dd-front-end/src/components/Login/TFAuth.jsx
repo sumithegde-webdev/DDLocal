@@ -94,7 +94,7 @@ const TFAuth = (props) => {
     }
 
     if (success) {
-        return <Navigate to='/' />
+        return <Navigate to='/Dashboard' />
     }
 
     return (
