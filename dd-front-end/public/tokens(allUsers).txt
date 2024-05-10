@@ -1,0 +1,50 @@
+SELLER - eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIn0.DPuLVj-2_yMG_uYRUKVGkaseHAWyq5mp2ncPzW9Xhu4
+
+ADMIN - eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdW1pdGhlZ2RlQGdtYWlsLmNvbSJ9.GSfpWtNTM8Jy92yoKwpdBQyRbVKrR6JGClFxJ0VOZOg
+
+BUYER - eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXllckBnbWFpbC5jb20ifQ.2P-Bn5WQxQqCUUzYAaqiVXFNhvWq8n4h1oV0ipSd-ck
+
+[
+    {
+        "id": "005427fb-2c08-499b-9b34-2a37957a77d8",
+        "userName": "Sumit",
+        "email": "sumithegde@gmail.com",
+        "phoneNumber": 9611137904,
+        "password": "$2a$10$fqbtiTAPiGXHRdVaw.tqMeWyPDVf1vFWDgZKzRuZanXTgRC9IxVPq",
+        "userRole": "ADMIN",
+        "requestStatus": "NOTREQUESTED",
+        "country": "India",
+        "state": null,
+        "city": null,
+        "pincode": 0,
+        "streetAddress": null
+    },
+    {
+        "id": "0af7adcd-b0be-4e02-8d0b-479dd14b1afa",
+        "userName": "Test",
+        "email": "test@test.com",
+        "phoneNumber": 9876543210,
+        "password": "$2a$10$wcKfP.zI0l8FvNQwg7IUfuD4FCGlOjWVqw5oyLBVrr9XDG7tyNis2",
+        "userRole": "BUYER",
+        "requestStatus": "NOTREQUESTED",
+        "country": "India",
+        "state": null,
+        "city": null,
+        "pincode": 0,
+        "streetAddress": null
+    },
+    {
+        "id": "ba8c0464-8dff-4ec7-a407-61968f61068e",
+        "userName": "Buyer",
+        "email": "buyer@gmail.com",
+        "phoneNumber": 1234512345,
+        "password": "$2a$10$P1EL8WP6suWgLGmAgYbuhufLqNLVdnKFlmpouBlyPpiaDUlbulmIC",
+        "userRole": "BUYER",
+        "requestStatus": "NOTREQUESTED",
+        "country": "India",
+        "state": null,
+        "city": null,
+        "pincode": 0,
+        "streetAddress": null
+    }
+]
