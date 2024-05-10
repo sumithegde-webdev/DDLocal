@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 const CreateSellerProductForm = () => {
+  const nav = useNavigate();
 const [userRole, setUserRole] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [state, setState] = useState('');
-  const [productCity, setProductCity] = useState('');
+  const [productcity, setProductCity] = useState('');
   const [pincode, setPincode] = useState('');
   const [streetAddress, setStreetAddress] = useState('');
 
@@ -36,7 +38,7 @@ const [userRole, setUserRole] = useState('');
       description,
       price: parseInt(price),
       state,
-      productCity,
+      productcity,
       pincode: parseInt(pincode),
       streetAddress
     };
@@ -56,6 +58,11 @@ const [userRole, setUserRole] = useState('');
         setProductCity('');
         setPincode('');
         setStreetAddress('');
+        toast.success('Product Created successfully!');
+        setTimeout(() => {
+          nav('/Seller/AllProducts');
+        }, 5000);
+  
       } catch (error) {
         console.error('Error:', error);
       }
@@ -68,6 +75,19 @@ const [userRole, setUserRole] = useState('');
     <div className="container mx-auto py-8">
         { userRole === "SELLER" ? 
         <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+          <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
         {/* Product Information */}
         <div className="mb-6">
           <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">Title</label>
@@ -127,7 +147,7 @@ const [userRole, setUserRole] = useState('');
             type="text" 
             id="productCity" 
             name="productCity" 
-            value={productCity} 
+            value={productcity} 
             onChange={(e) => setProductCity(e.target.value)} 
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
@@ -172,7 +192,7 @@ const [userRole, setUserRole] = useState('');
       </form>
         
         : <div> 
-            sdafsafase5gadf </div>}
+          You are not Authorized to Create Products </div>}
       
     </div>
 

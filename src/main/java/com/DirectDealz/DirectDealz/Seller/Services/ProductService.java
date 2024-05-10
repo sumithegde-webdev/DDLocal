@@ -108,6 +108,7 @@ public class ProductService {
             existingProduct.setTitle(updatedProduct.getTitle());
             existingProduct.setDescription(updatedProduct.getDescription());
             existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setProductcity(updatedProduct.getProductcity());
 
             // Save the updated product
             Product savedProduct = productRepository.save(existingProduct);

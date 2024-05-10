@@ -9,6 +9,8 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import ForgotPasswordSequence from "./components/ForgotPassword/ForgotPasswordSequence.jsx";
 import CreateSellerProductForm from "./components/Seller/CreateProduct";
 import EditProduct from "./components/Seller/EditProduct";
+import ListAllProducts from "./components/Seller/ListAllProducts.jsx";
+import DeleteProduct from "./components/Seller/DeleteProduct.jsx";
 
 function App() {
 
@@ -21,9 +23,9 @@ function App() {
     role: "user",
   })
   // console.log(userLoginStatus);
-  useEffect(() => {
-    console.log(userCredentials);
-  }, [userCredentials]);
+  // useEffect(() => {
+  //   console.log(userCredentials);
+  // }, [userCredentials]);
 
   function credEmailHandler(email) {
     setUserCredentials({
@@ -52,8 +54,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         
-        <Route path="/Seller" element={<CreateSellerProductForm />} />
-        <Route path="/Edit" element={<EditProduct />} />
+        <Route path="/Seller/Create" element={<CreateSellerProductForm />} />
+        <Route path="/Seller/AllProducts" element={<ListAllProducts/>} />
+        
+        <Route path="/Seller/Edit/:productId" element={<EditProduct />} />
+        <Route path="/Seller/Delete/:productId" element={<DeleteProduct />} />
+      
         <Route path="/login/*" element={null}>
           <Route
             path=""

@@ -1,50 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useParams } from 'react-router-dom';
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { CircularProgress } from '@mui/material';
 const EditProduct = () => {
-  const [userRole, setUserRole] = useState('');
+  const nav = useNavigate();
+  const { productId } = useParams();
+
   const [product, setProduct] = useState({
     title: '',
     description: '',
     price: '',
-    state: '',
-    productCity: '',
-    pincode: '',
-    streetAddress: ''
+    productStatus: '',
+    productcity: ''
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getUserDetails();
-  }, []);
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8090/api/GetProductById`, {
+          headers: {
+            token: import.meta.env.VITE_TOKEN,
+            productId: productId,
+          },
+        });
+        setProduct(response.data);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
 
-  const getUserDetails = async () => {
-    try {
-      const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
-        headers: {
-          token: import.meta.env.VITE_TOKEN,
-          role: "user"
-        },
-      });
-      const userDataResponse = await userData.json();
-      setUserRole(userDataResponse.userRole);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await axios.put('http://localhost:8090/api/products/' + productId, product, {
-        headers: {
-          token: import.meta.env.VITE_TOKEN
-        }
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    fetchProduct();
+  }, [productId]);
+  console.log(productId);
 
   const handleChange = (e) => {
     setProduct({
@@ -53,107 +44,122 @@ const EditProduct = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      await axios.put(`http://localhost:8090/api/products/Edit`, product, {
+        headers: {
+          token: import.meta.env.VITE_TOKEN,
+          productId: productId,
+
+        },
+      });
+      setProduct(product);
+      toast.success('Product updated successfully!');
+      setTimeout(() => {
+        nav('/Seller/AllProducts');
+      }, 5000);
+
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="container mx-auto py-8">
-      { userRole === "SELLER" ? 
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-          {/* Product Information */}
-          <div className="mb-6">
-            <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">Title</label>
-            <input 
-              type="text" 
-              id="title" 
-              name="title" 
-              value={product.title} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <input 
-              type="text" 
-              id="description" 
-              name="description" 
-              value={product.description} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Price</label>
-            <input 
-              type="number" 
-              id="price" 
-              name="price" 
-              value={product.price} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="state" className="block text-gray-700 text-sm font-bold mb-2">State</label>
-            <input 
-              type="text" 
-              id="state" 
-              name="state" 
-              value={product.state} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="productCity" className="block text-gray-700 text-sm font-bold mb-2">City</label>
-            <input 
-              type="text" 
-              id="productCity" 
-              name="productCity" 
-              value={product.productCity} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="pincode" className="block text-gray-700 text-sm font-bold mb-2">Pincode</label>
-            <input 
-              type="number" 
-              id="pincode" 
-              name="pincode" 
-              value={product.pincode} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="streetAddress" className="block text-gray-700 text-sm font-bold mb-2">Street Address</label>
-            <input 
-              type="text" 
-              id="streetAddress" 
-              name="streetAddress" 
-              value={product.streetAddress} 
-              onChange={handleChange} 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
-          </div>
-          {/* Submit Button */}
-          <div className="flex items-center justify-between">
-            <button 
-              type="submit" 
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-            >
-              Update
-            </button>
-          </div>
-        </form>
-        : <div> You are not authorized to edit this product. </div>
-      }
+    <div className="container mx-auto">
+      <h1 className="text-2xl font-bold my-4">Edit Product</h1>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
+
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+        <div className="mb-4">
+          <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={product.title}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            value={product.description}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Price</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="productStatus" className="block text-gray-700 text-sm font-bold mb-2">Status</label>
+          <input
+            type="text"
+            id="productStatus"
+            name="productStatus"
+            value={product.productStatus}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+
+
+
+        <div className="mb-4">
+          <label htmlFor="productcity" className="block text-gray-700 text-sm font-bold mb-2">City</label>
+          <input
+            type="text"
+            id="productcity"
+            name="productcity"
+            value={product.productcity}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Update
+
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
