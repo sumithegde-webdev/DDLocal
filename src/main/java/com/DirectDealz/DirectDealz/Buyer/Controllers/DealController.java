@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.DirectDealz.DirectDealz.Buyer.Service.DealService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost/3000")
+@CrossOrigin(origins = "http://localhost/5173")
 @RequestMapping("/api/deals")
 public class DealController {
     

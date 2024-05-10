@@ -19,7 +19,7 @@ import com.DirectDealz.DirectDealz.Admin.Service.AdminService;
 import com.DirectDealz.DirectDealz.Buyer.Models.Deal;
 
 @RestController
-@CrossOrigin(origins = "http://localhost/3000")
+@CrossOrigin(origins = "http://localhost/5173")
 @RequestMapping("api/admin")
 public class AdminController {
     
