@@ -14,9 +14,9 @@ import DeleteProduct from "./components/Seller/DeleteProduct.jsx";
 
 import Cookie from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
+import AdminLogin from "./components/Admin/AdminLogin.jsx";
 
 function App() {
-
   //cookie logic here
   const cookie = new Cookie();
   // console.log(cookie.cookies.jwt_token);
@@ -25,16 +25,19 @@ function App() {
   const [userLoginStatus, setUserLoginStatus] = useState(false);
 
   const [userCredentials, setUserCredentials] = useState({
-    email: (cookie.cookies.jwt_token == null ? "" : jwtDecode(cookie.cookies.jwt_token).sub),
-    token: (cookie.cookies.jwt_token == null ? "" : cookie.cookies.jwt_token),
+    email:
+      cookie.cookies.jwt_token == null
+        ? ""
+        : jwtDecode(cookie.cookies.jwt_token).sub,
+    token: cookie.cookies.jwt_token == null ? "" : cookie.cookies.jwt_token,
     role: "user",
-  })
+  });
 
   function credEmailHandler(email) {
     setUserCredentials({
       ...userCredentials,
       email: email,
-    })
+    });
   }
 
   function credTokenHandler(token, email) {
@@ -42,19 +45,20 @@ function App() {
       setUserCredentials({
         ...userCredentials,
         token: token,
-      })
+      });
       // console.log("WELCOME");
-    }
-    else {
+    } else {
       // console.log("INTRUDER ALERT!");
     }
-
   }
 
   return (
     <>
       {/* <nav>Navbar</nav> */}
       <Routes>
+        <Route path="/admin/*">
+          <Route path="" element={<AdminLogin />} />
+        </Route>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
 
@@ -67,9 +71,24 @@ function App() {
         <Route path="/login/*" element={null}>
           <Route
             path=""
-            element={<Login setLoginStatus={setUserLoginStatus} loginEmail={(val) => credEmailHandler(val)} />}
+            element={
+              <Login
+                setLoginStatus={setUserLoginStatus}
+                loginEmail={(val) => credEmailHandler(val)}
+              />
+            }
           />
-          {userLoginStatus && <Route path="tfauth" element={<TFAuth userEmail={userCredentials.email} setUserToken={credTokenHandler} />} />}
+          {userLoginStatus && (
+            <Route
+              path="tfauth"
+              element={
+                <TFAuth
+                  userEmail={userCredentials.email}
+                  setUserToken={credTokenHandler}
+                />
+              }
+            />
+          )}
           <Route
             path="*"
             element={

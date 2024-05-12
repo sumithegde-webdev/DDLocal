@@ -23,13 +23,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
-<<<<<<< HEAD
     "tailwindcss": "^3.4.3",
-    "universal-cookie": "^7.1.4"
-=======
-    "react-toastify": "^10.0.5",
-    "tailwindcss": "^3.4.3"
->>>>>>> 153564137dd03e7256f96b28fc1e220d46c0ef8b
+    "universal-cookie": "^7.1.4",
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
