@@ -1,4 +1,142 @@
+#register--container {
+    position: absolute;
+    top: 52.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 50%;
+    height: 60%;
+
+    /* background-color: rgb(205, 226, 245); */
+    background-color: #a5d8ff;
+    border: 1px solid #000;
+    box-shadow: 20px 20px 5px #000a;
+    border-radius: 15px;
+
+    overflow: hidden;
+}
+
+#reg--title {
+    display: flex;
+    top: 10%;
+    height: 15%;
+    /* background-color: blue; */
+    font-size: 2em;
+    letter-spacing: 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    justify-content: center;
+    align-items: center;
+}
+
+#register--inputs--container {
+    position: absolute;
+    top: 22.5%;
+    display: grid;
+    width: 100%;
+    height: 55%;
+    grid-template-columns: repeat(2, 1fr);
+    /* background-color: burlywood; */
+}
+
+#register--inputs--container>div {
+    width: 100%;
+    height: 100%;
+    /* background-color: aliceblue; */
+}
+
+#register--inputs--container>div:last-child {
+    grid-column: 2;
+}
+
+.reg--inputs {
+    margin: auto;
+    width: 80%;
+    height: 50%;
+    max-height: 45px;
+    cursor: pointer;
+    display: block;
+    left: 12.5%;
+    padding: 7.5px;
+    min-height: 32px;
+    border: 2px solid #2461FF;
+    border-radius: 7.5px;
+    outline: none;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #fff;
+}
+
+.erred {
+    border: 2px solid red;
+}
+
+.sub--divs {
+    margin: auto;
+    width: 80%;
+    font-size: 100%;
+    margin-top: 5px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.guide--div {
+    /* color: gray; */
+}
+
+.error--div {
+    color: red;
+}
+
 .disabled {
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.3;
+}
+
+#register--button--holder {
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    bottom: 11.5%;
+    /* background-color: #2461FF; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#register--button {
+    width: 20%;
+    max-width: 120px;
+    height: 80%;
+    cursor: pointer;
+    background-color: #2461FF;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#register--button:hover {
+    scale: 1.05;
+    background-color: #000;
+    color: #fff;
+}
+
+#login--ref {
+    position: absolute;
+    top: 90%;
+    right: 5%;
+    font-size: 15px;
+    font-family: monospace;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#login--ref:hover {
+    text-decoration: none;
+    font-weight: bold;
+    color: #2461FF;
 }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.DirectDealz.DirectDealz.Seller.Models.Product;
 import com.DirectDealz.DirectDealz.Seller.Services.ProductService;
@@ -31,16 +30,16 @@ public class ProductController {
         return productService.createProduct(product, token);
     }
 
-    @DeleteMapping("/products/{productId}")
-    public ResponseEntity<Object> deleteProduct(@RequestParam("productId") UUID productId, @RequestHeader String token) {
+    @DeleteMapping("/products/DeleteProductById")
+    public ResponseEntity<Object> deleteProduct(@RequestHeader UUID productId, @RequestHeader String token) {
         return productService.deleteProduct(productId, token);
     }
     
     
 
-    @PutMapping("/{productId}")
+    @PutMapping("/products/Edit")
     public ResponseEntity<Object> updateProduct(
-            @RequestParam UUID productId,
+            @RequestHeader UUID productId,
             @RequestBody Product updatedProduct,
             @RequestHeader String token) {
         return productService.updateProduct(productId, updatedProduct, token);
@@ -52,5 +51,10 @@ public class ProductController {
     public ResponseEntity<Object> getProductsBySeller(
             @RequestHeader String token) {
         return productService.getProductsBySeller(token);
+    }
+
+    @GetMapping("/GetProductById")
+    public ResponseEntity<Object> getproductById(@RequestHeader UUID productId , @RequestHeader String token){
+        return productService.getProductById(productId, token);
     }
 }

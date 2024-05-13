@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Navigate } from 'react-router-dom';
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-const TFAuth = (props) => {
+const VerifyOTP = (props) => {
 
-    const [success, setSuccess] = useState(false);
-
-    const [otp, setOtp] = useState("");
+    const [fpotp, setFpOtp] = useState("");
 
     const [min, setMin] = useState(5);
     const [sec, setSec] = useState(0);
-
-    const [error, setError] = useState({});
 
     var timer;
     const [counter, setCounter] = useState(0)
@@ -36,13 +31,11 @@ const TFAuth = (props) => {
         return () => clearInterval(timer);
     }, [counter])
 
-    function resendOTPRequest() { }
-
-    function onChangeHandler(e) {
+    function onOTPChangeHandler(e) {
         // console.log(isNumber(e.target.value));
         if (isNumber(e.target.value)) {
             // console.log("numberinput");
-            setOtp(e.target.value);
+            setFpOtp(e.target.value);
         }
         // console.log(otp);
     }
@@ -59,33 +52,23 @@ const TFAuth = (props) => {
         }
     }
 
-    function submitOTP() {
+    function resendOTPRequest() { }
 
-        const validationError = {}
-
-        if (otp.length === 0) {
-            validationError.otpError = "please enter the OTP to continue."
+    function requestReset() {
+        if (fpotp.length < 6) {
+            //show error
+            setFpOtp("");
+            console.log("Invalid OTP");
         }
-        else if (otp.length < 6) {
-            validationError.otpError = "OTP sent is a 6 digit number.";
-        }
-
-        setError(validationError);
-        setTimeout(() => {
-            setError({});
-        }, 3000);
-
-        if (Object.keys(validationError).length === 0) {
-            axios.post("http://localhost:8090/api/2fa", {}, {
+        else {
+            axios.post('http://localhost:8090/api/verifyOtpforforgotpassword', {}, {
                 headers: {
-                    otpforTwoFAFromUser: otp,
-                    role: "user",
+                    otp: fpotp,
                     email: props.userEmail,
                 }
             })
-                .then((response) => {
-                    props.setUserToken(response.data.token, props.userEmail);
-                    setSuccess(true);
+                .then(() => {
+                    props.setStage("resetpassword");
                 })
                 .catch((err) => {
                     console.error(err);
@@ -93,30 +76,24 @@ const TFAuth = (props) => {
         }
     }
 
-    if (success) {
-        return <Navigate to='/' />
-    }
-
     return (
         <>
-            <div id='tfauth--otp--div' className='current--div'>
-                <div id='tf--top--half'>
-                    <div id='tf--title'>Two Factor Authentication</div>
-                    <div id='tf--sent--message'>OTP sent to registered Email.</div>
+            <div id='verify--otp--div' className='current--div'>
+                <div id='top--half'>
+                    <div id='verify--title'>Verify OTP to Reset Password</div>
+                    <div id='sent--message'>OTP sent to entered Email.</div>
                     <input
-                        id='tf--otp--input'
-                        name='otp'
+                        id='verify--otp--input'
+                        name='fpotp'
                         type='text'
-                        className={error.otpError && "red"}
                         placeholder='Enter the OTP'
-                        value={otp}
+                        value={fpotp}
                         minLength={6}
                         maxLength={6}
-                        onChange={(e) => onChangeHandler(e)} />
-                    {error.otpError && <div id="otp--error--div">{error.otpError}</div>}
+                        onChange={(e) => onOTPChangeHandler(e)} />
                 </div>
                 <div id='horizontal--line'></div>
-                <div id='tf--bottom--half'>
+                <div id='bottom--half'>
                     <div id='div--housing'>
                         <div id='timer--div'>
                             <div id='textual' className='sub--timer--divs'>OTP Valid for</div>
@@ -128,8 +105,8 @@ const TFAuth = (props) => {
                             <p className={(min == 0 && sec == 0) ? "highlight" : "inactivate"} onClick={resendOTPRequest}>Resend OTP</p>
                         </div>
                     </div>
-                    <div id='tf--button--div'>
-                        <button id='tf--button' type='button' onClick={submitOTP}>Submit OTP</button>
+                    <div id='verify--button--div'>
+                        <button id='verify--button' type='button' onClick={requestReset}>Verify OTP</button>
                     </div>
                 </div>
                 {/* <div>DO NOT RELOAD THIS PAGE!</div> */}
@@ -138,4 +115,4 @@ const TFAuth = (props) => {
     )
 }
 
-export default TFAuth
+export default VerifyOTP

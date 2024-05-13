@@ -1,7 +1,7 @@
 const posts = [
     {
       id: 1,
-      title: 'DirectDealz: Empowering Sellers and Buyers',
+      title: 'DirectDealz: Empowering Sellers and Buyer',
       href: '#',
       description:
       'DirectDealz is your one-stop destination for seamless C2C transactions. Discover a wide range of products and services while enjoying a user-friendly platform',
@@ -16,10 +16,10 @@ const posts = [
     },
     {
       id: 1,
-      title: 'DirectDealz: Empowering Sellers and Buyers',
+      title: 'Enjoy a great experience.',
       href: '#',
       description:
-      'DirectDealz is your one-stop destination for seamless C2C transactions. Discover a wide range of products and services while enjoying a user-friendly platform',
+      'With DirectDealz you can experience transparent transactions and effortless buying/selling. ',
       date: 'May 7, 2024',
       datetime: '2024-05-07',
       category: { title: 'Marketing', href: '#' },
@@ -31,16 +31,16 @@ const posts = [
     },
     {
       id: 1,
-      title: 'DirectDealz: Empowering Sellers and Buyers',
+      title: 'Smooth transaction with seller',
       href: '#',
       description:
-      'DirectDealz is your one-stop destination for seamless C2C transactions. Discover a wide range of products and services while enjoying a user-friendly platform',
-      date: 'May 7, 2024',
-      datetime: '2024-05-07',
+      "DirectDealz provided me with smooth transactions with the seller and it was an easy buying experience. I recommend it for hassle-free shopping!",
+      date: 'May 8, 2024',
+      datetime: '2024-05-08',
       category: { title: 'Marketing', href: '#' },
       author: {
         name: 'Nick Johans',
-        role: 'Investor',
+        role: 'Buyer',
         href: '#',
        },
     },
@@ -53,7 +53,7 @@ const posts = [
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Reviews</h2>
             <p className="mt-2 text-lg leading-8 text-gray-600">
-              See what our Customers Say
+              See the buzz about Directdealz!
             </p>
           </div>
           <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
