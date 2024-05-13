@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Home from "./components/Home/HomePage";
 import TFAuth from "./components/Login/TFAuth";
+import Details from "./components/AddingProducts/Details";
 
 function App() {
   const [userLoginStatus, setUserLoginStatus] = useState(false);
@@ -30,7 +31,7 @@ function App() {
             }
           />
         </Route>
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={ <Register />} />
         {/* <Route path="/tfauth" element={<TFAuth />} /> */}
         <Route
           path="*"
@@ -40,7 +41,11 @@ function App() {
             </>
           }
         />
+        {/* <Route  path="/Details" element={ <Details />}> */}
+        
+        {/* </Route> */}
       </Routes>
+   
     </>
   );
 }

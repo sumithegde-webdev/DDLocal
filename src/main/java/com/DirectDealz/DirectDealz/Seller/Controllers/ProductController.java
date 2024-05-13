@@ -18,7 +18,7 @@ import com.DirectDealz.DirectDealz.Seller.Models.Product;
 import com.DirectDealz.DirectDealz.Seller.Services.ProductService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost/3000")
+@CrossOrigin(origins = "http://localhost:5173/")
 @RequestMapping("api")
 public class ProductController {
     

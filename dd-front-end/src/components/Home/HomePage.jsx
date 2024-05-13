@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import Hero from './Hero';
 import Feature from './Feature'
 import Blog from './Blog'
-import Contact from './Contact';
+// import Contact from './Contact';
 import Footer from './Footer'
 
 const HomePage = () => {
@@ -26,7 +26,7 @@ const HomePage = () => {
                 <Hero />
                 <Feature/>
                 <Blog />
-                <Contact/>
+                {/* <Contact/> */}
                 <Footer />
             </div> }
         </>

@@ -5,8 +5,8 @@ import logo from '../../assets/darkLogo.png';
 
 const navigation = [
   { name: 'About', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Reviews', href: '#' },
+  // { name: 'Features', href: '#' },
+  // { name: 'Reviews', href: '#' },
   { name: 'Contact', href: '#' },
 ]
 
