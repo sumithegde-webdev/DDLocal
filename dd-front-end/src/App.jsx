@@ -5,7 +5,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Home from "./components/Home/HomePage";
 import TFAuth from "./components/Login/TFAuth";
-import Details from "./components/AddingProducts/Details";
+//import Details from "./components/AddingProducts/Details";
 
 function App() {
   const [userLoginStatus, setUserLoginStatus] = useState(false);
