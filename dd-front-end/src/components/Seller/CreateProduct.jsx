@@ -51,8 +51,11 @@ const CreateSellerProductForm = () => {
         headers: {
 
           token: import.meta.env.VITE_TOKEN,
-         
-          
+          title,
+          description,
+          price,
+          productcity,
+
         }
       });
 
