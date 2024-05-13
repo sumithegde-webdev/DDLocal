@@ -8,7 +8,7 @@ const TFAuth = (props) => {
 
     const [otp, setOtp] = useState("");
 
-    const [min, setMin] = useState(5);
+    const [min, setMin] = useState(2);
     const [sec, setSec] = useState(0);
 
     const [error, setError] = useState({});
@@ -36,7 +36,23 @@ const TFAuth = (props) => {
         return () => clearInterval(timer);
     }, [counter])
 
-    function resendOTPRequest() { }
+    function resendOTPRequest() {
+        axios.post('http://localhost:8090/api/forgotpassword', {}, {
+            headers: {
+                email: props.userEmail,
+                role: "user",
+                flag: "2",
+            }
+        })
+            .then(() => {
+                //change state here
+                props.setEmail(email)
+                props.setStage("verifyotp");
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
 
     function onChangeHandler(e) {
         // console.log(isNumber(e.target.value));
@@ -125,7 +141,7 @@ const TFAuth = (props) => {
                             </div>
                         </div>
                         <div id='resend--otp'>
-                            <p className={(min == 0 && sec == 0) ? "highlight" : "inactivate"} onClick={resendOTPRequest}>Resend OTP</p>
+                            <p className={(min == 0 && sec == 0) ? "highlight" : "inactivate"} onClick={resendOTPRequest()}>Resend OTP</p>
                         </div>
                     </div>
                     <div id='tf--button--div'>

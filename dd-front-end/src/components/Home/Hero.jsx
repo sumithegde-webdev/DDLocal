@@ -21,7 +21,7 @@ export default function Hero() {
               <span className="sr-only">DirectDealz</span>
               <img
                 className="h-20  w-20"
-                src= {logo}
+                src={logo}
                 alt="DirectDealz"
               />
             </a>
@@ -124,21 +124,21 @@ export default function Hero() {
           </div>
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Seamless buying and selling.
+              Seamless buying and selling.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">    
-                Discover hassle-free buying and selling with DirectDealz – your one-stop solution for seamless transactions!
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Discover hassle-free buying and selling with DirectDealz – your one-stop solution for seamless transactions!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="http://localhost:5173/Register"
                 className="rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                style={{backgroundColor: "#2461FF"}}  >
-                Get started
+                style={{ backgroundColor: "#2461FF" }}  >
+                Register
               </a>
-              <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+              {/* <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

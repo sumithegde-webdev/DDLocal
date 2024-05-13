@@ -58,6 +58,14 @@ function App() {
       <Routes>
         <Route path="/admin/*">
           <Route path="" element={<AdminLogin />} />
+          <Route
+            path="*"
+            element={
+              <>
+                <div>404 ERROR</div>
+              </>
+            }
+          />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />

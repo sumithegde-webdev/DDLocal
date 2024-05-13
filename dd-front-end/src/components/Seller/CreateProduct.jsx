@@ -13,8 +13,6 @@ const CreateSellerProductForm = () => {
   const [pincode, setPincode] = useState('');
   const [streetAddress, setStreetAddress] = useState('');
 
-
-
   const getUserDetails = async () => {
     const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
 

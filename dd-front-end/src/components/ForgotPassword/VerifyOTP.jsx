@@ -5,9 +5,10 @@ const VerifyOTP = (props) => {
 
     const [fpotp, setFpOtp] = useState("");
 
-    const [min, setMin] = useState(5);
+    const [min, setMin] = useState(2);
     const [sec, setSec] = useState(0);
 
+    var resendReloader = 0;
     var timer;
     const [counter, setCounter] = useState(0)
     useEffect(() => {
@@ -29,7 +30,7 @@ const VerifyOTP = (props) => {
         }, 1000)
 
         return () => clearInterval(timer);
-    }, [counter])
+    }, [counter, resendReloader])
 
     function onOTPChangeHandler(e) {
         // console.log(isNumber(e.target.value));
@@ -52,7 +53,23 @@ const VerifyOTP = (props) => {
         }
     }
 
-    function resendOTPRequest() { }
+    function resendOTPRequest() {
+        axios.post('http://localhost:8090/api/forgotpassword', {}, {
+            headers: {
+                email: props.userEmail,
+                role: "user",
+                flag: "2",
+            }
+        })
+            .then(() => {
+                setMin(2)
+                setSec(0)
+                setCounter(0)
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
 
     function requestReset() {
         if (fpotp.length < 6) {
@@ -84,6 +101,7 @@ const VerifyOTP = (props) => {
                     <div id='sent--message'>OTP sent to entered Email.</div>
                     <input
                         id='verify--otp--input'
+                        className={(min == 0 && sec == 0) ? "inactivate" : ""}
                         name='fpotp'
                         type='text'
                         placeholder='Enter the OTP'
@@ -102,7 +120,7 @@ const VerifyOTP = (props) => {
                             </div>
                         </div>
                         <div id='resend--otp'>
-                            <p className={(min == 0 && sec == 0) ? "highlight" : "inactivate"} onClick={resendOTPRequest}>Resend OTP</p>
+                            <p className={(min > 0 && sec > 40) ? "inactivate" : "highlight"} onClick={resendOTPRequest}>Resend OTP</p>
                         </div>
                     </div>
                     <div id='verify--button--div'>

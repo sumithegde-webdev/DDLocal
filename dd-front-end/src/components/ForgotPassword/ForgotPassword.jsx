@@ -33,7 +33,8 @@ const ForgotPassword = (props) => {
             axios.post('http://localhost:8090/api/forgotpassword', {}, {
                 headers: {
                     email: email,
-                    role: "user"
+                    role: "user",
+                    flag: "1",
                 }
             })
                 .then(() => {
