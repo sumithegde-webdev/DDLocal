@@ -49,7 +49,7 @@ const DeleteProduct = () => {
       toast.success('Product deleted successfully!');
       setTimeout(() => {
         nav('/Seller/AllProducts');
-      }, 5000);
+      }, 2000);
 
     } catch (error) {
       console.error('Error Deleting product:', error);
@@ -70,7 +70,7 @@ const DeleteProduct = () => {
       <h1 className="text-2xl font-bold my-4">Delete Product</h1>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -82,6 +82,7 @@ const DeleteProduct = () => {
         transition={Bounce}
       />
       <div>
+      {/* <p> <img src={product.imageURL} alt="" srcset="" /></p> */}
         <p>Product Title: {product.title}</p>
         <p>Description: {product.description}</p>
         <p>Price: {product.price}</p>

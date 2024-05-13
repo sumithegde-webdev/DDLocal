@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Component;
 import com.DirectDealz.DirectDealz.Authentication.Enum.UserRole;
 import com.DirectDealz.DirectDealz.Seller.Enum.ProductStatus;
@@ -43,6 +44,9 @@ public class Product {
     private ProductStatus productStatus = ProductStatus.AVAILABLE; 
 
     private String productcity;
+
+    @Transient
+    private String imageURL;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

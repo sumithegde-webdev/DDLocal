@@ -8,13 +8,13 @@ import { CircularProgress } from '@mui/material';
 const EditProduct = () => {
   const nav = useNavigate();
   const { productId } = useParams();
-
   const [product, setProduct] = useState({
     title: '',
     description: '',
     price: '',
     productStatus: '',
-    productcity: ''
+    productcity: '',
+    image: null,
   });
   const [loading, setLoading] = useState(false);
 
@@ -38,21 +38,37 @@ const EditProduct = () => {
   console.log(productId);
 
   const handleChange = (e) => {
-    setProduct({
-      ...product,
-      [e.target.name]: e.target.value
-    });
+    if (e.target.name === 'image') {
+      setProduct({ ...product, image: e.target.files[0] });
+    } else {
+      setProduct({
+        ...product,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-      await axios.put(`http://localhost:8090/api/products/Edit`, product, {
+      const formData = new FormData();
+      formData.append('title', product.title);
+      formData.append('description', product.description);
+      formData.append('price', product.price);
+      formData.append('productStatus', product.productStatus);
+      formData.append('productcity', product.productcity);
+      formData.append('file', product.image); 
+
+
+            await axios.put(`http://localhost:8090/api/products/Edit`, formData, {
         headers: {
           token: import.meta.env.VITE_TOKEN,
           productId: productId,
+          title:product.title,
+          description : product.description,
+          price : product.price,
+          productcity : product.productcity
 
         },
       });
@@ -88,6 +104,17 @@ const EditProduct = () => {
       />
 
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+
+      <div className="mb-6">
+            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">Image</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
         <div className="mb-4">
           <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">Title</label>
           <input

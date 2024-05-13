@@ -11,6 +11,8 @@ import CreateSellerProductForm from "./components/Seller/CreateProduct";
 import EditProduct from "./components/Seller/EditProduct";
 import ListAllProducts from "./components/Seller/ListAllProducts.jsx";
 import DeleteProduct from "./components/Seller/DeleteProduct.jsx";
+import SpecificProductPage from "./components/Dashboard/SpecificProductPage.jsx";
+import { ToastContainer } from "react-toastify";
 
 function App() {
 
@@ -50,6 +52,7 @@ function App() {
   return (
     <>
       {/* <nav>Navbar</nav> */}
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
@@ -59,7 +62,7 @@ function App() {
         
         <Route path="/Seller/Edit/:productId" element={<EditProduct />} />
         <Route path="/Seller/Delete/:productId" element={<DeleteProduct />} />
-      
+        <Route path="/products/:productId" element={<SpecificProductPage/>} />
         <Route path="/login/*" element={null}>
           <Route
             path=""
@@ -87,6 +90,7 @@ function App() {
           }
         />
       </Routes>
+
     </>
   );
 }
