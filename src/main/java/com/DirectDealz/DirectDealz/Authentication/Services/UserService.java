@@ -52,7 +52,12 @@ public class UserService {
 
     @Scheduled(fixedRate = 60000)
     public void deleteExpiredRecords() {
-        LocalDateTime expiryTime = LocalDateTime.now().minusMinutes(7).truncatedTo(ChronoUnit.MINUTES);
+        // 5 minutes
+        // LocalDateTime expiryTime =
+        // LocalDateTime.now().minusMinutes(5).truncatedTo(ChronoUnit.MINUTES);
+
+        // 2 minutes
+        LocalDateTime expiryTime = LocalDateTime.now().minusMinutes(2).truncatedTo(ChronoUnit.MINUTES);
         List<OTPModel> expiredRecords = otpRepo.findByCreatedAt(expiryTime);
         if (expiredRecords.size() != 0) {
             otpRepo.deleteAll(expiredRecords);
@@ -150,6 +155,65 @@ public class UserService {
         }
     }
 
+    // admin sign up
+    public ResponseEntity<Object> userRegisterService(Object userOrService, BindingResult bindingResult, String role,
+            String userRole) {
+        try {
+            if (!bindingResult.hasErrors()) {
+                if (bindingResult.hasFieldErrors()) {
+                    responseMessage.setSuccess(false);
+                    responseMessage.setMessage("Enter valid Email");
+                    return ResponseEntity.ok().body(responseMessage);
+                }
+
+                if (role.equals("user")) {
+                    if (userRepository.findByUserRole(UserRole.ADMIN) != null) {
+                        responseMessage.setSuccess(false);
+                        responseMessage.setMessage("An Admin already exists!");
+                        responseMessage.setToken(null);
+                        return ResponseEntity.badRequest().body(responseMessage);
+                    } else {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        UserModel userModel = objectMapper.convertValue(userOrService, UserModel.class);
+                        userModel.setUserRole(UserRole.ADMIN);
+                        UserModel userByEmail = userRepository.findByEmail(userModel.getEmail());
+
+                        if (userByEmail == null) {
+                            userModel.setPassword(hashPassword(userModel.getPassword()));
+                            userRepository.save(userModel);
+                            responseMessage.setSuccess(true);
+                            responseMessage.setMessage("Account Created Successfully!");
+                            responseMessage.setToken(authService.generateToken(userModel.getEmail()));
+                            return ResponseEntity.ok().body(responseMessage);
+                        } else {
+                            responseMessage.setSuccess(false);
+                            responseMessage.setMessage("Admin with this email already exists!");
+                            responseMessage.setToken(null);
+                            return ResponseEntity.badRequest().body(responseMessage);
+                        }
+                    }
+
+                }
+
+                else {
+                    responseMessage.setSuccess(false);
+                    responseMessage.setMessage("Invalid Input!");
+                    responseMessage.setToken(null);
+                    return ResponseEntity.badRequest().body(responseMessage);
+                }
+
+            } else {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Invalid user name or email");
+                return ResponseEntity.badRequest().body(responseMessage);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+    // till here
+
     public ResponseEntity<Object> userLoginService(LoginModel loginModel, String role) {
         try {
             if (role.equals("user")) {
@@ -217,8 +281,12 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> forgotPasswordService(String email, String role) {
-        return sendingEmailService(email, role);
+    public ResponseEntity<Object> forgotPasswordService(String email, String role, int flag) {
+        if (flag == 1) {
+            return sendingEmailService(email, role);
+        } else {
+            return resendingEmailService(email, role);
+        }
     }
 
     public ResponseEntity<Object> sendingEmailService(String email, String role) {
@@ -226,20 +294,74 @@ public class UserService {
             if (role.equals("user")) {
                 UserModel userByEmail = userRepository.findByEmail(email);
                 if (userByEmail != null) {
-                    int otp = OTPGenerator.generateRandom6DigitNumber();
-                    OTPModel otpForForgotPassword = new OTPModel();
-                    otpForForgotPassword.setEmail(email);
-                    otpForForgotPassword.setOtp(otp);
-                    otpForForgotPassword.setUseCase("forgotpassword");
-                    otpForForgotPassword.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
-                    otpRepo.save(otpForForgotPassword);
+                    if (otpRepo.findByEmail(email) != null) {
+                        otpRepo.delete(otpRepo.findByEmail(email));
+                        return sendingEmailService(email, role);
+                    } else {
+                        int otp = OTPGenerator.generateRandom6DigitNumber();
+                        OTPModel otpForForgotPassword = new OTPModel();
+                        otpForForgotPassword.setEmail(email);
+                        otpForForgotPassword.setOtp(otp);
+                        otpForForgotPassword.setUseCase("forgotpassword");
+                        otpForForgotPassword.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
-                    emailModel.setRecipient(email);
-                    emailModel.setSubject("OTP for Resetting your password");
-                    emailModel.setMsgBody("Your OTP for resetting your password is " + otp
-                            + ". It is valid only for 5 minutes.");
+                        otpRepo.save(otpForForgotPassword);
 
+                        emailModel.setRecipient(email);
+                        emailModel.setSubject("OTP for Resetting your password");
+                        emailModel.setMsgBody("Your OTP for resetting your password is " + otp
+                                + ". It is valid only for 5 minutes.");
+                        ResponseMessage response = emailService.sendSimpleMail(emailModel).getBody();
+
+                        if (response.getSuccess()) {
+                            responseMessage.setSuccess(true);
+                            responseMessage.setMessage(response.getMessage());
+                            return ResponseEntity.ok().body(responseMessage);
+                        } else {
+                            responseMessage.setSuccess(false);
+                            responseMessage.setMessage(response.getMessage());
+                            return ResponseEntity.badRequest().body(responseMessage);
+                        }
+                    }
+                } else {
+                    responseMessage.setSuccess(false);
+                    responseMessage.setMessage("Invalid Email");
+                    return ResponseEntity.badRequest().body(responseMessage);
+                }
+            } else {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Invalid role");
+                return ResponseEntity.badRequest().body(responseMessage);
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<Object> resendingEmailService(String email, String role) {
+        try {
+            if (role.equals("user")) {
+                UserModel userByEmail = userRepository.findByEmail(email);
+                if (userByEmail != null) {
+
+                    if (otpRepo.findByEmail(userByEmail.getEmail()) != null) {
+                        OTPModel otpForForgotPassword = new OTPModel();
+                        otpForForgotPassword.setEmail(email);
+                        otpForForgotPassword.setOtp(otpRepo.findByEmail(userByEmail.getEmail()).getOtp());
+                        otpForForgotPassword.setUseCase("forgotpasswordresend");
+                        otpForForgotPassword.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+
+                        otpRepo.delete(otpRepo.findByEmail(email));
+                        otpRepo.save(otpForForgotPassword);
+
+                        emailModel.setRecipient(email);
+                        emailModel.setSubject("OTP for Resetting your password");
+                        emailModel.setMsgBody("Your OTP for resetting your password is " + otpForForgotPassword.getOtp()
+                                + ". It is valid only for 5 minutes.");
+
+                    }
                     ResponseMessage response = emailService.sendSimpleMail(emailModel).getBody();
 
                     if (response.getSuccess()) {
@@ -326,7 +448,7 @@ public class UserService {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error!"+e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error!" + e);
         }
     }
 

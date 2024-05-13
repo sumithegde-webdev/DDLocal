@@ -30,6 +30,12 @@ public class MainController {
         return userService.userRegisterService(userOrService, bindingResult, role);
     }
 
+    @PostMapping("adminRegister")
+    public ResponseEntity<Object> addAdmin(@Valid @RequestBody Object userOrService, BindingResult bindingResult,
+            @RequestHeader String role, @RequestHeader String userRole) {
+        return userService.userRegisterService(userOrService, bindingResult, role, userRole);
+    }
+
     // @GetMapping("login")
     // public ResponseEntity<Object> verifyUser(@RequestBody LoginModel loginModel,
     // @RequestHeader String role) {
@@ -48,8 +54,9 @@ public class MainController {
     }
 
     @PostMapping("forgotpassword")
-    public ResponseEntity<Object> forgotPassword(@RequestHeader String email, @RequestHeader String role) {
-        return userService.forgotPasswordService(email, role);
+    public ResponseEntity<Object> forgotPassword(@RequestHeader String email, @RequestHeader String role,
+            @RequestHeader int flag) {
+        return userService.forgotPasswordService(email, role, flag);
     }
 
     @PostMapping("verifyOtpforforgotpassword")
