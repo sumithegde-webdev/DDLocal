@@ -2,13 +2,15 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from '../../assets/darkLogo.png';
+import { Link } from 'react-router-dom';
 
 const navigation = [
-  { name: 'About', href: '#' },
+  // { name: 'About', href: '/About' },
   // { name: 'Features', href: '#' },
   // { name: 'Reviews', href: '#' },
-  { name: 'Contact', href: '#' },
+  // { name: 'Contact', href: '#' },
 ]
+
 
 export default function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -136,9 +138,9 @@ export default function Hero() {
                 style={{backgroundColor: "#2461FF"}}  >
                 Get started
               </a>
-              <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+              {/* <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

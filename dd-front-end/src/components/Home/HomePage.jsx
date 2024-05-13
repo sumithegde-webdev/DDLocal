@@ -7,6 +7,7 @@ import Feature from './Feature'
 import Blog from './Blog'
 // import Contact from './Contact';
 import Footer from './Footer'
+import About from './About';
 
 const HomePage = () => {
     return (
@@ -25,9 +26,10 @@ const HomePage = () => {
             
                 <Hero />
                 <Feature/>
+                <About />
                 <Blog />
                 {/* <Contact/> */}
-                <Footer />
+                {/* <Footer /> */}
             </div> }
         </>
     )
