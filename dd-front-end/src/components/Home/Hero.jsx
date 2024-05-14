@@ -2,15 +2,13 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from '../../assets/darkLogo.png';
-import { Link } from 'react-router-dom';
 
 const navigation = [
-  // { name: 'About', href: '/About' },
+  // { name: 'About', href: '#' },
   // { name: 'Features', href: '#' },
   // { name: 'Reviews', href: '#' },
   // { name: 'Contact', href: '#' },
 ]
-
 
 export default function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
