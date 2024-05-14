@@ -1,5 +1,6 @@
 package com.DirectDealz.DirectDealz.Seller.Services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.DirectDealz.DirectDealz.Authentication.Enum.UserRole;
 import com.DirectDealz.DirectDealz.Authentication.Models.ResponseMessage;
@@ -19,7 +21,7 @@ import com.DirectDealz.DirectDealz.Seller.Repository.ProductRepository;
 
 @Service
 public class ProductService {
-    
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -32,28 +34,40 @@ public class ProductService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private S3Service s3Service;
 
-    public ResponseEntity<Object> createProduct(Product product,String token ) {
+ 
+
+    public ResponseEntity<Object> createProduct(MultipartFile file,String title , String description , BigDecimal price ,  String productcity,  String token) {
         try {
             if (!authService.isTokenValid(token)) {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Invalid token");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
             }
-            String email=authService.verifyToken(token);
-            UserModel user=userRepository.findByEmail(email);
+            String email = authService.verifyToken(token);
+            UserModel user = userRepository.findByEmail(email);
             if (user.getUserRole() != UserRole.SELLER) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only sellers are allowed to create products.");
             }
+            String key = "products/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+            s3Service.uploadFileToS3(file, key);
+            Product product = new Product();
             product.setUserId(user.getId());
+            product.setTitle(title);
+            product.setProductcity(productcity);
+            product.setPrice(price);
+            product.setDescription(description);
+            product.setImageURL(System.getenv("BUCKET_URL")+key);
+
             Product savedProduct = productRepository.save(product);
             return ResponseEntity.ok(savedProduct);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal Server Error: " + e.getMessage());
         }
     }
-
-
 
     public ResponseEntity<Object> deleteProduct(UUID productId, String token) {
         try {
@@ -71,7 +85,8 @@ public class ProductService {
             if (productOptional.isPresent()) {
                 Product product = productOptional.get();
                 if (!product.getUserId().equals(user.getId())) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this product.");
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                            .body("You are not authorized to delete this product.");
                 }
                 productRepository.delete(product);
                 return ResponseEntity.ok("Product deleted successfully.");
@@ -79,45 +94,87 @@ public class ProductService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal Server Error: " + e.getMessage());
         }
     }
-    
 
-    public ResponseEntity<Object> updateProduct(UUID productId, Product updatedProduct, String token) {
-        try {
-            if (!authService.isTokenValid(token)) {
-                responseMessage.setSuccess(false);
-                responseMessage.setMessage("Invalid token");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
-            }
-            String email = authService.verifyToken(token);
-            UserModel user = userRepository.findByEmail(email);
-            Optional<Product> existingProductOptional = productRepository.findById(productId);
-            if (user.getUserRole() != UserRole.SELLER) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access to this Resource is Denied.");
-            }
-            if (!existingProductOptional.isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-            }
-            Product existingProduct = existingProductOptional.get();
-            if (!existingProduct.getUserId().equals(user.getId())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this product.");
-            }
-            // Update fields of the existing product
-            existingProduct.setTitle(updatedProduct.getTitle());
-            existingProduct.setDescription(updatedProduct.getDescription());
-            existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setProductcity(updatedProduct.getProductcity());
+    // public ResponseEntity<Object> updateProduct(UUID productId, Product updatedProduct, String token) {
+    //     try {
+    //         if (!authService.isTokenValid(token)) {
+    //             responseMessage.setSuccess(false);
+    //             responseMessage.setMessage("Invalid token");
+    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
+    //         }
+    //         String email = authService.verifyToken(token);
+    //         UserModel user = userRepository.findByEmail(email);
+    //         Optional<Product> existingProductOptional = productRepository.findById(productId);
+    //         if (user.getUserRole() != UserRole.SELLER) {
+    //             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access to this Resource is Denied.");
+    //         }
+    //         if (!existingProductOptional.isPresent()) {
+    //             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+    //         }
+    //         Product existingProduct = existingProductOptional.get();
+    //         if (!existingProduct.getUserId().equals(user.getId())) {
+    //             return ResponseEntity.status(HttpStatus.FORBIDDEN)
+    //                     .body("You are not authorized to update this product.");
+    //         }
+    //         // Update fields of the existing product
+    //         existingProduct.setTitle(updatedProduct.getTitle());
+    //         existingProduct.setDescription(updatedProduct.getDescription());
+    //         existingProduct.setPrice(updatedProduct.getPrice());
+    //         existingProduct.setProductcity(updatedProduct.getProductcity());
 
-            // Save the updated product
-            Product savedProduct = productRepository.save(existingProduct);
-            return ResponseEntity.ok(savedProduct);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+    //         // Save the updated product
+    //         Product savedProduct = productRepository.save(existingProduct);
+    //         return ResponseEntity.ok(savedProduct);
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                 .body("Internal Server Error: " + e.getMessage());
+    //     }
+    // }
+    public ResponseEntity<Object> updateProduct(MultipartFile file, String title, String description, BigDecimal price, String productcity, String token, UUID productId) {
+    try {
+        if (!authService.isTokenValid(token)) {
+            responseMessage.setSuccess(false);
+            responseMessage.setMessage("Invalid token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
         }
+        String email = authService.verifyToken(token);
+        UserModel user = userRepository.findByEmail(email);
+        if (user.getUserRole() != UserRole.SELLER) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only sellers are allowed to update products.");
+        }
+
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (!optionalProduct.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+        }
+
+        Product product = optionalProduct.get();
+        if (!product.getUserId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this product.");
+        }
+
+        if (file != null) {
+            String key = "products/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+            s3Service.uploadFileToS3(file, key);
+            product.setImageURL(System.getenv("BUCKET_URL") + key);
+        }
+        product.setTitle(title);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setProductcity(productcity);
+
+        Product updatedProduct = productRepository.save(product);
+        return ResponseEntity.ok(updatedProduct);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Internal Server Error: " + e.getMessage());
     }
-    
+}
+
 
     // Listing all products present in the database for particular seller
 
@@ -140,18 +197,17 @@ public class ProductService {
             List<Product> products = productRepository.findByUserId(user.getId());
             return ResponseEntity.ok(products);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal Server Error: " + e.getMessage());
         }
     }
-
-
 
     public ResponseEntity<Object> getProductById(UUID productId, String token) {
         try {
             if (!authService.isTokenValid(token)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
             }
-            
+
             // Get the user from the token
             String email = authService.verifyToken(token);
             UserModel user = userRepository.findByEmail(email);
@@ -160,7 +216,8 @@ public class ProductService {
             }
 
             // Check if the user is a buyer or seller or Admin
-            if (user.getUserRole() != UserRole.BUYER && user.getUserRole() != UserRole.SELLER && user.getUserRole() != UserRole.ADMIN) {
+            if (user.getUserRole() != UserRole.BUYER && user.getUserRole() != UserRole.SELLER
+                    && user.getUserRole() != UserRole.ADMIN) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
             }
 
@@ -174,7 +231,8 @@ public class ProductService {
             Product product = productOptional.get();
             return ResponseEntity.ok(product);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal Server Error: " + e.getMessage());
         }
     }
 

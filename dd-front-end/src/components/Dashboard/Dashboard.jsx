@@ -1,10 +1,13 @@
 import { all } from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const Dashboard = () => {
     const nav = useNavigate();
+    const { productId } = useParams();
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [cityFilter, setCityFilter] = useState('');
@@ -18,7 +21,7 @@ const Dashboard = () => {
 
 
         fetchProducts();
-       
+
     }, []);
 
     const getUserDetails = async () => {
@@ -30,10 +33,10 @@ const Dashboard = () => {
             },
         });
         const userDataResponse = await userData.json();
-         setUserRole(userDataResponse.userRole);
-       
+        setUserRole(userDataResponse.userRole);
 
-        
+
+
     }
 
     getUserDetails();
@@ -81,7 +84,7 @@ const Dashboard = () => {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
-    
+
     const handleBecomeSellerClick = () => {
         nav("/");
 
@@ -108,15 +111,15 @@ const Dashboard = () => {
 
                         <div class="hidden md:block">
                             <div class="ml-4 flex items-center md:ml-6">
-                            {userRole == "BUYER" ? (
-                <div>
-                  <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleBecomeSellerClick}> 
-                                Become Buyer </button>
+                                {userRole == "BUYER" ? (
+                                    <div>
+                                        <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleBecomeSellerClick}>
+                                            Become Buyer </button>
 
-                </div>
-            ) : (
-                <p></p>
-            )}
+                                    </div>
+                                ) : (
+                                    <p></p>
+                                )}
                                 <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">View notifications</span>
@@ -221,7 +224,7 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <button class="ml-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={handleSearchButtonClick}   style={{backgroundColor: "#2461FF"}}>
+                        <button class="ml-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={handleSearchButtonClick} style={{ backgroundColor: "#2461FF" }}>
                             Search
                         </button>
                     </div>
@@ -234,6 +237,7 @@ const Dashboard = () => {
                         {cityFilter === '' ? products.map((product) => (
                             <div key={product.id} class="bg-white overflow-hidden shadow rounded-lg">
                                 <div class="p-4">
+                                     <img src={product.imageURL} alt="" srcset="" />
                                     <h3 class="text-lg font-medium text-gray-900">{product.title}</h3>
                                     <p class="mt-2 text-sm text-gray-500">{product.description}</p>
                                     <p class="mt-2 text-sm text-gray-500">₹{product.price}</p>
@@ -243,9 +247,10 @@ const Dashboard = () => {
                                     {/* <p class="mt-2 text-sm text-gray-500">{product.userId}</p> */}
                                 </div>
                                 <div class="bg-gray-50 px-4 py-3 sm:px-6">
-                                    <button class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"   style={{backgroundColor: "#2461FF"}}>
-                                        View Product
-                                    </button>
+                                    <Link to={`/products/${product.id}`} className='w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' style={{backgroundColor: "#2461FF"}}>
+                                    View Product
+                                    </Link>
+                                 
                                 </div>
                             </div>
                         ))
@@ -261,9 +266,9 @@ const Dashboard = () => {
                                         {/* <p class="mt-2 text-sm text-gray-500">{product.userId}</p> */}
                                     </div>
                                     <div class="bg-gray-50 px-4 py-3 sm:px-6">
-                                        <button class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            View Product
-                                        </button>
+                                    <Link to={`/products/${product.id}`} className='w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' style={{backgroundColor: "#2461FF"}}>
+                                    View Product
+                                    </Link>
                                     </div>
                                 </div>
                             ))}
