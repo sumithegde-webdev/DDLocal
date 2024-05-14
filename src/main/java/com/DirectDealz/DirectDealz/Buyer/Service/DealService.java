@@ -1,6 +1,7 @@
 package com.DirectDealz.DirectDealz.Buyer.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +83,23 @@ public class DealService {
                     .body("Internal Server Error: " + e.getMessage());
         }
     }
+
+
+    public ResponseEntity<?> findDealsByBuyerId(UUID buyerId, String token) {
+        if (!authService.isTokenValid(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+        }
+    
+        String email = authService.verifyToken(token);
+        UserModel user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    
+        List<Deal> deals = dealRepository.findByBuyerId(buyerId);
+        return deals.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(deals);
+    }
+    
+    
 
 }

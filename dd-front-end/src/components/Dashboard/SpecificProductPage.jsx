@@ -4,10 +4,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
+import { FaLock } from 'react-icons/fa';
 
 const SpecificProductPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [dealLocked, setDealLocked] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -16,11 +18,13 @@ const SpecificProductPage = () => {
         const response = await axios.get('http://localhost:8090/api/GetProductById', {
           headers: {
             token: Cookies.get('token'),
-            productId: productId
-
+            productId: productId,
           },
         });
         setProduct(response.data);
+        if (response.data.productStatus === 'SOLD') {
+          setDealLocked(true);
+        }
       } catch (error) {
         console.error('Error fetching product:', error);
       }
@@ -29,91 +33,67 @@ const SpecificProductPage = () => {
     fetchProducts();
   }, []);
 
+  const handleDealLock = async () => {
+    const confirmLock = window.confirm('Are you sure you want to lock the deal?');
 
-  const getUserDetails = async () => {
-    const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+    if (!confirmLock) {
+      return;
+    }
 
-      headers: {
-        token: Cookies.get('token'),
-        role: "user"
-      },
-    });
-    const userDataResponse = await userData.json();
-    //  setUserRole(userDataResponse.userRole);
-
-
-
-  }
-  getUserDetails();
-
-
-  //   const handleDealLock = async () => {
-  //     try {
-  //       await axios.post(`http://localhost:8090/api/products/${id}/lock`, {
-  //         // Include any data needed for the lock process
-  //       });
-  //       alert('Product locked successfully!');
-  //       // Optionally, you can navigate the user to a confirmation page or update the UI
-  //     } catch (error) {
-  //       console.error('Error locking product:', error);
-  //     }
-  //   };
-
-
-  
-
-  const onclickbutton = () => {
-    const loadingToastId = toast.promise(
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 2000);
-      }),
-      {
-        pending: 'Redirecting...',
-        success: 'Welcome to Dashboard ',
-        error: 'Error while loading',
-      }
-    );
-  
-    loadingToastId.then(() => {
-      nav('/Dashboard');
-    });
+    try {
+      await axios.post(`http://localhost:8090/api/deals/lock`, {}, {
+        headers: {
+          token: Cookies.get('token'),
+          productId: productId,
+        },
+      });
+      toast.success('Deal locked successfully!');
+      setDealLocked(true);
+    } catch (error) {
+      console.error('Error locking product:', error);
+      toast.error(error);
+    }
   };
-  if (!product) { 
-   
+
+  const onClickButton = () => {
+    nav('/Dashboard');
+  };
+
+  if (!product) {
     return <div>Loading...</div>;
   }
-  
 
   return (
-    <div class="flex items-center justify-center min-h-screen">
-    <div class="max-w-md mx-auto rounded-md overflow-hidden shadow-md hover:shadow-lg">
-      <div class="relative">
-        <img src={product.imageURL} alt="" srcset="" />
-      </div>
-      <div class="p-4">
-        <h3 class="text-lg font-medium mb-2">{product.title}</h3>
-        <p class="text-gray-600 text-sm mb-4">{product.description}</p>
-        <div class="flex items-center justify-between">
-  <span class="font-bold text-lg">₹{product.price}</span>
-  <div class="flex gap-1">
-    <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={onclickbutton}>
-      Back
-    </button>
-    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-      Deal Lock 
-    </button>
-  </div>
-</div>
-
-        
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="max-w-md mx-auto rounded-md overflow-hidden shadow-md hover:shadow-lg">
+        <div className="relative">
+          <img src={product.imageURL} alt="" />
+        </div>
+        <div className="p-4">
+          <h3 className="text-lg font-medium mb-2">{product.title}</h3>
+          <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-lg">₹{product.price}</span>
+            <div className="flex gap-1">
+              {dealLocked ? (
+                <button className="bg-gray-500 text-white font-bold py-2 px-4 rounded cursor-not-allowed">
+                  <div className="flex items-center">
+                    <FaLock className="mr-1" /> Sold
+                  </div>
+                </button>
+              ) : (
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={handleDealLock}>
+                  Deal Lock
+                </button>
+              )}
+              <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onClick={onClickButton}>
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  
-
-
   );
 };
 
