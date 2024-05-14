@@ -1,12 +1,12 @@
 
-import { Link } from 'react-router-dom'
 // import LoginPage from '../Login/LoginPage'
 // import RegistrationPage from '../Registration/RegistrationPage'
 import Hero from './Hero';
 import Feature from './Feature'
 import Blog from './Blog'
-import Contact from './Contact';
+// import Contact from './Contact';
 import Footer from './Footer'
+import About from './About';
 
 const HomePage = () => {
     return (
@@ -25,9 +25,10 @@ const HomePage = () => {
             
                 <Hero />
                 <Feature/>
+                <About />
                 <Blog />
-                <Contact/>
-                <Footer />
+                {/* <Contact/> */}
+                {/* <Footer /> */}
             </div> }
         </>
     )

@@ -4,10 +4,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from '../../assets/darkLogo.png';
 
 const navigation = [
-  { name: 'About', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Reviews', href: '#' },
-  { name: 'Contact', href: '#' },
+  // { name: 'About', href: '#' },
+  // { name: 'Features', href: '#' },
+  // { name: 'Reviews', href: '#' },
+  // { name: 'Contact', href: '#' },
 ]
 
 export default function Hero() {
@@ -136,9 +136,9 @@ export default function Hero() {
                 style={{backgroundColor: "#2461FF"}}  >
                 Get started
               </a>
-              <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+              {/* <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
