@@ -5,6 +5,7 @@ import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress } from '@mui/material';
+import Cookies from 'js-cookie';
 const EditProduct = () => {
   const nav = useNavigate();
   const { productId } = useParams();
@@ -23,7 +24,7 @@ const EditProduct = () => {
       try {
         const response = await axios.get(`http://localhost:8090/api/GetProductById`, {
           headers: {
-            token: import.meta.env.VITE_TOKEN,
+            token: Cookies.get('token'),
             productId: productId,
           },
         });
@@ -63,7 +64,7 @@ const EditProduct = () => {
 
             await axios.put(`http://localhost:8090/api/products/Edit`, formData, {
         headers: {
-          token: import.meta.env.VITE_TOKEN,
+          token: Cookies.get('token'),
           productId: productId,
           title:product.title,
           description : product.description,

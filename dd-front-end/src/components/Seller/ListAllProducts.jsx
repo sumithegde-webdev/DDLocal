@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 const listAllProducts = () => {
 
   const nav = useNavigate();
@@ -14,11 +15,12 @@ const listAllProducts = () => {
       try {
         const response = await axios.get('http://localhost:8090/api/productslisted', {
           headers: {
-            token: import.meta.env.VITE_TOKEN,
+            token: Cookies.get('token'),
           },
         });
         setProducts(response.data);
       } catch (error) {
+        
         console.error('Error fetching products:', error);
       }
     };
@@ -35,8 +37,8 @@ const listAllProducts = () => {
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold my-4">Seller Products</h1>
-      {products.length === 0 ? (
-        <p>No products found</p>
+      {products.length === 0  ? (
+        <p>No products found or You are not authorized to perform this Action </p>
 
       ) : (
         <table className="min-w-full">

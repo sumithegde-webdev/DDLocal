@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 const CreateSellerProductForm = () => {
   const nav = useNavigate();
   const [userRole, setUserRole] = useState('');
@@ -20,7 +21,7 @@ const CreateSellerProductForm = () => {
     const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
 
       headers: {
-        token: import.meta.env.VITE_TOKEN,
+        token: Cookies.get('token'),
         role: "user"
       },
     });
@@ -50,7 +51,7 @@ const CreateSellerProductForm = () => {
       await axios.post('http://localhost:8090/api/products/create', formData, {
         headers: {
 
-          token: import.meta.env.VITE_TOKEN,
+          token: Cookies.get('token'),
           title,
           description,
           price,

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
     const nav = useNavigate();
@@ -17,8 +17,7 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        const token = import.meta.env.VITE_TOKEN; // Assuming token is stored in localStorage
-
+        const token = Cookies.get('token');
 
         fetchProducts();
 
@@ -28,7 +27,7 @@ const Dashboard = () => {
         const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
 
             headers: {
-                token: import.meta.env.VITE_TOKEN,
+                token: Cookies.get('token'),
                 role: "user"
             },
         });
@@ -46,7 +45,7 @@ const Dashboard = () => {
             const allProductsResponse = await fetch('http://localhost:8090/api/listedproducts', {
 
                 headers: {
-                    token: import.meta.env.VITE_TOKEN, // Include token in the Authorization header
+                    token: Cookies.get('token'), // Include token in the Authorization header
                 },
             });
             const allProductsData = await allProductsResponse.json();
@@ -61,7 +60,7 @@ const Dashboard = () => {
         try {
             const filteredProductsResponse = await fetch(`http://localhost:8090/api/listbycity/${cityFilter}`, {
                 headers: {
-                    token: import.meta.env.VITE_TOKEN, // Include token in the Authorization header
+                    token: Cookies.get('token'), // Include token in the Authorization header
                 },
             });
             const filteredProductsData = await filteredProductsResponse.json();

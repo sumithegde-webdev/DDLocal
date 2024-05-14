@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const TFAuth = (props) => {
 
@@ -84,6 +85,7 @@ const TFAuth = (props) => {
                 }
             })
                 .then((response) => {
+                    Cookies.set('token', response.data.token);
                     props.setUserToken(response.data.token, props.userEmail);
                     setSuccess(true);
                 })
@@ -94,7 +96,8 @@ const TFAuth = (props) => {
     }
 
     if (success) {
-        return <Navigate to='/' />
+        
+        return <Navigate to='/Dashboard' />
     }
 
     return (

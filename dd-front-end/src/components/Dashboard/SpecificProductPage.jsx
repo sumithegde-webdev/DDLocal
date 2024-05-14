@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 const SpecificProductPage = () => {
   const { productId } = useParams();
@@ -14,7 +15,7 @@ const SpecificProductPage = () => {
       try {
         const response = await axios.get('http://localhost:8090/api/GetProductById', {
           headers: {
-            token: import.meta.env.VITE_TOKEN,
+            token: Cookies.get('token'),
             productId: productId
 
           },
@@ -33,7 +34,7 @@ const SpecificProductPage = () => {
     const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
 
       headers: {
-        token: import.meta.env.VITE_TOKEN,
+        token: Cookies.get('token'),
         role: "user"
       },
     });
