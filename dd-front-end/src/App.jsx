@@ -15,6 +15,8 @@ import DeleteProduct from "./components/Seller/DeleteProduct.jsx";
 import Cookie from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 import AdminLogin from "./components/Admin/AdminLogin.jsx";
+import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
+import AdminSellerRequests from "./components/Admin/AdminSellerRequests.jsx";
 
 function App() {
   //cookie logic here
@@ -58,6 +60,10 @@ function App() {
       <Routes>
         <Route path="/admin/*">
           <Route path="" element={<AdminLogin />} />
+          <Route path="dashboard/*">
+            <Route path="" element={<AdminDashboard />} />
+            <Route path="seller-requests" element={<AdminSellerRequests />} />
+          </Route>
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />

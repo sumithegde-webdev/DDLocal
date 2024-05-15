@@ -2,6 +2,18 @@
     position: absolute;
 } */
 
+#admin--login--div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 40%;
+    max-width: 350px;
+    height: 70%;
+    background-color: #a5d8ff;
+    border-radius: 15px;
+}
+
 #logo {
     position: absolute;
     top: 2.5%;
@@ -92,7 +104,7 @@
     width: 100%;
 }
 
-#login--title {
+#login--title,#admin--title {
     display: flex;
     top: 10%;
     height: 15%;
