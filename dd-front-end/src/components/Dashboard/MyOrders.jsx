@@ -77,7 +77,7 @@ const OrderPage = () => {
     return (
         <div className="container mx-auto">
             <h1 className="text-3xl font-bold mb-4">My Deals</h1>
-            {product && (
+            {product != null  ? (
                 <div className="bg-white shadow-md rounded-md p-4 flex flex-col">
                     <div className="flex justify-between items-center mb-4">
                         <div>
@@ -93,6 +93,8 @@ const OrderPage = () => {
                         <span className="font-bold text-lg">₹{product.price}</span>
                     </div>
                 </div>
+            ) : (
+                <p>No Deals Found</p>
             )}
         </div>
     );

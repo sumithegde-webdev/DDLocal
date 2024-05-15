@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import styled from 'styled-components'; 
 
 const Dashboard = () => {
     const nav = useNavigate();
@@ -60,7 +61,7 @@ const Dashboard = () => {
         try {
             const filteredProductsResponse = await fetch(`http://localhost:8090/api/listbycity/${cityFilter}`, {
                 headers: {
-                    token: Cookies.get('token'), // Include token in the Authorization header
+                    token: Cookies.get('token'),
                 },
             });
             const filteredProductsData = await filteredProductsResponse.json();
@@ -83,11 +84,7 @@ const Dashboard = () => {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
-
-    const handleBecomeSellerClick = () => {
-        nav("/");
-
-    }
+   
 
     return (
         <div className="min-h-full">
@@ -101,9 +98,22 @@ const Dashboard = () => {
                             </div>
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-4">
-                                    <a href="#" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Dashboard</a>
+                                    <a href="#" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">DirectDealz</a>
                                     <p className='text-white'>Welcome, {userName}</p>
+                                    {userRole == "SELLER" ? (
+                                        <div className="flex justify-center my-4">
+                                            
+                                            
+                                            <Link to={`/Seller/create`} className="bg-orange-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-4 ml-80" aria-current="page">Create Products</Link>
+                                            <Link to={`/Seller/AllProducts`}className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-4" aria-current="page">Manage Products</Link>
+
+                                        </div>
+                                    ) : (
+                                        <p></p>
+                                    )}
                                 </div>
+
+
                             </div>
 
                         </div>
@@ -185,7 +195,7 @@ const Dashboard = () => {
 
                 <div className="md:hidden" id="mobile-menu">
                     <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                        <a href="#" className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Dashboard</a>
+                        <a href="#" className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">DirectDealz</a>
 
                     </div>
                     <div className="border-t border-gray-700 pb-3 pt-4">
@@ -262,9 +272,10 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         ))
-                            : filteredProducts.map((product) => (
+                            : filteredProducts.length > 0 ? filteredProducts.map((product) => (
                                 <div key={product.id} className="bg-white overflow-hidden shadow rounded-lg">
                                     <div className="p-4">
+                                    <img src={product.imageURL} alt="" srcSet="" />
                                         <h3 className="text-lg font-medium text-gray-900">{product.title}</h3>
                                         <p className="mt-2 text-sm text-gray-500">{product.description}</p>
                                         <p className="mt-2 text-sm text-gray-500">₹{product.price}</p>
@@ -279,7 +290,10 @@ const Dashboard = () => {
                                         </Link>
                                     </div>
                                 </div>
-                            ))}
+                            )) : (
+                                <RedBox>No Products Found for your search.</RedBox>
+                            )
+                        }
 
                     </div>
                 </div>
@@ -287,5 +301,17 @@ const Dashboard = () => {
         </div>
     );
 };
+const RedBox = styled.div`
+background-color: #f8d7da; 
+border-color: #f5c6cb; 
+border-width: 1px;
+border-radius: 4px;
+padding: 1rem;
+margin: 1rem 0;
+color: #721c24; 
+text-align: center;
+justify-conter : center;
+align-items : center;
+`;
 
 export default Dashboard;
