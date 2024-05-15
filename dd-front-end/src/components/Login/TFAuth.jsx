@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
+import { toast } from 'react-toastify';
 const TFAuth = (props) => {
 
     const [success, setSuccess] = useState(false);
@@ -13,7 +13,6 @@ const TFAuth = (props) => {
     const [sec, setSec] = useState(0);
 
     const [error, setError] = useState({});
-
     var timer;
     const [counter, setCounter] = useState(0)
     useEffect(() => {
@@ -88,17 +87,19 @@ const TFAuth = (props) => {
                     Cookies.set('token', response.data.token);
                     props.setUserToken(response.data.token, props.userEmail);
                     setSuccess(true);
+                    toast.success("OTP verified successfully!");
                 })
                 .catch((err) => {
                     console.error(err);
+                    toast.error(err);
                 });
         }
     }
 
     if (success) {
-        //don't navigate
-        //useEffect in App to reroute to Dashboard?
         return <Navigate to='/Dashboard' />
+
+
     }
 
     return (
@@ -142,4 +143,4 @@ const TFAuth = (props) => {
     )
 }
 
-export default TFAuth
+export default TFAuth;

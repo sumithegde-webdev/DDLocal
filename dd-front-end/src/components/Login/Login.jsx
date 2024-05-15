@@ -7,6 +7,7 @@ import lightLogo from '../../assets/lightLogo.png';
 import darkLogo from '../../assets/darkLogo.png';
 
 import './login.css'
+import { toast } from "react-toastify";
 
 // const baseURL = 'http://localhost:8090/api/login';
 const loginAxios = axios.create({
@@ -17,13 +18,10 @@ const loginAxios = axios.create({
 });
 
 
-// eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdW1pdGhlZ2RlNjQ2M0BnbWFpbC5jb20ifQ.DmDicY6ssI8FMSOJBz5yWLUKWa1oNVLjbFbXAIfetOk
-// eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdW1pdGhlZ2RlNjQ2M0BnbWFpbC5jb20ifQ.DmDicY6ssI8FMSOJBz5yWLUKWa1oNVLjbFbXAIfetOk
 
 const Login = (props) => {
 
     const navigate = useNavigate();
-    // console.log(props);
     const [login, setLogin] = useState(false);
 
     const [loginCreds, setLoginCreds] = useState({
@@ -41,7 +39,6 @@ const Login = (props) => {
     }
 
     function registerRouting() {
-        // console.log("Clicked");
         navigate("/register");
     }
 
@@ -51,44 +48,73 @@ const Login = (props) => {
 
     //holding the token in memory
 
+    // function onSubmitHandler() {
+    //     //redirect to OTP verification at http://localhost:8090/api/2fa
+    //     // setLogin(true);
+    //     loginAxios.post('', {
+    //         email: loginCreds.email,
+    //         password: loginCreds.password,
+    //     })
+    //         .then((response) => {
+    //             // console.log(response);
+    //             if (response.data.success) {
+    //                 props.loginEmail(loginCreds.email);
+    //                 props.setLoginStatus(true);
+    //                 setLogin(true);
+    //                 // console.log("TFA");
+    //             }
+    //             else {
+    //                 setLoginCreds({
+    //                     email: '',
+    //                     password: '',
+    //                 })
+    //                 setLogin(false);
+    //                 // console.log("FAILED");
+    //             }
+    //             setLoginCreds({
+    //                 email: '',
+    //                 password: '',
+    //             })
+    //         })
+    //         .catch((error) => {
+    //             setLoginCreds({
+    //                 email: '',
+    //                 password: '',
+    //             })
+    //             console.log("FAILED");
+    //             console.log(error);
+    //         })
+    //     // console.log(loginCreds);
+    // }
+    
     function onSubmitHandler() {
-        //redirect to OTP verification at http://localhost:8090/api/2fa
-        // setLogin(true);
-        loginAxios.post('', {
-            email: loginCreds.email,
-            password: loginCreds.password,
-        })
-            .then((response) => {
-                // console.log(response);
-                if (response.data.success) {
-                    props.loginEmail(loginCreds.email);
-                    props.setLoginStatus(true);
-                    setLogin(true);
-                    // console.log("TFA");
-                }
-                else {
-                    setLoginCreds({
-                        email: '',
-                        password: '',
-                    })
-                    setLogin(false);
-                    // console.log("FAILED");
-                }
-                setLoginCreds({
-                    email: '',
-                    password: '',
-                })
+        const functionThatReturnPromise = () => {
+            return loginAxios.post('', {
+                email: loginCreds.email,
+                password: loginCreds.password,
             })
-            .catch((error) => {
-                setLoginCreds({
-                    email: '',
-                    password: '',
-                })
-                console.log("FAILED");
-                console.log(error);
-            })
-        // console.log(loginCreds);
+                .then((response) => {
+                    if (response.data.success) {
+                        props.loginEmail(loginCreds.email);
+                        props.setLoginStatus(true);
+                        setLogin(true);
+                        return response;
+                    } else {
+                        throw new Error("Invalid email or password.");
+                    }
+                });
+        };
+
+        toast.promise(
+            functionThatReturnPromise,
+            {
+                pending: 'Logging in...',
+                success: 'Login successful! Please Enter OTP to Access Dashboard',
+                error: 'Login Failed ! Please check email or password and try again',
+            }
+        );
     }
+    
 
     if (login) {
         return <Navigate to='tfauth' />

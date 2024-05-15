@@ -15,6 +15,8 @@ import ListAllProducts from "./components/Seller/ListAllProducts.jsx";
 import DeleteProduct from "./components/Seller/DeleteProduct.jsx";
 import SpecificProductPage from "./components/Dashboard/SpecificProductPage.jsx";
 import { ToastContainer } from "react-toastify";
+import SellerRequestForm from "./components/Dashboard/SellerRequestForm.jsx";
+import MyOrders from "./components/Dashboard/MyOrders.jsx";
 import AdminSellerRequests from "./components/Admin/AdminSellerRequests.jsx";
 import AdminLogin from "./components/Admin/AdminLogin.jsx";
 
@@ -27,8 +29,10 @@ function App() {
     token: "",
     role: "user",
   })
-
-  // useEffect(() => { console.log("Once"); }, []);
+  // console.log(userLoginStatus);
+  // useEffect(() => {
+  //   console.log(userCredentials);
+  // }, [userCredentials]);
 
   function credEmailHandler(email) {
     setUserCredentials({
@@ -66,6 +70,8 @@ function App() {
         <Route path="/Seller/Edit/:productId" element={<EditProduct />} />
         <Route path="/Seller/Delete/:productId" element={<DeleteProduct />} />
         <Route path="/products/:productId" element={<SpecificProductPage />} />
+        <Route path="/seller/request" element={<SellerRequestForm />} />
+        <Route path="/myOrders" element={< MyOrders />} />
         <Route path="/login/*" element={null}>
           <Route
             path=""
@@ -84,14 +90,7 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPasswordSequence />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path="/tfauth" element={<TFAuth />} /> */}
-        <Route
-          path="*"
-          element={
-            <>
-              <div>404 ERROR</div>
-            </>
-          }
-        />
+        <Route path="*" element={<div>401 Unauthorized</div>} />
       </Routes>
 
     </>
