@@ -96,7 +96,8 @@ const TFAuth = (props) => {
     }
 
     if (success) {
-        
+        //don't navigate
+        //useEffect in App to reroute to Dashboard?
         return <Navigate to='/Dashboard' />
     }
 

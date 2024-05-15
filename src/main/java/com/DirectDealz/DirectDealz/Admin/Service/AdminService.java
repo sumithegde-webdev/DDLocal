@@ -20,7 +20,7 @@ import com.DirectDealz.DirectDealz.Buyer.Repository.DealRepository;
 
 @Service
 public class AdminService {
-    
+
     @Autowired
     private DealRepository dealRepository;
 
@@ -48,12 +48,13 @@ public class AdminService {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Only Admin role can Access this URL");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
-                
+
             }
             List<Deal> deals = dealRepository.findAll();
             return ResponseEntity.ok(deals);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving deals: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error retrieving deals: " + e.getMessage());
         }
     }
 
@@ -72,7 +73,7 @@ public class AdminService {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Only Admin role can Access this URL");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
-                
+
             }
             Optional<Deal> dealOptional = dealRepository.findById(dealId);
             if (dealOptional.isPresent()) {
@@ -81,12 +82,12 @@ public class AdminService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deal not found with ID: " + dealId);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving deal: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error retrieving deal: " + e.getMessage());
         }
     }
 
-
-    public ResponseEntity<Object> updateDeal(UUID dealId, Deal updatedDeal , String token) {
+    public ResponseEntity<Object> updateDeal(UUID dealId, Deal updatedDeal, String token) {
         try {
             if (!authService.isTokenValid(token)) {
                 responseMessage.setSuccess(false);
@@ -101,7 +102,7 @@ public class AdminService {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Only Admin role can Access this URL");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
-                
+
             }
             Optional<Deal> existingDealOptional = dealRepository.findById(dealId);
             if (existingDealOptional.isPresent()) {
@@ -117,7 +118,8 @@ public class AdminService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deal not found with ID: " + dealId);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating deal: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating deal: " + e.getMessage());
         }
     }
 
@@ -136,7 +138,7 @@ public class AdminService {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Only Admin role can Access this URL");
                 return ResponseEntity.badRequest().body(responseMessage);
-                
+
             }
             Optional<Deal> existingDealOptional = dealRepository.findById(dealId);
             if (existingDealOptional.isPresent()) {
@@ -146,11 +148,10 @@ public class AdminService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deal not found with ID: " + dealId);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting deal: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting deal: " + e.getMessage());
         }
     }
-
-
 
     public ResponseEntity<Object> getAllPendingRequests(String token) {
         try {
@@ -170,10 +171,10 @@ public class AdminService {
 
             return ResponseEntity.ok(usersWithPendingRequests);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching pending requests: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching pending requests: " + e.getMessage());
         }
     }
-    
 
     public ResponseEntity<Object> approveRequest(UUID userId, String token) {
         try {
@@ -214,7 +215,52 @@ public class AdminService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error approving request: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error approving request: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<Object> rejectRequest(UUID userId, String token) {
+        try {
+            // Check if the token is valid and the user is an admin
+            if (!authService.isTokenValid(token)) {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Invalid token");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
+            }
+
+            String email = authService.verifyToken(token);
+            UserModel adminUser = userRepository.findByEmail(email);
+
+            // Check if the logged-in user is an admin
+            if (!adminUser.getUserRole().equals(UserRole.ADMIN)) {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Only admins can access this URL.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+            }
+
+            // Find the user by ID
+            UserModel user = userRepository.findById(userId).orElse(null);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            // Check if the user's request is pending
+            if (user.getRequestStatus().equals(RequestStatus.PENDING)) {
+                user.setRequestStatus(RequestStatus.REJECTED);
+                user.setUserRole(UserRole.BUYER);
+                userRepository.save(user);
+                responseMessage.setSuccess(true);
+                responseMessage.setMessage("Request rejected successfully.");
+                return ResponseEntity.ok(responseMessage);
+            } else {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Request is Already Approved or User has not Requested for Seller Role.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error approving request: " + e.getMessage());
         }
     }
 }
