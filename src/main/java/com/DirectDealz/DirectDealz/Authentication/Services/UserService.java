@@ -122,7 +122,8 @@ public class UserService {
                         userRepository.save(userModel);
                         responseMessage.setSuccess(true);
                         responseMessage.setMessage("Account Created Successfully!");
-                        responseMessage.setToken(authService.generateToken(userModel.getEmail()));
+                        responseMessage.setToken(null);
+                        // responseMessage.setToken(authService.generateToken(userModel.getEmail()));
                         return ResponseEntity.ok().body(responseMessage);
                     } else {
                         responseMessage.setSuccess(false);
@@ -142,6 +143,7 @@ public class UserService {
             } else {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Invalid user name or email");
+                responseMessage.setToken(null);
                 return ResponseEntity.badRequest().body(responseMessage);
             }
         } catch (Exception e) {
@@ -170,11 +172,13 @@ public class UserService {
                 } else {
                     responseMessage.setSuccess(false);
                     responseMessage.setMessage("Invalid email or password");
+                    responseMessage.setToken(null);
                     return ResponseEntity.badRequest().body(responseMessage);
                 }
             } else {
                 responseMessage.setSuccess(false);
                 responseMessage.setMessage("Invalid email or password");
+                responseMessage.setToken(null);
                 return ResponseEntity.badRequest().body(responseMessage);
             }
 
@@ -361,7 +365,7 @@ public class UserService {
             userRepository.save(user);
 
             responseMessage.setSuccess(true);
-            responseMessage.setMessage("Request to become a buyer sent successfully");
+            responseMessage.setMessage("Request to become a seller sent successfully");
             return ResponseEntity.ok().body(responseMessage);
         } catch (Exception e) {
             responseMessage.setSuccess(false);

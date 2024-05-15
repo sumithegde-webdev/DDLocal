@@ -22,7 +22,7 @@ import com.DirectDealz.DirectDealz.Buyer.Models.Deal;
 @CrossOrigin(origins = "http://localhost/3000")
 @RequestMapping("api/admin")
 public class AdminController {
-    
+
     @Autowired
     private AdminService adminService;
 
@@ -37,7 +37,8 @@ public class AdminController {
     }
 
     @PutMapping("/deals/{dealId}")
-    public ResponseEntity<Object> updateDeal(@PathVariable UUID dealId, @RequestBody Deal updatedDeal, @RequestHeader String token) {
+    public ResponseEntity<Object> updateDeal(@PathVariable UUID dealId, @RequestBody Deal updatedDeal,
+            @RequestHeader String token) {
         return adminService.updateDeal(dealId, updatedDeal, token);
     }
 
@@ -51,9 +52,13 @@ public class AdminController {
         return adminService.getAllPendingRequests(token);
     }
 
-
     @PostMapping("/approve-request/{userId}")
     public ResponseEntity<Object> approveRequest(@PathVariable UUID userId, @RequestHeader String token) {
         return adminService.approveRequest(userId, token);
+    }
+
+    @PostMapping("/reject-request/{userId}")
+    public ResponseEntity<Object> rejectRequest(@PathVariable UUID userId, @RequestHeader String token) {
+        return adminService.rejectRequest(userId, token);
     }
 }
