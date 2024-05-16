@@ -20,6 +20,8 @@ import AdminLogin from "./components/Admin/AdminLogin.jsx";
 import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
 import Cookies from 'js-cookie';
 import Error404 from './Error404.jsx';
+import AdminProducts from "./components/Admin/AdminProducts.jsx";
+import AdminDeals from "./components/Admin/AdminDeals.jsx";
 
 function App() {
 
@@ -75,9 +77,17 @@ function App() {
             }
           </Route>
           {Cookies.get('token') ?
-            <Route path="admindashboard" element={<AdminDashboard />} />
+            <Route path="admindashboard/*" element={null} >
+              <Route path="" element={<AdminDashboard />} />
+              <Route path="sellerrequests" element={<AdminSellerRequests />} />
+              <Route path="allproducts" element={<AdminProducts />} />
+              <Route path="deals" element={<AdminDeals />} />
+            </Route>
             :
             <Route path="*" element={<Error404 />} />
+          }
+          {
+
           }
           <Route path="*" element={<Error404 />} />
         </Route>

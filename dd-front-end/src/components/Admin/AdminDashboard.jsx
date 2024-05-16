@@ -1,84 +1,5 @@
-// // AdminDashboard.js
-// import React from "react";
-// import { Link, Route, Routes } from "react-router-dom";
-// // import AdminProducts from "./AdminProducts";
-// import AdminSellerRequests from "./AdminSellerRequests";
-// // import AdminTransactions from "./AdminTransactions";
 
-// const AdminDashboard = () => {
-//     // let { path, url } = useRouteMatch();
-//     const url = "/admin/dashboard";
-//     return (
-//         <div>
-//             <h1 className="text-3xl mb-4">Admin Dashboard</h1>
-//             <div className="flex justify-between">
-//                 <Link
-//                     to={`/products`}
-//                     className="bg-blue-500 text-white py-2 px-4 rounded-md"
-//                 >
-//                     View Products
-//                 </Link>
-//                 <Link
-//                     to={`./seller-requests`}
-//                     className="bg-blue-500 text-white py-2 px-4 rounded-md"
-//                 >
-//                     View Seller Requests
-//                 </Link>
-//                 <Link
-//                     to={`/transactions`}
-//                     className="bg-blue-500 text-white py-2 px-4 rounded-md"
-//                 >
-//                     View Transactions
-//                 </Link>
-//             </div>
-//             {/* <Routes> */}
-//             {/* <Route exact path={path}> */}
-//             {/* Render some default component or message */}
-//             {/* </Route> */}
-//             {/* <Route path={`/products`}>
-//           <AdminProducts />
-//         </Route>
-//         <Route path={`/seller-requests`}>
-//           <AdminSellerRequests />
-//         </Route>
-//         <Route path={`/transactions`}>
-//           <AdminTransactions />
-//         </Route>
-//       </Routes> */}
-//         </div>
-//     );
-// };
-
-// export default AdminDashboard;
-
-
-// const stats = [
-//     { id: 1, name: 'Transactions every 24 hours', value: '44 million' },
-//     { id: 2, name: 'Assets under holding', value: '$119 trillion' },
-//     { id: 3, name: 'New users annually', value: '46,000' },
-// ]
-
-// export default function AdminDashboard() {
-//     return (
-//         <div className="bg-white py-24 sm:py-32">
-//             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-//                 <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
-//                     {stats.map((stat) => (
-//                         <div key={stat.id} className="mx-auto flex max-w-xs flex-col gap-y-4">
-//                             <dt className="text-base leading-7 text-gray-600">{stat.name}</dt>
-//                             <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-//                                 {stat.value}
-//                             </dd>
-//                         </div>
-//                     ))}
-//                 </dl>
-//             </div>
-//         </div>
-//     )
-// }
-
-import Cookies from 'js-cookie';
-
+import Cookies from 'js-cookie'
 import pic1 from '../../assets/adminDashboard1.png'
 import pic2 from '../../assets/adminDashboard2.png'
 import pic3 from '../../assets/adminDashboard3.png'
@@ -87,58 +8,324 @@ const posts = [
     {
         id: 1,
         title: 'View All the Products',
-        href: '/allProducts',
+        href: 'admindashboard/allProducts',
         imageUrl: `${pic1}`,
     },
     {
         id: 2,
         title: 'View All Seller Requests',
-        href: '#',
+        href: 'admindashboard/sellerrequests',
         imageUrl: `${pic2}`,
     },
     {
         id: 3,
         title: 'View All Deals and Transaction Status',
-        href: '#',
+        href: 'admindashboard/deals',
         imageUrl: `${pic3}`,
     },
     // More posts...
 ]
 
-export default function AdminDashboard({ history }) {
+// export default function AdminDashboard({ history }) {
+//     return (
+//         <div className="bg-white py-24 sm:py-32">
+//             <div className="mx-auto max-w-7xl px-6 lg:px-8">
+//                 <div className="mx-auto text-center lg:mx-0">
+//                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Admin Control Center</h2>
+//                     {/* <p className="mt-2 text-lg leading-8 text-gray-600">
+//                         An access gateway to the application!
+//                     </p> */}
+//                 </div>
+//                 <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+//                     {posts.map((post) => (
+//                         <a href={post.href} key={post.id}>
+//                             <article className="flex min-w-md max-w-xl hover:bg-blue-300 rounded-lg flex-col items-center p-4 border border-blue-300 justify-center">
+//                                 {/* <div className="flex items-center gap-x-4 text-xs">
+//                                 <a
+//                                     href={post.category.href}
+//                                     className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+//                                 >
+//                                     {post.category.title}
+//                                 </a>
+//                             </div> */}
+//                                 <div className="group relative">
+//                                     <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
+
+//                                         <span className="absolute inset-0" />
+//                                         {post.title}
+
+//                                     </h3>
+//                                     {/* <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p> */}
+//                                 </div>
+//                                 <div className="relative mt-8 flex items-center gap-x-4">
+//                                     <img src={post.imageUrl} alt="" className="h-60 w-60 rounded-full bg-gray-50" />
+//                                     {/* <div className="text-sm leading-6">
+//                                     <p className="font-semibold text-gray-900">
+//                                         <a href={post.author.href}>
+//                                             <span className="absolute inset-0" />
+//                                             {post.author.name}
+//                                         </a>
+//                                     </p>
+//                                     <p className="text-gray-600">{post.author.role}</p>
+//                                 </div> */}
+//                                 </div>
+//                             </article>
+//                         </a>
+//                     ))}
+//                 </div>
+//             </div>
+//         </div>
+//     )
+// }
+
+import { Fragment, useEffect, useState } from 'react'
+import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import axios from 'axios'
+
+const user = {
+    name: 'Tom Cook',
+    email: 'tom@example.com',
+    imageUrl:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+}
+
+const userNavigation = [
+    { name: 'Sign out', href: '#' },
+]
+
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
+
+export default function AdminDashboard() {
+
+    const token = Cookies.get("token");
+
+    //retreive admin data
+    const [adminData, setAdminData] = useState({
+        userName: "",
+        email: "",
+    });
+
+    const navigation = [
+        { name: `${adminData.userName}`, href: '', current: true },
+        { name: 'Products', href: 'admindashboard/allproducts', current: false },
+        { name: 'Requests', href: 'admindashboard/sellerrequests', current: false },
+        { name: 'Deals', href: 'admindashboard/deals', current: false },
+    ]
+
+    useEffect(() => {
+        axios.get("http://localhost:8090/api/GetallUsers", {
+            headers: {
+                token: `${token}`,
+            }
+        })
+            .then((response) => {
+                response.data.map((user) => {
+                    if (user.userRole === "ADMIN") {
+                        setAdminData({
+                            userName: user.userName,
+                            email: user.email,
+                        })
+                    }
+                })
+            })
+            .catch((err) => { console.error(err) });
+    }, [])
+
     return (
-        <div className="bg-white py-24 sm:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto text-center lg:mx-0">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Admin Control Center</h2>
-                    {/* <p className="mt-2 text-lg leading-8 text-gray-600">
-                        An access gateway to the application!
-                    </p> */}
-                </div>
-                <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                    {posts.map((post) => (
-                        <a href={post.href} key={post.id}>
-                            <article className="flex min-w-md max-w-xl hover:bg-blue-300 rounded-lg flex-col items-center p-4 border border-blue-300 justify-center">
-                                {/* <div className="flex items-center gap-x-4 text-xs">
-                                <a
-                                    href={post.category.href}
-                                    className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
-                                >
-                                    {post.category.title}
-                                </a>
-                            </div> */}
-                                <div className="group relative">
-                                    <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
+        <>
+            {/*
+        This example requires updating your template:
 
-                                        <span className="absolute inset-0" />
-                                        {post.title}
-
-                                    </h3>
-                                    {/* <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p> */}
+        ```
+        <html class="h-full bg-gray-100">
+        <body class="h-full">
+        ```
+      */}
+            <div className="min-h-full">
+                <Disclosure as="nav" className="bg-gray-800">
+                    {({ open }) => (
+                        <>
+                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                                <div className="flex h-16 items-center justify-between">
+                                    <div className="flex items-center">
+                                        <div className="flex-shrink-0">
+                                            <img
+                                                className="h-8 w-8"
+                                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                                                alt="Your Company"
+                                            />
+                                        </div>
+                                        <div className="hidden md:block">
+                                            <div className="ml-10 flex items-baseline space-x-4">
+                                                {navigation.map((item) => (
+                                                    <a
+                                                        key={item.name}
+                                                        href={item.href}
+                                                        className={classNames(
+                                                            item.current
+                                                                ? 'bg-gray-900 text-white'
+                                                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                            'rounded-md px-3 py-2 text-sm font-medium'
+                                                        )}
+                                                        aria-current={item.current ? 'page' : undefined}
+                                                    >
+                                                        {item.name}
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="hidden md:block">
+                                        <div className="ml-4 flex items-center md:ml-6">
+                                            {/* <button
+                                                type="button"
+                                                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                            >
+                                                <span className="absolute -inset-1.5" />
+                                                <span className="sr-only">View notifications</span>
+                                                <BellIcon className="h-6 w-6" aria-hidden="true" />
+                                            </button> */}
+                                            {/* Profile dropdown */}
+                                            <Menu as="div" className="relative flex max-w-96 ml-3">
+                                                {/* <div>{adminData.userName}</div> */}
+                                                <div className='mx-5 my-auto text-white'>{adminData.email}</div>
+                                                <div>
+                                                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                                        <span className="absolute -inset-1.5" />
+                                                        <span className="sr-only">Open user menu</span>
+                                                        {/* <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" /> */}
+                                                    </Menu.Button>
+                                                </div>
+                                                <Transition
+                                                    as={Fragment}
+                                                    enter="transition ease-out duration-100"
+                                                    enterFrom="transform opacity-0 scale-95"
+                                                    enterTo="transform opacity-100 scale-100"
+                                                    leave="transition ease-in duration-75"
+                                                    leaveFrom="transform opacity-100 scale-100"
+                                                    leaveTo="transform opacity-0 scale-95"
+                                                >
+                                                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                        {userNavigation.map((item) => (
+                                                            <Menu.Item key={item.name}>
+                                                                {({ active }) => (
+                                                                    <a
+                                                                        href={item.href}
+                                                                        className={classNames(
+                                                                            active ? 'bg-gray-100' : '',
+                                                                            'block px-4 py-2 text-sm text-gray-700'
+                                                                        )}
+                                                                    >
+                                                                        {item.name}
+                                                                    </a>
+                                                                )}
+                                                            </Menu.Item>
+                                                        ))}
+                                                    </Menu.Items>
+                                                </Transition>
+                                            </Menu>
+                                        </div>
+                                    </div>
+                                    <div className="-mr-2 flex md:hidden">
+                                        {/* Mobile menu button */}
+                                        <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                            <span className="absolute -inset-0.5" />
+                                            <span className="sr-only">Open main menu</span>
+                                            {open ? (
+                                                <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                                            ) : (
+                                                <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                                            )}
+                                        </Disclosure.Button>
+                                    </div>
                                 </div>
-                                <div className="relative mt-8 flex items-center gap-x-4">
-                                    <img src={post.imageUrl} alt="" className="h-60 w-60 rounded-full bg-gray-50" />
-                                    {/* <div className="text-sm leading-6">
+                            </div>
+
+                            <Disclosure.Panel className="md:hidden">
+                                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                                    {navigation.map((item) => (
+                                        <Disclosure.Button
+                                            key={item.name}
+                                            as="a"
+                                            href={item.href}
+                                            className={classNames(
+                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                'block rounded-md px-3 py-2 text-base font-medium'
+                                            )}
+                                            aria-current={item.current ? 'page' : undefined}
+                                        >
+                                            {item.name}
+                                        </Disclosure.Button>
+                                    ))}
+                                </div>
+                                <div className="border-t border-gray-700 pb-3 pt-4">
+                                    <div className="flex items-center px-5">
+                                        {/* <div className="flex-shrink-0">
+                                            <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                                        </div> */}
+                                        <div className="ml-3">
+                                            <div className="text-base font-medium leading-none text-white">{adminData.name}</div>
+                                            <div className="text-sm font-medium leading-none text-gray-400">{adminData.email}</div>
+                                        </div>
+                                        {/* <button
+                                            type="button"
+                                            className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                        >
+                                            <span className="absolute -inset-1.5" />
+                                            <span className="sr-only">View notifications</span>
+                                            <BellIcon className="h-6 w-6" aria-hidden="true" />
+                                        </button> */}
+                                    </div>
+                                    <div className="mt-3 space-y-1 px-2">
+                                        {userNavigation.map((item) => (
+                                            <Disclosure.Button
+                                                key={item.name}
+                                                as="a"
+                                                href={item.href}
+                                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                                            >
+                                                {item.name}
+                                            </Disclosure.Button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </Disclosure.Panel>
+                        </>
+                    )}
+                </Disclosure>
+
+                <header className="bg-white shadow">
+                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Admin Control Center</h1>
+                    </div>
+                </header>
+                <main>
+                    {/* <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"> */}
+                    <div className="bg-white ">
+                        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                            {/* <div className="mx-auto text-center lg:mx-0">
+                                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Admin Control Center</h2>
+
+                                </div> */}
+                            <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                                {posts.map((post) => (
+                                    <a href={post.href} key={post.id}>
+                                        <article className="flex min-w-md max-w-xl hover:bg-blue-300 rounded-lg flex-col items-center p-4 border border-blue-300 justify-center">
+                                            <div className="group relative">
+                                                <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
+
+                                                    <span className="absolute inset-0" />
+                                                    {post.title}
+
+                                                </h3>
+                                                {/* <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{post.description}</p> */}
+                                            </div>
+                                            <div className="relative mt-8 flex items-center gap-x-4">
+                                                <img src={post.imageUrl} alt="" className="h-60 w-60 rounded-full bg-gray-50" />
+                                                {/* <div className="text-sm leading-6">
                                     <p className="font-semibold text-gray-900">
                                         <a href={post.author.href}>
                                             <span className="absolute inset-0" />
@@ -147,12 +334,17 @@ export default function AdminDashboard({ history }) {
                                     </p>
                                     <p className="text-gray-600">{post.author.role}</p>
                                 </div> */}
-                                </div>
-                            </article>
-                        </a>
-                    ))}
-                </div>
+                                            </div>
+                                        </article>
+                                    </a>
+                                ))}
+                            </div>
+                            {/* </div> */}
+                        </div>
+                    </div>
+                </main>
             </div>
-        </div>
+        </>
     )
 }
+
