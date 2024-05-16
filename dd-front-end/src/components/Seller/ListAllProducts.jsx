@@ -9,6 +9,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FaLock } from 'react-icons/fa';
+import { GoAlertFill } from "react-icons/go";
 const listAllProducts = () => {
 
   const nav = useNavigate();
@@ -53,6 +54,7 @@ const listAllProducts = () => {
     setuserName(userDataResponse.userName);
     setuserRole(userDataResponse.userRole);
 
+    console.log(userRole);
 
 
   }
@@ -116,9 +118,14 @@ const listAllProducts = () => {
 
                       <p className='text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'>Hi, {userName}</p>
                       <div className="my-1 flex flex-wrap sm:flex-nowrap">
-                        <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-2 sm:mx-4 ml-0 sm:ml-60" aria-current="page">Dashboard</Link>
-                        <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-2 sm:mx-4" aria-current="page">Create Products</Link>
-                      </div>
+                      {userRole === "SELLER" ? (
+                    <>
+                    <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
+                    <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
+                    </>
+                  ): (
+                    <p></p>
+                  )}  </div>
                     </div>
 
                   </div>
@@ -193,8 +200,15 @@ const listAllProducts = () => {
 
                 <p className='text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'>Hi, {userName}</p>
                 <div className="my-1 flex flex-wrap sm:flex-nowrap">
-                  <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
-                  <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
+                  {userRole === "SELLER" ? (
+                    <>
+                    <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
+                    <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
+                    </>
+                  ): (
+                    <p></p>
+                  )}
+                 
                 </div>
               </div>
             </Disclosure.Panel>
@@ -202,76 +216,89 @@ const listAllProducts = () => {
         )}
       </Disclosure>
       <div className="container mx-auto">
-  <h1 className="text-2xl font-bold my-4">Your Products</h1>
-  {products.length === 0 ? (
-    <p>No products found</p>
-  ) : userRole === "BUYER" ? (
-    <p>You are not authorized to access this URL</p>
-  ) : (
-    <div className="overflow-x-auto">
-      <table className="min-w-full">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">Image</th>
-            <th className="px-4 py-2">Product Title</th>
-            <th className="px-4 py-2">Description</th>
-            <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Status</th>
-            <th className="px-4 py-2">City</th>
-            <th className="px-4 py-2">Edit</th>
-            <th className="px-4 py-2">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td className="border px-4 py-2">
-                <img
-                  src={product.imageURL}
-                  alt={product.title}
-                  style={{ maxWidth: '100px', maxHeight: '100px' }}
-                />
-              </td>
-              <td className="border px-4 py-2">{product.title}</td>
-              <td className="border px-4 py-2">{product.description}</td>
-              <td className="border px-4 py-2">₹{product.price}</td>
-              <td className="border px-4 py-2">{product.productStatus}</td>
-              <td className="border px-4 py-2">{product.productcity}</td>
-              <td className="border px-4 py-2">
-                {product.productStatus !== "SOLD" ? (
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    <Link to={`/Seller/Edit/${product.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                      Edit
-                    </Link>
-                  </button>
-                ) : (
-                  <button className="bg-gray-400 text-gray-600 font-bold py-2 px-4 rounded cursor-not-allowed" disabled>
-                    <FaLock className="mr-1 inline-block" />
-                    Edit
-                  </button>
-                )}
-              </td>
-              <td className="border px-4 py-2">
-                {product.productStatus !== "SOLD" ? (
-                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    <Link to={`/Seller/Delete/${product.id}`} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                      Delete
-                    </Link>
-                  </button>
-                ) : (
-                  <button className="bg-gray-400 text-gray-600 font-bold py-2 px-4 rounded cursor-not-allowed" disabled>
-                    <FaLock className="mr-1 inline-block" />
-                    Delete
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )}
-</div>
+        <h1 className="text-2xl font-bold my-4">Your Products</h1>
+        {userRole === "BUYER" ? (
+          <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+              <div className="bg-red-500 rounded-t-lg p-4 justify-center transition duration-300 hover:bg-red-600 cursor-pointer">
+                <GoAlertFill className="text-white h-8 w-8 mx-auto" />
+              </div>
+              <div className="bg-white rounded-b-lg p-6">
+                <h2 className="text-2xl font-bold text-center mb-4">Access Denied</h2>
+                <p className="text-gray-700 text-center">You are not authorized to access this page.</p>
+              </div>
+            </div>
+          </div>
+
+
+
+        ) : products.length === 0 ? (
+          <p>No products Found</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Image</th>
+                  <th className="px-4 py-2">Product Title</th>
+                  <th className="px-4 py-2">Description</th>
+                  <th className="px-4 py-2">Price</th>
+                  <th className="px-4 py-2">Status</th>
+                  <th className="px-4 py-2">City</th>
+                  <th className="px-4 py-2">Edit</th>
+                  <th className="px-4 py-2">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td className="border px-4 py-2">
+                      <img
+                        src={product.imageURL}
+                        alt={product.title}
+                        style={{ maxWidth: '100px', maxHeight: '100px' }}
+                      />
+                    </td>
+                    <td className="border px-4 py-2">{product.title}</td>
+                    <td className="border px-4 py-2">{product.description}</td>
+                    <td className="border px-4 py-2">₹{product.price}</td>
+                    <td className="border px-4 py-2">{product.productStatus}</td>
+                    <td className="border px-4 py-2">{product.productcity}</td>
+                    <td className="border px-4 py-2">
+                      {product.productStatus !== "SOLD" ? (
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                          <Link to={`/Seller/Edit/${product.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Edit
+                          </Link>
+                        </button>
+                      ) : (
+                        <button className="bg-gray-400 text-gray-600 font-bold py-2 px-4 rounded cursor-not-allowed" disabled>
+                          <FaLock className="mr-1 inline-block" />
+                          Edit
+                        </button>
+                      )}
+                    </td>
+                    <td className="border px-4 py-2">
+                      {product.productStatus !== "SOLD" ? (
+                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                          <Link to={`/Seller/Delete/${product.id}`} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Delete
+                          </Link>
+                        </button>
+                      ) : (
+                        <button className="bg-gray-400 text-gray-600 font-bold py-2 px-4 rounded cursor-not-allowed" disabled>
+                          <FaLock className="mr-1 inline-block" />
+                          Delete
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
 
     </>
