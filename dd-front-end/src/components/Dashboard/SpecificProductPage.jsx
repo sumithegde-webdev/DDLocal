@@ -37,6 +37,7 @@ const SpecificProductPage = () => {
           setDealLocked(true);
         }
       } catch (error) {
+        toast.error(error.response.data);
         console.error('Error fetching product:', error);
       }
     };
@@ -60,9 +61,9 @@ const SpecificProductPage = () => {
       });
       toast.success('Deal locked successfully!');
       setDealLocked(true);
+      
     } catch (error) {
-      console.error('Error locking product:', error);
-      toast.error(error);
+      toast.error(error.response.data);
     }
   };
 

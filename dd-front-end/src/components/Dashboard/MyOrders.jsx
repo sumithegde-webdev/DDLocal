@@ -36,7 +36,6 @@ const OrderPage = () => {
             setProduct(response.data);
         } catch (error) {
             console.error('Error fetching product:', error);
-            toast.error('Error fetching product');
         }
     };
 
@@ -58,7 +57,7 @@ const OrderPage = () => {
                 setDeals(response.data);
             } catch (error) {
                 console.error('Error fetching deals:', error);
-                toast.error('Error fetching deals');
+                toast.error(error.toString());
             }
         };
 

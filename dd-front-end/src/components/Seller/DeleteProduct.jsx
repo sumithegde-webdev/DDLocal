@@ -42,6 +42,7 @@ const DeleteProduct = () => {
         });
         setProduct(response.data);
       } catch (error) {
+        toast.error(error.response.data);
         console.error('Error fetching product:', error);
       }
     };
@@ -77,6 +78,7 @@ const DeleteProduct = () => {
       }, 2000);
 
     } catch (error) {
+      toast.error(error.response.data);
       console.error('Error Deleting product:', error);
     }
     finally {

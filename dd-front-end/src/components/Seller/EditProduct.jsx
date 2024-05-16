@@ -40,13 +40,13 @@ const EditProduct = () => {
         });
         setProduct(response.data);
       } catch (error) {
+        toast.error(error.response.data);
         console.error('Error fetching product:', error);
       }
     };
 
     fetchProduct();
   }, [productId]);
-  console.log(productId);
 
   const handleChange = (e) => {
     if (e.target.name === 'image') {
@@ -90,6 +90,7 @@ const EditProduct = () => {
       }, 5000);
 
     } catch (error) {
+      toast.error(error.response.data);
       console.error('Error updating product:', error);
     }
     finally {

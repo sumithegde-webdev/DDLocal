@@ -35,7 +35,6 @@ const SellerRequestForm = () => {
         });
         const userDataResponse = await userData.json();
         setUserId(userDataResponse.userId);
-        // Assuming userDataResponse contains country, username, and phoneNumber
         setCountry(userDataResponse.country);
         setUsername(userDataResponse.userName);
         setPhoneNumber(userDataResponse.phoneNumber);
@@ -44,6 +43,7 @@ const SellerRequestForm = () => {
  
  
       } catch (error) {
+        toast.error(error.toString());
         console.error('Error fetching user details:', error);
       }
     };
@@ -85,7 +85,7 @@ const SellerRequestForm = () => {
       }, 2000);
     } catch (error) {
       console.error('Error updating user details:', error);
-      toast.error(error);
+      toast.error(error.response.data);
     }
   };
  
