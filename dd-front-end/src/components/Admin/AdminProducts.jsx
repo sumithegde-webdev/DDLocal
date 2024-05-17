@@ -28,6 +28,9 @@ const AdminProducts = () => {
         { name: 'Deals', href: './deals', current: false },
     ]
 
+    const sell = [];
+    const [allSellers, setAllSeller] = useState({});
+
     useEffect(() => {
         axios.get("http://localhost:8090/api/GetallUsers", {
             headers: {
@@ -43,11 +46,13 @@ const AdminProducts = () => {
                         })
                     }
                     if (user.userRole === "SELLER") {
-                        setSellers({
-                            sellerName: user.userName,
-                            sellerEmail: user.email,
-                            sellerNumber: user.phoneNumber,
-                        })
+                        // setSellers({
+                        //     sellerName: user.userName,
+                        //     sellerEmail: user.email,
+                        //     sellerNumber: user.phoneNumber,
+                        // })
+                        sell.push(user);
+                        setAllSeller(sell);
                     }
                 })
             })
@@ -62,7 +67,6 @@ const AdminProducts = () => {
     useEffect(() => {
 
         fetchProducts();
-
     }, []);
 
     const fetchProducts = async () => {
@@ -85,6 +89,7 @@ const AdminProducts = () => {
         sellerEmail: "",
         sellerNumber: "",
     })
+
 
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -115,17 +120,26 @@ const AdminProducts = () => {
                             //     });
                             < div key={product.id} className="bg-white overflow-hidden border shadow rounded-lg" >
                                 <div className="p-4">
-                                    <div>
-                                        <div>Username</div>
-                                        <div>Email</div>
-                                        <div>Phone Number</div>
-                                    </div>
+
+                                    {
+                                        allSellers.map((seller) => {
+                                            if (seller.id === product.userId) {
+                                                return (
+                                                    <div key={seller.id} className='text-xl mb-5'>
+                                                        <div className='text-xl'>Seller - {seller.userName}</div>
+                                                        <div className='text-sm'>Email - {seller.email}</div>
+                                                        <div className='text-sm'>Number - {seller.phoneNumber}</div>
+                                                    </div>
+                                                )
+                                            }
+                                        })
+                                    }
                                     <img src={product.imageURL} alt="" srcSet="" />
                                     <h3 className="text-lg font-medium text-gray-900">{product.title}</h3>
                                     <p className="mt-2 text-sm text-gray-500">{product.description}</p>
                                     <p className="mt-2 text-sm text-red-500">₹{product.price}</p>
                                     <p className="mt-2 text-sm text-black-500">{product.productcity}</p>
-
+                                    <p className="mt-2  text-sm text-black-500">{product.productStatus}</p>
                                     {/* Display Seller name  */}
                                     {/* <p className="mt-2 text-sm text-gray-500">{product.userId}</p> */}
                                 </div>
