@@ -21,15 +21,15 @@ const HomePage = () => {
                 </li>
             </ul> */}
 
-            { <div className="home-page">
-            
+            {<div className="home-page">
+
                 <Hero />
-                <Feature/>
+                <Feature />
                 <About />
                 <Blog />
                 {/* <Contact/> */}
                 {/* <Footer /> */}
-            </div> }
+            </div>}
         </>
     )
 }

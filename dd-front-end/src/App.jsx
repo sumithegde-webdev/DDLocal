@@ -22,6 +22,7 @@ import Cookies from 'js-cookie';
 import Error404 from './Error404.jsx';
 import AdminProducts from "./components/Admin/AdminProducts.jsx";
 import AdminDeals from "./components/Admin/AdminDeals.jsx";
+import AdminUsers from "./components/Admin/AdminUsers.jsx";
 
 function App() {
 
@@ -66,7 +67,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/AdminDashboard" element={<AdminDashboard />} />
+        {/* <Route path="/AdminDashboard" element={<AdminDashboard />} /> */}
         <Route path="/admin/*" element={null}>
           <Route path="login/*" element={null} >
             <Route path="" element={<AdminLogin adminLoginStatus={setAdminLoginStatus} adminEmail={(val) => credEmailHandler(val)} />} />
@@ -82,6 +83,7 @@ function App() {
               <Route path="sellerrequests" element={<AdminSellerRequests />} />
               <Route path="allproducts" element={<AdminProducts />} />
               <Route path="deals" element={<AdminDeals />} />
+              <Route path="users" element={<AdminUsers />} />
             </Route>
             :
             <Route path="*" element={<Error404 />} />

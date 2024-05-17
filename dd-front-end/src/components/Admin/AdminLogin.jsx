@@ -94,8 +94,6 @@ const AdminLogin = (props) => {
                     ADMIN LOGIN
                 </div>
                 <form className="login--divs" id="login--form">
-                    {/* <label id="email--label" className="label" htmlFor="email-input">Email</label> */}
-                    {/* <br /> */}
                     <input
                         id="email--input"
                         autoComplete="off"
@@ -107,9 +105,6 @@ const AdminLogin = (props) => {
                             onChangeHandler(e);
                         }}
                     />
-                    {/* <br /> */}
-                    {/* <label id="password--label" className="label" htmlFor="password-input">Password</label> */}
-                    {/* <br /> */}
                     <input
                         id="password--input"
                         type="password"
