@@ -5,7 +5,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import logo from '../assets/widelogo.png';
 import icon from '../assets/icon.png';
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const userNavigation = [
     { name: 'Sign out' },   //sign out functionality here
@@ -18,6 +18,14 @@ function classNames(...classes) {
 //needs open, navigation, adminData
 
 export default function AdminNavbar(props) {
+
+    const nav = useNavigate();
+
+    const signOut = () => {
+        console.log("?");
+        Cookies.remove("token");
+        nav("/");
+    }
 
     return (
         <Disclosure as="nav" className="bg-gray-800">
@@ -88,7 +96,7 @@ export default function AdminNavbar(props) {
                                                     <Menu.Item key={item.name}>
                                                         {({ active }) => (
                                                             <div
-                                                                onClick={props.signout}
+                                                                onClick={signOut}
                                                                 className={classNames(
                                                                     active ? 'bg-gray-100' : '',
                                                                     'block px-4 py-2 text-sm text-gray-700'
@@ -158,7 +166,8 @@ export default function AdminNavbar(props) {
                                 {userNavigation.map((item) => (
                                     <Disclosure.Button
                                         key={item.name}
-                                        as="a"
+                                        as="div"
+                                        onClick={signOut}
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                                     >
                                         {item.name}
