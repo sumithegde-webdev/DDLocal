@@ -118,14 +118,14 @@ const listAllProducts = () => {
 
                       <p className='text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'>Hi, {userName}</p>
                       <div className="my-1 flex flex-wrap sm:flex-nowrap">
-                      {userRole === "SELLER" ? (
-                    <>
-                    <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
-                    <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
-                    </>
-                  ): (
-                    <p></p>
-                  )}  </div>
+                        {userRole === "SELLER" ? (
+                          <>
+                            <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
+                            <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
+                          </>
+                        ) : (
+                          <p></p>
+                        )}  </div>
                     </div>
 
                   </div>
@@ -202,13 +202,13 @@ const listAllProducts = () => {
                 <div className="my-1 flex flex-wrap sm:flex-nowrap">
                   {userRole === "SELLER" ? (
                     <>
-                    <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
-                    <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
+                      <Link to={`/Dashboard`} className="bg-red-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Dashboard</Link>
+                      <Link to={`/Seller/create`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mb-2 sm:mb-0 sm:mr-4" aria-current="page">Create Products</Link>
                     </>
-                  ): (
+                  ) : (
                     <p></p>
                   )}
-                 
+
                 </div>
               </div>
             </Disclosure.Panel>

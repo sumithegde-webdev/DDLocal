@@ -1,8 +1,6 @@
-
-
 import { useEffect, useState } from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Home from "./components/Home/HomePage";
@@ -19,10 +17,17 @@ import SellerRequestForm from "./components/Dashboard/SellerRequestForm.jsx";
 import MyOrders from "./components/Dashboard/MyOrders.jsx";
 import AdminSellerRequests from "./components/Admin/AdminSellerRequests.jsx";
 import AdminLogin from "./components/Admin/AdminLogin.jsx";
+import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
+import Cookies from 'js-cookie';
+import Error404 from './Error404.jsx';
+import AdminProducts from "./components/Admin/AdminProducts.jsx";
+import AdminDeals from "./components/Admin/AdminDeals.jsx";
 
 function App() {
 
   const [userLoginStatus, setUserLoginStatus] = useState(false);
+
+  const [adminLoginStatus, setAdminLoginStatus] = useState(false);
 
   const [userCredentials, setUserCredentials] = useState({
     email: "",
@@ -61,7 +66,43 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/AdminDashboard" element={<AdminDashboard />} />
+        <Route path="/admin/*" element={null}>
+          <Route path="login/*" element={null} >
+            <Route path="" element={<AdminLogin adminLoginStatus={setAdminLoginStatus} adminEmail={(val) => credEmailHandler(val)} />} />
+            {adminLoginStatus ?
+              <Route path="tfauth" element={<TFAuth status={"admin"} userEmail={userCredentials.email} setUserToken={credTokenHandler} />} />
+              :
+              <Route path="*" element={<Error404 />} />
+            }
+          </Route>
+          {Cookies.get('token') ?
+            <Route path="admindashboard/*" element={null} >
+              <Route path="" element={<AdminDashboard />} />
+              <Route path="sellerrequests" element={<AdminSellerRequests />} />
+              <Route path="allproducts" element={<AdminProducts />} />
+              <Route path="deals" element={<AdminDeals />} />
+            </Route>
+            :
+            <Route path="*" element={<Error404 />} />
+          }
+          {
+
+          }
+          <Route path="*" element={<Error404 />} />
+        </Route>
+        {/* <Route path="/admin/login/*" element={null}>
+          <Route path="" element={<AdminLogin adminLoginStatus={setAdminLoginStatus} adminEmail={(val) => credEmailHandler(val)} />} />
+          {adminLoginStatus && <Route path="tfauth" element={<TFAuth status={"admin"} userEmail={userCredentials.email} setUserToken={credTokenHandler} />} />}
+          <Route
+            path="*"
+            element={
+              <>
+                <div>404 ERROR</div>
+              </>
+            }
+          />
+        </Route> */}
         <Route path="/admin/sellerRequests" element={<AdminSellerRequests />} />
 
         <Route path="/Seller/Create" element={<CreateSellerProductForm />} />
@@ -77,7 +118,7 @@ function App() {
             path=""
             element={<Login setLoginStatus={setUserLoginStatus} loginEmail={(val) => credEmailHandler(val)} />}
           />
-          {userLoginStatus && <Route path="tfauth" element={<TFAuth userEmail={userCredentials.email} setUserToken={credTokenHandler} />} />}
+          {userLoginStatus && <Route path="tfauth" element={<TFAuth status={"nonadmin"} userEmail={userCredentials.email} setUserToken={credTokenHandler} />} />}
           <Route
             path="*"
             element={

@@ -4,6 +4,7 @@ import axios from "axios";
 // import { useHistory } from "react-router-dom";
 import "../Login/login.css";
 import { Navigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const adminAxios = axios.create({
     headers: {
@@ -12,7 +13,13 @@ const adminAxios = axios.create({
     baseURL: "http://localhost:8090/api/login",
 });
 
-const AdminLogin = () => {
+const AdminLogin = (props) => {
+
+    if (Cookies.get("token") != null) {
+        //add logic here to check if admin
+        return <Navigate to='../admindashboard' />
+    }
+
     const [login, setLogin] = useState(false);
     const [adminCredentials, setAdminCredentials] = useState({
         email: "",
@@ -51,21 +58,6 @@ const AdminLogin = () => {
         // If authentication is successful, redirect to the Admin dashboard
         // history.push("/admin/dashboard");
 
-        // const validationError = {};
-
-        // //email to follow the pattern
-        // const emailPattern = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}$/;
-        // if (!userCredentials.email.trim()) {
-        //   validationError.emailError = "email is required.";
-        // } else if (!emailPattern.test(userCredentials.email)) {
-        //   validationError.emailError = "email format is _@_._";
-        // }
-
-        // //password and rePassword
-        // if (!userCredentials.password.trim()) {
-        //   validationError.passwordError = "password is required.";
-        // }
-
         adminAxios
             .post("", {
                 email: adminCredentials.email,
@@ -74,10 +66,12 @@ const AdminLogin = () => {
             .then((response) => {
                 if (response.data.success) {
                     setLogin(true);
+                    props.adminEmail(adminCredentials.email);
                     setAdminCredentials({
                         email: "",
                         password: "",
                     });
+                    props.adminLoginStatus(true);
                 } else {
                     window.alert("Invalid Credentials!");
                     setAdminCredentials({
@@ -90,7 +84,7 @@ const AdminLogin = () => {
     };
 
     if (login) {
-        return <Navigate to="/tfauth" />;
+        return <Navigate to="tfauth" />;
     }
 
     return (
