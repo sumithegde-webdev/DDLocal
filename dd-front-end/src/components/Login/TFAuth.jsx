@@ -98,7 +98,7 @@ const TFAuth = (props) => {
 
     if (success) {
         if (props.status === "admin") {
-            return <Navigate to='/AdminDashboard' />
+            return <Navigate to='/admin/adminDashboard' />
         }
         else if (props.status === "nonadmin") {
             return <Navigate to='/Dashboard' />

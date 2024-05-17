@@ -1,92 +1,52 @@
-// // AdminSellerRequests.js
-// import axios from "axios";
-// import React, { useEffect } from "react";
-// import { useState } from "react";
 
-// const responseAxios = axios.create({
-//     headers: {
-//         role: "user",
-//     },
-//     baseURL: "http://localhost:8090/api/admin/approve-request/",
-// });
-
-// const AdminSellerRequests = () => {
-//     // Fetch and display list of seller requests
-//     const [requests, setRequests] = useState({});
-
-//     useEffect(() => { }, []);
-
-//     const fetchRequests = async () => {
-//         try {
-//             const allRequestsResponse = await fetch(
-//                 "http://localhost:8090/api/admin/pending-requests",
-//                 {
-//                     headers: {
-//                         token: props.requiredToken, // Include token in the Authorization header
-//                     },
-//                 }
-//             )
-//                 .then((res) => {
-//                     return res.json();
-//                 })
-//                 .catch((err) => {
-//                     console.error(err);
-//                 });
-//             // const allProductsData = await allProductsResponse.json();
-//             const allRequests = await allRequestsResponse;
-//             setRequests(allRequests);
-//         } catch (error) {
-//             console.error("Error fetching products:", error);
-//         }
-//     };
-
-//     const handleAccept = (requestId) => {
-//         // Logic to accept the seller request
-//         responseAxios
-//             .post(
-//                 `${requestId}`,
-//                 {},
-//                 {
-//                     token: "",
-//                 }
-//             )
-//             .then()
-//             .catch();
-//     };
-
-//     const handleReject = (requestId) => {
-//         // Logic to reject the seller request
-//     };
-
-//     return (
-//         <div>
-//             <h1 className="text-3xl mb-4">View Seller Requests</h1>
-//             {/* Display list of seller requests here */}
-//             {/* Example: */}
-//             {/* <div>
-//         <span>Seller Name</span>
-//         <button onClick={() => handleAccept(requestId)}>Accept</button>
-//         <button onClick={() => handleReject(requestId)}>Reject</button>
-//       </div> */}
-//         </div>
-//     );
-// };
-
-// export default AdminSellerRequests;
-
-
-// AdminSellerRequests.js
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie';
+import AdminNavbar from '../AdminNavbar';
+import { useState, useEffect } from 'react';
 
 const AdminSellerRequests = () => {
+    const token = Cookies.get('token');
+
     const [sellerRequests, setSellerRequests] = useState([]);
+
+    const [adminData, setAdminData] = useState({
+        userName: "",
+        email: "",
+    });
+
+    const navigation = [
+        { name: `${adminData.userName}`, href: '../admindashboard', current: false },
+        { name: 'Users', href: './users', current: false },
+        { name: 'Products', href: './allproducts', current: false },
+        { name: 'Requests', href: 'admindashboard/sellerrequests', current: true },
+        { name: 'Deals', href: './deals', current: false },
+    ]
+
+    useEffect(() => {
+        axios.get("http://localhost:8090/api/GetallUsers", {
+            headers: {
+                token: `${token}`,
+            }
+        })
+            .then((response) => {
+                response.data.map((user) => {
+                    if (user.userRole === "ADMIN") {
+                        setAdminData({
+                            userName: user.userName,
+                            email: user.email,
+                        })
+                    }
+                })
+            })
+            .catch((err) => { console.error(err) });
+    }, [])
 
     useEffect(() => {
         // Fetch seller requests from the API endpoint
         axios.get('http://localhost:8090/api/admin/pending-requests', {
             headers: {
-                token: `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20ifQ.pqhNI6wSknFspiBiKa1rGMVZmQQY7MLax5Lrq5qSPGE`,
+                token: `${token}`,
             }
         })
             .then(response => {
@@ -101,7 +61,7 @@ const AdminSellerRequests = () => {
         // Logic to approve the seller request
         axios.post(`http://localhost:8090/api/admin/approve-request/${requestId}`, {}, {
             headers: {
-                token: `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20ifQ.pqhNI6wSknFspiBiKa1rGMVZmQQY7MLax5Lrq5qSPGE`,
+                token: `${token}`,
             }
         })
             .then(response => {
@@ -118,7 +78,7 @@ const AdminSellerRequests = () => {
         // Logic to approve the seller request
         axios.post(`http://localhost:8090/api/admin/reject-request/${requestId}`, {}, {
             headers: {
-                token: `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20ifQ.pqhNI6wSknFspiBiKa1rGMVZmQQY7MLax5Lrq5qSPGE`,
+                token: `${token}`,
             }
         })
             .then(response => {
@@ -131,39 +91,62 @@ const AdminSellerRequests = () => {
             });
     };
 
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
     return (
-        <div>
-            <h1 className="text-3xl mb-4">View Seller Requests</h1>
-            <table className="m-auto w-3/5 text-center table-auto shadow-xl">
-                <thead>
-                    <tr>
-                        <th className="border w-3/5 px-4 py-2">User name</th>
-                        <th className="border w-2/5 px-4 py-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sellerRequests.map(request => (
-                        <tr key={request.id}>
-                            <td className="border px-4 py-2">{request.userName}</td>
-                            <td className="border px-4 py-2">
-                                <button onClick={() => handleApprove(request.id)} className="bg-green-500 hover:bg-green-700 text-black hover:text-white font-bold py-2 px-4 rounded mr-10">
-                                    Approve
-                                </button>
-                                <button onClick={() => handleReject(request.id)} className="bg-red-500 hover:bg-red-700 text-black hover:text-white font-bold py-2 px-4 rounded">
-                                    Reject
-                                </button>
-                            </td>
-                            {/* <td className="border px-4 py-2">
+        <div className="min-h-full">
+            <AdminNavbar navigation={navigation} adminData={adminData} />
+            <main>
+                <div className='w-full'>
+                    {sellerRequests.length != 0 ?
+                        <>
+                            <div className='text-center m-auto mt-10 mb-10'>
+                                <h1 className="text-4xl">Seller Requests</h1>
+                            </div>
+                            <table className="m-auto w-4/5 text-center table-auto shadow-xl">
+                                <thead>
+                                    <tr>
+                                        <th className="border border-black bg-blue-400 w-3/5 px-4 py-2">User name</th>
+                                        <th className="border border-black bg-blue-400 w-2/5 px-4 py-2">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {sellerRequests.map(request => (
+                                        <tr key={request.id}>
+                                            <td className="border border-black text-xl px-4 py-2">{request.userName}</td>
+                                            <td className="border border-black px-4 py-2">
+                                                <button onClick={() => handleApprove(request.id)} className="bg-green-500 hover:bg-green-700 text-black hover:text-white font-bold py-2 px-4 rounded mr-10">
+                                                    Approve
+                                                </button>
+                                                <button onClick={() => handleReject(request.id)} className="bg-red-500 hover:bg-red-700 text-black hover:text-white font-bold py-2 px-4 rounded">
+                                                    Reject
+                                                </button>
+                                            </td>
+                                            {/* <td className="border px-4 py-2">
                                 <button onClick={() => handleReject(request.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                     Reject
                                 </button>
                             </td> */}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </>
+                        :
+                        <>
+                            <div className='text-center m-auto mt-36'>
+                                <h1 className="text-4xl">No 'Seller' requests at the moment.</h1>
+                            </div>
+                        </>
+                    }
+                </div>
+            </main >
+        </div >
+    )
 };
 
 export default AdminSellerRequests;
