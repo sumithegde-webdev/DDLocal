@@ -59,6 +59,7 @@ export default function AdminDashboard() {
     function signOut() {
         console.log("?");
         Cookies.remove("token");
+        nav("/");
     }
 
     //retreive admin data
