@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.DirectDealz.DirectDealz.Buyer.Service.DealService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost/3000")
+@CrossOrigin(origins = "http://localhost/5173")
 @RequestMapping("/api/deals")
 public class DealController {
-    
+
     @Autowired
     private DealService dealService;
 
@@ -26,10 +26,9 @@ public class DealController {
         return dealService.lockProductForDeal(productId, token);
     }
 
-     @GetMapping("/buyer/deals")
+    @GetMapping("/buyer/deals")
     public ResponseEntity<?> findDealsByBuyerId(@RequestHeader UUID buyerId, @RequestHeader String token) {
         return dealService.findDealsByBuyerId(buyerId, token); // Call service method
     }
-
 
 }

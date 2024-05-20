@@ -1,6 +1,4 @@
-
 import axios from 'axios';
-import { Link } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import AdminNavbar from '../AdminNavbar';
 import { useState, useEffect } from 'react';
