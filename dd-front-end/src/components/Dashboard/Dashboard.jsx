@@ -16,8 +16,6 @@ const Dashboard = () => {
     const [token, setToken] = useState(''); // Assuming you have a way to get the token
     const [userRole, setUserRole] = useState('');
 
-
-
     useEffect(() => {
         const token = Cookies.get('token');
 

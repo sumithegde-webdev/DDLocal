@@ -3,7 +3,6 @@ import AdminNavbar from '../AdminNavbar'
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
@@ -34,6 +33,7 @@ const AdminProducts = () => {
       }
     })
       .then((response) => {
+        fetchProducts();
         response.data.map((user) => {
           if (user.userRole === "ADMIN") {
             setAdminData({
@@ -60,10 +60,6 @@ const AdminProducts = () => {
   const [products, setProducts] = useState([]);
 
   const token = Cookies.get('token');
-  useEffect(() => {
-
-    fetchProducts();
-  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -79,13 +75,6 @@ const AdminProducts = () => {
       console.error('Error fetching products:', error);
     }
   };
-
-  const [sellers, setSellers] = useState({
-    sellerName: "",
-    sellerEmail: "",
-    sellerNumber: "",
-  })
-
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -116,7 +105,6 @@ const AdminProducts = () => {
               //     });
               < div key={product.id} className="bg-white overflow-hidden border shadow rounded-lg" >
                 <div className="p-4">
-
                   {
                     allSellers.map((seller) => {
                       if (seller.id === product.userId) {

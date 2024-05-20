@@ -67,7 +67,7 @@ const AdminUsers = () => {
                         </thead>
                         <tbody>
                             {userInfo.map(user => (
-                                user.userRole !== "ADMIN" && <tr key={user.id} className={user.userRole === "SELLER" ? "bg-gray-400" : user.requestStatus !== "REJECTED" ? "bg-green-400" : "bg-red-400"}>
+                                user.userRole !== "ADMIN" && <tr key={user.id} className={user.userRole === "SELLER" ? "bg-gray-400" : user.requestStatus !== "REJECTED" ? "bg-green-200" : "bg-red-200"}>
                                     <td className="border border-black text-xl px-4 py-2">{user.userName}</td>
                                     <td className="border border-black text-xl px-4 py-2">{user.email}</td>
                                     <td className="border border-black text-xl px-4 py-2">{user.phoneNumber}</td>
