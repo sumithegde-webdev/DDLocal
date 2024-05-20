@@ -4,7 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import styled from 'styled-components'; 
+import styled from 'styled-components';
 
 const Dashboard = () => {
     const nav = useNavigate();
@@ -84,7 +84,7 @@ const Dashboard = () => {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
-   
+
 
     return (
         <div className="min-h-full">
@@ -102,10 +102,10 @@ const Dashboard = () => {
                                     <p className='text-white'>Welcome, {userName}</p>
                                     {userRole == "SELLER" ? (
                                         <div className="flex justify-center my-4">
-                                            
-                                            
+
+
                                             <Link to={`/Seller/create`} className="bg-orange-700 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-4 ml-80" aria-current="page">Create Products</Link>
-                                            <Link to={`/Seller/AllProducts`}className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-4" aria-current="page">Manage Products</Link>
+                                            <Link to={`/Seller/AllProducts`} className="bg-green-800 text-white rounded-md px-3 py-2 text-sm font-medium text-center mx-4" aria-current="page">Manage Products</Link>
 
                                         </div>
                                     ) : (
@@ -168,7 +168,9 @@ const Dashboard = () => {
                                                 onClick={() => {
                                                     // Handle sign out action
                                                     Cookies.remove('token');
-                                                    nav('/login')
+                                                    // nav('/login')
+                                                    //changed this to route to DirectDealz HomePage
+                                                    nav('/')
                                                 }}
                                             >
                                                 Sign Out
@@ -250,47 +252,47 @@ const Dashboard = () => {
             </header>
 
             <main>
-            <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {products.length === 0 ? (
-            <RedBox>No products available.</RedBox>
-        ) : (
-            cityFilter === '' ? products.map((product) => (
-                <div key={product.id} className="bg-white overflow-hidden shadow rounded-lg">
-                    <div className="p-4">
-                        <img src={product.imageURL} alt="" srcSet="" />
-                        <h3 className="text-lg font-medium text-gray-900">{product.title}</h3>
-                        <p className="mt-2 text-sm text-gray-500">{product.description}</p>
-                        <p className="mt-2 text-sm text-gray-500">₹{product.price}</p>
-                        <p className="mt-2 text-sm text-gray-500">{product.productcity}</p>
-                    </div>
-                    <div className="bg-gray-50 px-4 py-3 sm:px-6">
-                        <Link to={`/products/${product.id}`} className='w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' style={{ backgroundColor: "#2461FF" }}>
-                            View Product
-                        </Link>
+                <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {products.length === 0 ? (
+                            <RedBox>No products available.</RedBox>
+                        ) : (
+                            cityFilter === '' ? products.map((product) => (
+                                <div key={product.id} className="bg-white overflow-hidden shadow rounded-lg">
+                                    <div className="p-4">
+                                        <img src={product.imageURL} alt="" srcSet="" />
+                                        <h3 className="text-lg font-medium text-gray-900">{product.title}</h3>
+                                        <p className="mt-2 text-sm text-gray-500">{product.description}</p>
+                                        <p className="mt-2 text-sm text-gray-500">₹{product.price}</p>
+                                        <p className="mt-2 text-sm text-gray-500">{product.productcity}</p>
+                                    </div>
+                                    <div className="bg-gray-50 px-4 py-3 sm:px-6">
+                                        <Link to={`/products/${product.id}`} className='w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' style={{ backgroundColor: "#2461FF" }}>
+                                            View Product
+                                        </Link>
+                                    </div>
+                                </div>
+                            )) : filteredProducts.length > 0 ? filteredProducts.map((product) => (
+                                <div key={product.id} className="bg-white overflow-hidden shadow rounded-lg">
+                                    <div className="p-4">
+                                        <img src={product.imageURL} alt="" srcSet="" />
+                                        <h3 className="text-lg font-medium text-gray-900">{product.title}</h3>
+                                        <p className="mt-2 text-sm text-gray-500">{product.description}</p>
+                                        <p className="mt-2 text-sm text-gray-500">₹{product.price}</p>
+                                        <p className="mt-2 text-sm text-gray-500">{product.productcity}</p>
+                                    </div>
+                                    <div className="bg-gray-50 px-4 py-3 sm:px-6">
+                                        <Link to={`/products/${product.id}`} className='w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' style={{ backgroundColor: "#2461FF" }}>
+                                            View Product
+                                        </Link>
+                                    </div>
+                                </div>
+                            )) : (
+                                <RedBox>No Products Found for your search.</RedBox>
+                            )
+                        )}
                     </div>
                 </div>
-            )) : filteredProducts.length > 0 ? filteredProducts.map((product) => (
-                <div key={product.id} className="bg-white overflow-hidden shadow rounded-lg">
-                    <div className="p-4">
-                        <img src={product.imageURL} alt="" srcSet="" />
-                        <h3 className="text-lg font-medium text-gray-900">{product.title}</h3>
-                        <p className="mt-2 text-sm text-gray-500">{product.description}</p>
-                        <p className="mt-2 text-sm text-gray-500">₹{product.price}</p>
-                        <p className="mt-2 text-sm text-gray-500">{product.productcity}</p>
-                    </div>
-                    <div className="bg-gray-50 px-4 py-3 sm:px-6">
-                        <Link to={`/products/${product.id}`} className='w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' style={{ backgroundColor: "#2461FF" }}>
-                            View Product
-                        </Link>
-                    </div>
-                </div>
-            )) : (
-                <RedBox>No Products Found for your search.</RedBox>
-            )
-        )}
-    </div>
-</div>
 
             </main>
         </div>

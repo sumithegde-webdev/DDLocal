@@ -152,11 +152,55 @@ public class UserService {
         }
     }
 
+    // login service for ADMIN only
+    public ResponseEntity<Object> adminLoginService(LoginModel loginModel, String role, String userRole) {
+        try {
+            if (role.equals("user")) {
+                if (userRole.equals("ADMIN")) {
+                    UserModel adminModel = userRepository.findByEmail(loginModel.getEmail());
+                    if (adminModel != null && adminModel.getUserRole().equals(UserRole.ADMIN)) {
+                        if (BCrypt.checkpw(loginModel.getPassword(), adminModel.getPassword())) {
+                            responseMessage.setSuccess(true);
+                            responseMessage.setMessage("Logged In Successfully!");
+                            responseMessage.setToken(null);
+                            generateOTPforTwoFAService(adminModel);
+                            return ResponseEntity.ok().body(responseMessage);
+                        } else {
+                            responseMessage.setSuccess(false);
+                            responseMessage.setMessage("Invalid credentials!");
+                            responseMessage.setToken(null);
+                            return ResponseEntity.badRequest().body(responseMessage);
+                        }
+                    } else {
+                        responseMessage.setSuccess(false);
+                        responseMessage.setMessage("Not an Admin! Login as User");
+                        responseMessage.setToken(null);
+                        return ResponseEntity.badRequest().body(responseMessage);
+                    }
+                } else {
+                    responseMessage.setSuccess(false);
+                    responseMessage.setMessage("Not an Admin! Login as User");
+                    responseMessage.setToken(null);
+                    return ResponseEntity.badRequest().body(responseMessage);
+                }
+            } else {
+                responseMessage.setSuccess(false);
+                responseMessage.setMessage("Not an Admin! Login as User");
+                responseMessage.setToken(null);
+                return ResponseEntity.badRequest().body(responseMessage);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+    // login service for USERS only
     public ResponseEntity<Object> userLoginService(LoginModel loginModel, String role) {
         try {
             if (role.equals("user")) {
                 UserModel userModel = userRepository.findByEmail(loginModel.getEmail());
-                if (userModel != null) {
+                if (userModel != null && !userModel.getUserRole().equals(UserRole.ADMIN)) {
                     if (BCrypt.checkpw(loginModel.getPassword(), userModel.getPassword())) {
                         responseMessage.setSuccess(true);
                         responseMessage.setMessage("Logged in Successfully!");
@@ -169,6 +213,7 @@ public class UserService {
                         responseMessage.setToken(null);
                         return ResponseEntity.badRequest().body(responseMessage);
                     }
+
                 } else {
                     responseMessage.setSuccess(false);
                     responseMessage.setMessage("Invalid email or password");
