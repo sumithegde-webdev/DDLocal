@@ -36,15 +36,9 @@ const posts = [
 ]
 
 import { Fragment, useEffect, useState } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
 import AdminNavbar from '../AdminNavbar'
 import { Navigate, useNavigate } from 'react-router-dom'
-
-const userNavigation = [
-    { name: 'Sign out' },
-]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -56,11 +50,6 @@ export default function AdminDashboard() {
 
     const token = Cookies.get("token");
 
-    function signOut() {
-        console.log("?");
-        Cookies.remove("token");
-        nav("/");
-    }
 
     //retreive admin data
     const [adminData, setAdminData] = useState({

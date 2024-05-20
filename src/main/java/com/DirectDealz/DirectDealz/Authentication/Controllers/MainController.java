@@ -41,6 +41,12 @@ public class MainController {
         return userService.userLoginService(loginModel, role);
     }
 
+    @PostMapping("adminlogin")
+    public ResponseEntity<Object> verifyAdmin(@RequestBody LoginModel loginModel, @RequestHeader String role,
+            @RequestHeader String userRole) {
+        return userService.adminLoginService(loginModel, role, userRole);
+    }
+
     @PostMapping("2fa")
     public ResponseEntity<Object> twofa(@RequestHeader int otpforTwoFAFromUser, @RequestHeader String email,
             @RequestHeader String role) {

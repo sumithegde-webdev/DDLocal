@@ -5,12 +5,14 @@ import axios from "axios";
 import "../Login/login.css";
 import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { toast } from "react-toastify";
 
 const adminAxios = axios.create({
     headers: {
         role: "user",
+        userRole: "ADMIN",
     },
-    baseURL: "http://localhost:8090/api/login",
+    baseURL: "http://localhost:8090/api/adminlogin",
 });
 
 const AdminLogin = (props) => {
@@ -58,29 +60,64 @@ const AdminLogin = (props) => {
         // If authentication is successful, redirect to the Admin dashboard
         // history.push("/admin/dashboard");
 
-        adminAxios
-            .post("", {
-                email: adminCredentials.email,
-                password: adminCredentials.password,
-            })
-            .then((response) => {
-                if (response.data.success) {
-                    setLogin(true);
-                    props.adminEmail(adminCredentials.email);
-                    setAdminCredentials({
-                        email: "",
-                        password: "",
-                    });
-                    props.adminLoginStatus(true);
-                } else {
-                    window.alert("Invalid Credentials!");
-                    setAdminCredentials({
-                        email: "",
-                        password: "",
-                    });
-                }
-            })
-            .catch((error) => console.error(error));
+        const functionThatReturnPromise = () => {
+            return adminAxios
+                .post("", {
+                    email: adminCredentials.email,
+                    password: adminCredentials.password,
+                })
+                .then((response) => {
+                    if (response.data.success) {
+                        //need to check if actual admin creds!
+                        setLogin(true);
+                        props.adminEmail(adminCredentials.email);
+                        setAdminCredentials({
+                            email: "",
+                            password: "",
+                        });
+                        props.adminLoginStatus(true);
+                    } else {
+                        window.alert("Invalid Credentials!");
+                        setAdminCredentials({
+                            email: "",
+                            password: "",
+                        });
+                    }
+                })
+        };
+
+        toast.promise(
+            functionThatReturnPromise,
+            {
+                pending: 'Logging in...',
+                success: 'Login successful! Please Enter OTP to Access Dashboard',
+                error: 'Login Failed ! Please check email or password and try again',
+            }
+        );
+
+        // adminAxios
+        //     .post("", {
+        //         email: adminCredentials.email,
+        //         password: adminCredentials.password,
+        //     })
+        //     .then((response) => {
+        //         if (response.data.success) {
+        //             setLogin(true);
+        //             props.adminEmail(adminCredentials.email);
+        //             setAdminCredentials({
+        //                 email: "",
+        //                 password: "",
+        //             });
+        //             props.adminLoginStatus(true);
+        //         } else {
+        //             window.alert("Invalid Credentials!");
+        //             setAdminCredentials({
+        //                 email: "",
+        //                 password: "",
+        //             });
+        //         }
+        //     })
+        //     .catch((error) => console.error(error));
     };
 
     if (login) {
