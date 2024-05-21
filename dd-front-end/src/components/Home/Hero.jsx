@@ -3,6 +3,7 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from '../../assets/darkLogo.png';
 
+import widelogo from '../../assets/widelogo.png';
 const navigation = [
   // { name: 'About', href: '#' },
   // { name: 'Features', href: '#' },
@@ -20,8 +21,8 @@ export default function Hero() {
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">DirectDealz</span>
               <img
-                className="h-20  w-20"
-                src= {logo}
+                className="h-14  w-22"
+                src= {widelogo}
                 alt="DirectDealz"
               />
             </a>
@@ -44,9 +45,9 @@ export default function Hero() {
               </a>
             ))}
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end " >
             {/* Login URL To be implemented !! for Production server change this */}
-            <a href="http://localhost:5173/Login" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="http://localhost:5173/Login" className="text-lg font-semibold leading-6 text-gray-900">
               Login <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
