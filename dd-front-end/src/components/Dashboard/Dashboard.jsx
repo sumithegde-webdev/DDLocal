@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import styled from 'styled-components';
+import  widelogo  from '../../assets/widelogo.png'
 
 const Dashboard = () => {
     const nav = useNavigate();
@@ -92,11 +93,11 @@ const Dashboard = () => {
                         <div className="flex items-center">
                             <div className="flex-shrink-0">
                                 {/* Compnay Logo  */}
-                                {/* <img className="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" /> */}
+                                <img className="h-10 w-15" src={widelogo}alt="Your Company" />
                             </div>
                             <div className="hidden md:block">
                                 <div className="ml-10 flex items-baseline space-x-4">
-                                    <a href="#" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">DirectDealz</a>
+                                    {/* <a href="#" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">DirectDealz</a> */}
                                     <p className='text-white'>Welcome, {userName}</p>
                                     {userRole == "SELLER" ? (
                                         <div className="flex justify-center my-4">

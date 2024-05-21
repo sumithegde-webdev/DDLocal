@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import lightLogo from '../../assets/lightLogo.png';
 import darkLogo from '../../assets/darkLogo.png';
 import './register.css';
+import { toast } from "react-toastify";
 
 const registerAxios = axios.create({
     headers: {
@@ -203,6 +204,7 @@ const Register = () => {
     }
 
     if (regSuccess) {
+        toast.success("Registration Successful. Please Login to Access DirectDealz")
         return <Navigate to="/login" />;
     }
 
