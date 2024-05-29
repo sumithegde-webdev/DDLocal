@@ -131,10 +131,10 @@ const Dashboard = () => {
                                 )}
                                 <button type="button" className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                     <span className="absolute -inset-1.5"></span>
-                                    <span className="sr-only">View notifications</span>
+                                    {/* <span className="sr-only">View notifications</span>
                                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                                    </svg>
+                                    </svg> */}
                                 </button>
                                 <div className="relative">
                                     <button
@@ -210,10 +210,10 @@ const Dashboard = () => {
                             </div>
                             <button type="button" className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                 <span className="absolute -inset-1.5"></span>
-                                <span className="sr-only">View notifications</span>
+                                {/* <span className="sr-only">View notifications</span>
                                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                                </svg>
+                                </svg> */}
                             </button>
                         </div>
                         <div className="mt-3 space-y-1 px-2">
@@ -236,8 +236,8 @@ const Dashboard = () => {
             <header className="bg-white shadow">
                 <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mb-6">
-                        <div className="relative">
-                            <input type="text" id="search" placeholder="Search products..." className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={handleCityFilterChange} />
+                        <div className="relative w-[300px]">
+                            <input type="text" id="search" placeholder="Search products based on city" className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={handleCityFilterChange} />
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m-1.38-2.58a8.5 8.5 0 111.38-1.38M8 17a7 7 0 100-14 7 7 0 000 14z" />

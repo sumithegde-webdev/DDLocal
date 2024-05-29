@@ -64,7 +64,7 @@ const SpecificProductPage = () => {
       setDealLocked(true);
       
     } catch (error) {
-      toast.error(error.response.data);
+        toast.error("Error while deal lock")
     }
   };
 
@@ -152,8 +152,8 @@ const SpecificProductPage = () => {
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
                     <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    {/* <span className="sr-only">View notifications</span>
+                    <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
                   </button>
 
                   {/* Profile dropdown */}
