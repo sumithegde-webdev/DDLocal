@@ -10,4 +10,4 @@ WORKDIR /directdealz
  
 COPY . /directdealz/
  
-ENTRYPOINT [ "mvn","spring-boot:run"n ]
+ENTRYPOINT [ "mvn","spring-boot:run" ]
