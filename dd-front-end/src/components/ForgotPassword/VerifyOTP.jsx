@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../constants";
 
 const VerifyOTP = (props) => {
 
@@ -61,7 +62,7 @@ const VerifyOTP = (props) => {
             console.log("Invalid OTP");
         }
         else {
-            axios.post('http://localhost:8090/api/verifyOtpforforgotpassword', {}, {
+            axios.post(`${API_BASE_URL}/api/verifyOtpforforgotpassword`, {}, {
                 headers: {
                     otp: fpotp,
                     email: props.userEmail,

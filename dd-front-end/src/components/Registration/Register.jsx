@@ -5,12 +5,13 @@ import lightLogo from '../../assets/lightLogo.png';
 import darkLogo from '../../assets/darkLogo.png';
 import './register.css';
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../constants";
 
 const registerAxios = axios.create({
     headers: {
         role: "user",
     },
-    baseURL: "http://localhost:8090/api/adduser",
+    baseURL: `${API_BASE_URL}/api/adduser`,
 });
 
 const Register = () => {

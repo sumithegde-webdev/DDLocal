@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from '../../constants';
 const TFAuth = (props) => {
 
     const [success, setSuccess] = useState(false);
@@ -76,7 +77,7 @@ const TFAuth = (props) => {
         }, 3000);
 
         if (Object.keys(validationError).length === 0) {
-            axios.post("http://localhost:8090/api/2fa", {}, {
+            axios.post(`${API_BASE_URL}/api/2fa`, {}, {
                 headers: {
                     otpforTwoFAFromUser: otp,
                     role: "user",

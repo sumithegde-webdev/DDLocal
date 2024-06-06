@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie';
 import ImageURL from '../../assets/purchased.jpg';
+import { API_BASE_URL } from '../../constants';
 
 const OrderPage = () => {
     const [deals, setDeals] = useState([]);
@@ -11,7 +12,7 @@ const OrderPage = () => {
 
     const getUserDetails = async () => {
         try {
-            const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+            const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
                 headers: {
                     token: Cookies.get('token'),
                     role: 'user',
@@ -27,7 +28,7 @@ const OrderPage = () => {
 
     const fetchProductById = async (productId) => {
         try {
-            const response = await axios.get(`http://localhost:8090/api/GetProductById`, {
+            const response = await axios.get(`${API_BASE_URL}/api/GetProductById`, {
                 headers: {
                     token: Cookies.get('token'),
                     productId: productId,
@@ -48,7 +49,7 @@ const OrderPage = () => {
                     return;
                 }
 
-                const response = await axios.get(`http://localhost:8090/api/deals/buyer/deals`, {
+                const response = await axios.get(`${API_BASE_URL}/api/deals/buyer/deals`, {
                     headers: {
                         token: Cookies.get('token'),
                         buyerId: userId,

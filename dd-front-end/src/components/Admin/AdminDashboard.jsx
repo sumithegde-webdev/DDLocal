@@ -39,6 +39,7 @@ import { Fragment, useEffect, useState } from 'react'
 import axios from 'axios'
 import AdminNavbar from '../AdminNavbar'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../../constants'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -66,7 +67,7 @@ export default function AdminDashboard() {
     ]
 
     useEffect(() => {
-        axios.get("http://localhost:8090/api/GetallUsers", {
+        axios.get(`${API_BASE_URL}/api/GetallUsers`, {
             headers: {
                 token: `${token}`,
             }

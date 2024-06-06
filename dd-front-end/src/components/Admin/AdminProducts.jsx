@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import AdminNavbar from '../AdminNavbar'
 import axios from 'axios'
 import Cookies from 'js-cookie';
+import { API_BASE_URL } from '../../constants';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -27,7 +28,7 @@ const AdminProducts = () => {
   const [allSellers, setAllSeller] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:8090/api/GetallUsers", {
+    axios.get(`${API_BASE_URL}/api/GetallUsers`, {
       headers: {
         token: `${token}`,
       }
@@ -63,7 +64,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const allProductsResponse = await fetch('http://localhost:8090/api/listedproducts', {
+      const allProductsResponse = await fetch(`${API_BASE_URL}/api/listedproducts`, {
 
         headers: {
           token: `${token}`, // Include token in the Authorization header

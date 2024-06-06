@@ -7,6 +7,7 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import avatar from '../../assets/avatar.png'
+import { API_BASE_URL } from '../../constants';
 const SellerRequestForm = () => {
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
@@ -28,7 +29,7 @@ const SellerRequestForm = () => {
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+        const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
           headers: {
             token: Cookies.get('token'),
             role: 'user',
@@ -65,7 +66,7 @@ const SellerRequestForm = () => {
     }
  
     try {
-      await axios.post('http://localhost:8090/api/request', {
+      await axios.post(`${API_BASE_URL}/api/request`, {
  
         state,
         city,

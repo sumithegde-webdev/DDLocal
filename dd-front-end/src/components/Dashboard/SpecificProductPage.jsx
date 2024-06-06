@@ -10,6 +10,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom';
 import avatar from '../../assets/avatar.png'
+import { API_BASE_URL } from '../../constants';
 const SpecificProductPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -27,7 +28,7 @@ const SpecificProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8090/api/GetProductById', {
+        const response = await axios.get(`${API_BASE_URL}/api/GetProductById`, {
           headers: {
             token: Cookies.get('token'),
             productId: productId,
@@ -54,7 +55,7 @@ const SpecificProductPage = () => {
     }
 
     try {
-      await axios.post(`http://localhost:8090/api/deals/lock`, {}, {
+      await axios.post(`${API_BASE_URL}/api/deals/lock`, {}, {
         headers: {
           token: Cookies.get('token'),
           productId: productId,
@@ -76,7 +77,7 @@ const SpecificProductPage = () => {
     return <div>Loading...</div>;
   }
   const getUserDetails = async () => {
-    const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+    const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
 
       headers: {
         token: Cookies.get('token'),

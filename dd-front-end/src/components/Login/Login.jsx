@@ -8,13 +8,14 @@ import darkLogo from '../../assets/darkLogo.png';
 
 import './login.css'
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../constants";
 
 // const baseURL = 'http://localhost:8090/api/login';
 const loginAxios = axios.create({
     headers: {
         role: 'user',
     },
-    baseURL: 'http://localhost:8090/api/login',
+    baseURL: `${API_BASE_URL}/api/login`,
 });
 
 

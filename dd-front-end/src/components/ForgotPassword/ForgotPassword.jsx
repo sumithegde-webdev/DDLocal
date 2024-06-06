@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../constants";
 
 const ForgotPassword = (props) => {
 
@@ -30,7 +31,7 @@ const ForgotPassword = (props) => {
         }, 3000);
 
         if (Object.keys(emailValidationError).length === 0) {
-            axios.post('http://localhost:8090/api/forgotpassword', {}, {
+            axios.post(`${API_BASE_URL}/api/forgotpassword`, {}, {
                 headers: {
                     email: email,
                     role: "user"

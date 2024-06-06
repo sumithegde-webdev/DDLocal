@@ -6,13 +6,14 @@ import "../Login/login.css";
 import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../constants";
 
 const adminAxios = axios.create({
     headers: {
         role: "user",
         userRole: "ADMIN",
     },
-    baseURL: "http://localhost:8090/api/adminlogin",
+    baseURL: `${API_BASE_URL}/api/adminlogin`,
 });
 
 const AdminLogin = (props) => {

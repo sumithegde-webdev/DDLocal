@@ -12,6 +12,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useEffect } from 'react';
 import { GoAlertFill } from 'react-icons/go';
 import avatar from '../../assets/avatar.png'
+import { API_BASE_URL } from '../../constants';
 const CreateSellerProductForm = () => {
   const nav = useNavigate();
   const [userRole, setUserRole] = useState('');
@@ -44,7 +45,7 @@ const CreateSellerProductForm = () => {
   }
 
   const getUserDetails = async () => {
-    const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+    const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
 
       headers: {
         token: Cookies.get('token'),
@@ -74,7 +75,7 @@ const CreateSellerProductForm = () => {
 
 
     try {
-      await axios.post('http://localhost:8090/api/products/create', formData, {
+      await axios.post(`${API_BASE_URL}/api/products/create`, formData, {
         headers: {
 
           token: Cookies.get('token'),

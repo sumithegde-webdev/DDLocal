@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import AdminNavbar from '../AdminNavbar';
 import { useState, useEffect } from 'react';
-
+import { API_BASE_URL } from '../../constants'
 const AdminDeals = () => {
     const token = Cookies.get('token');
 
@@ -28,7 +28,7 @@ const AdminDeals = () => {
     ]
 
     useEffect(() => {
-        axios.get("http://localhost:8090/api/GetallUsers", {
+        axios.get(`${API_BASE_URL}/api/GetallUsers`, {
             headers: {
                 token: `${token}`,
             }
@@ -58,7 +58,7 @@ const AdminDeals = () => {
                 console.error(error);
             })
             .catch((err) => { console.error(err) });
-        axios.get('http://localhost:8090/api/admin/alldeals', {
+        axios.get(`${API_BASE_URL}/api/admin/alldeals`, {
             headers: {
                 token: `${token}`
             }

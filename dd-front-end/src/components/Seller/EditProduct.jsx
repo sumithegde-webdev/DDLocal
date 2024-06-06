@@ -10,6 +10,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import avatar from '../../assets/avatar.png'
+import { API_BASE_URL } from '../../constants';
 const EditProduct = () => {
   const nav = useNavigate();
   const { productId } = useParams();
@@ -33,7 +34,7 @@ const EditProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8090/api/GetProductById`, {
+        const response = await axios.get(`${API_BASE_URL}/api/GetProductById`, {
           headers: {
             token: Cookies.get('token'),
             productId: productId,
@@ -73,7 +74,7 @@ const EditProduct = () => {
       formData.append('file', product.image); 
 
 
-            await axios.put(`http://localhost:8090/api/products/Edit`, formData, {
+            await axios.put(`${API_BASE_URL}/api/products/Edit`, formData, {
         headers: {
           token: Cookies.get('token'),
           productId: productId,
@@ -100,7 +101,7 @@ const EditProduct = () => {
   };
 
   const getUserDetails = async () => {
-    const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+    const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
 
       headers: {
         token: Cookies.get('token'),

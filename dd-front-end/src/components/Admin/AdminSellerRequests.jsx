@@ -2,6 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import AdminNavbar from '../AdminNavbar';
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../constants';
 
 const AdminSellerRequests = () => {
     const token = Cookies.get('token');
@@ -22,7 +23,7 @@ const AdminSellerRequests = () => {
     ]
 
     useEffect(() => {
-        axios.get("http://localhost:8090/api/GetallUsers", {
+        axios.get(`${API_BASE_URL}/api/GetallUsers`, {
             headers: {
                 token: `${token}`,
             }
@@ -42,7 +43,7 @@ const AdminSellerRequests = () => {
 
     useEffect(() => {
         // Fetch seller requests from the API endpoint
-        axios.get('http://localhost:8090/api/admin/pending-requests', {
+        axios.get(`${API_BASE_URL}/api/admin/pending-requests`, {
             headers: {
                 token: `${token}`,
             }
@@ -57,7 +58,7 @@ const AdminSellerRequests = () => {
 
     const handleApprove = (requestId) => {
         // Logic to approve the seller request
-        axios.post(`http://localhost:8090/api/admin/approve-request/${requestId}`, {}, {
+        axios.post(`${API_BASE_URL}/api/admin/approve-request/${requestId}`, {}, {
             headers: {
                 token: `${token}`,
             }
@@ -74,7 +75,7 @@ const AdminSellerRequests = () => {
 
     const handleReject = (requestId) => {
         // Logic to approve the seller request
-        axios.post(`http://localhost:8090/api/admin/reject-request/${requestId}`, {}, {
+        axios.post(`${API_BASE_URL}/api/admin/reject-request/${requestId}`, {}, {
             headers: {
                 token: `${token}`,
             }

@@ -11,6 +11,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FaLock } from 'react-icons/fa';
 import { GoAlertFill } from "react-icons/go";
 import avatar from '../../assets/avatar.png'
+import { API_BASE_URL } from '../../constants';
 const listAllProducts = () => {
 
   const nav = useNavigate();
@@ -29,7 +30,7 @@ const listAllProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8090/api/productslisted', {
+        const response = await axios.get(`${API_BASE_URL}/api/productslisted`, {
           headers: {
             token: Cookies.get('token'),
           },
@@ -44,7 +45,7 @@ const listAllProducts = () => {
     fetchProducts();
   }, []);
   const getUserDetails = async () => {
-    const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+    const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
 
       headers: {
         token: Cookies.get('token'),

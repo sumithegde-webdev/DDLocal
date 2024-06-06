@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Fragment, useEffect, useState } from 'react'
 import AdminNavbar from '../AdminNavbar';
 import Cookies from 'js-cookie';
+import { API_BASE_URL } from '../../constants';
 
 const AdminUsers = () => {
     const token = Cookies.get('token');
@@ -23,7 +24,7 @@ const AdminUsers = () => {
     ]
 
     useEffect(() => {
-        axios.get("http://localhost:8090/api/GetallUsers", {
+        axios.get(`${API_BASE_URL}/api/GetallUsers`, {
             headers: {
                 token: `${token}`,
             }

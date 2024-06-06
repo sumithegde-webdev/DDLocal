@@ -11,6 +11,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom';
 import avatar from '../../assets/avatar.png'
+import { API_BASE_URL } from '../../constants';
 const DeleteProduct = () => {
   const nav = useNavigate();
   const { productId } = useParams();
@@ -34,7 +35,7 @@ const DeleteProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8090/api/GetProductById`, {
+        const response = await axios.get(`${API_BASE_URL}/api/GetProductById`, {
           headers: {
             token: Cookies.get('token'),
             productId: productId,
@@ -50,7 +51,7 @@ const DeleteProduct = () => {
     fetchProduct();
   }, [productId]);
   const getUserDetails = async () => {
-    const userData = await fetch('http://localhost:8090/api/getuserdetailsbytoken', {
+    const userData = await fetch(`${API_BASE_URL}/api/getuserdetailsbytoken`, {
 
       headers: {
         token: Cookies.get('token'),
@@ -66,7 +67,7 @@ const DeleteProduct = () => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:8090/api/products/DeleteProductById`, {
+      await axios.delete(`${API_BASE_URL}/api/products/DeleteProductById`, {
         headers: {
           token: Cookies.get('token'),
           productId : productId

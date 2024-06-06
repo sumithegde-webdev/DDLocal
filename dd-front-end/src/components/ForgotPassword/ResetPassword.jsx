@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
+import { API_BASE_URL } from "../../constants";
 
 const ResetPassword = (props) => {
 
@@ -66,7 +67,7 @@ const ResetPassword = (props) => {
         }, 3000)
 
         if (Object.keys(validationError).length === 0) {
-            axios.post('http://localhost:8090/api/resetpassword', {}, {
+            axios.post(`${API_BASE_URL}/api/resetpassword`, {}, {
                 headers: {
                     passwordFromUser: passwords.password,
                     role: "user",
